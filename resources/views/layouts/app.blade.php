@@ -8,7 +8,7 @@
 
 <nav class="navbar navbar-dark bg-dark">
     <div class="container">
-        <span class="navbar-brand">📘 Monitoring Ibadah</span>
+        <span class="navbar-brand"> Monitoring Ibadah</span>
 
         <div>
             <a href="/guru/monitoring" class="btn btn-sm btn-light">Guru</a>
