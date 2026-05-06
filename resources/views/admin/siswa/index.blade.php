@@ -2,6 +2,7 @@
 @csrf
 <input type="text" name="nis" placeholder="NIS">
 <input type="text" name="nama" placeholder="Nama">
+<input type="text" name="alamat" placeholder="Alamat">
 <input type="text" name="kelas" placeholder="Kelas  ">
 <button>Simpan</button>
 </form>
