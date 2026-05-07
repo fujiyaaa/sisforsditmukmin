@@ -8,35 +8,41 @@ use Illuminate\Http\Request;
 
 class MonitoringController extends Controller
 {
-   public function store(Request $request)
-   {
+   public function store(Request $request, $nis)
+{
+    $siswa = Siswa::where('nis', $nis)->firstOrFail();
+
     $validated = $request->validate([
-        'siswa_id'   => 'required|exists:siswas,id',
         'surah'      => 'required|string|max:100',
         'juz'        => 'required|integer|min:1|max:30',
         'jenis'      => 'required|in:tahfidz,murajaah,tilawah',
         'nilai'      => 'nullable|integer|min:0|max:100',
         'keterangan' => 'nullable|string|max:255',
     ], [
-        // custom pesan biar lebih user friendly
         'surah.required' => 'Surah wajib diisi',
         'juz.required' => 'Juz wajib diisi',
         'jenis.required' => 'Pilih jenis setoran',
         'nilai.max' => 'Nilai maksimal 100',
-        'siswa_id.exists' => 'Siswa tidak valid'
     ]);
 
     Monitoring::create([
-        ...$validated,
-        'tanggal' => now()
+        'siswa_id'   => $siswa->id,
+        'surah'      => $validated['surah'],
+        'juz'        => $validated['juz'],
+        'jenis'      => $validated['jenis'],
+        'nilai'      => $validated['nilai'] ?? null,
+        'keterangan' => $validated['keterangan'] ?? null,
+        'tanggal'    => now()
     ]);
 
-    return redirect('/guru/siswa')->with('success', 'Data berhasil disimpan');
-    }
-    
-    public function create($id)
+    return redirect('/guru/siswa')
+        ->with('success', 'Data berhasil disimpan');
+}
+
+    public function create($nis)
     {
-        $siswa = Siswa::findOrFail($id);
+        $siswa = Siswa::where('nis', $nis)->firstOrFail();
+
         return view('guru.monitoring.create', compact('siswa'));
     }
 }
