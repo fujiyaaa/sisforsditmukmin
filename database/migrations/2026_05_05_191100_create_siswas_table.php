@@ -27,7 +27,7 @@ return new class extends Migration
             $table->text('alamat')->nullable();
 
             // Akademik
-            $table->string('kelas');
+            $table->foreignId('kelas_id')->constrained('kelas')->onDelete('cascade');
 
             // Relasi orang tua (users.id)
             $table->unsignedBigInteger('orangtua_id')->nullable();

@@ -12,7 +12,7 @@
             <p class="mb-0">
                 Monitoring Hafalan Ananda :
                 <strong>{{ $siswa->nama }}</strong>
-                | Kelas {{ $siswa->kelas }}
+                | Kelas  {{ $siswa->kelas->nama_kelas }}
             </p>
         </div>
     </div>
