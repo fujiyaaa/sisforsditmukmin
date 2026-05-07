@@ -3,6 +3,7 @@
 use App\Http\Controllers\SiswaController;
 use App\Http\Controllers\MonitoringController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\OrangTuaController;
 
 Route::prefix('admin')->group(function () {
     Route::get('/siswa', [SiswaController::class, 'index']);
@@ -14,4 +15,9 @@ Route::prefix('guru')->group(function () {
     Route::get('/siswa', [SiswaController::class, 'listGuru']);
     Route::get('/monitoring/{id}', [MonitoringController::class, 'create']);
     Route::post('/monitoring', [MonitoringController::class, 'store']);
+});
+
+Route::prefix('orangtua')->group(function () {
+    Route::get('/monitoring', [OrangTuaController::class, 'monitoring'])
+        ->name('orangtua.monitoring');
 });
