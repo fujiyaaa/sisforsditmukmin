@@ -13,8 +13,15 @@ Route::prefix('admin')->group(function () {
 
 Route::prefix('guru')->group(function () {
     Route::get('/siswa', [SiswaController::class, 'listGuru']);
-    Route::get('/monitoring/{nis}', [MonitoringController::class, 'create']);
-    Route::post('/monitoring/{nis}', [MonitoringController::class, 'store']);
+
+    Route::get('/monitoring', [MonitoringController::class, 'index'])
+        ->name('monitoring.index');
+
+    Route::get('/monitoring/{nis}', [MonitoringController::class, 'create'])
+        ->name('monitoring.create');
+
+    Route::post('/monitoring/{nis}', [MonitoringController::class, 'store'])
+        ->name('monitoring.store');
 });
 
 Route::prefix('orangtua')->group(function () {

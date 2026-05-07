@@ -45,4 +45,11 @@ class MonitoringController extends Controller
 
         return view('guru.monitoring.create', compact('siswa'));
     }
+
+    public function index()
+        {
+            $siswas = Siswa::all();
+
+            return view('guru.monitoring.index', compact('siswas'));
+        }
 }

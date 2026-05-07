@@ -24,8 +24,8 @@
             </div>
 
 
-            <form action="{{ url('/guru/monitoring/' . $siswa->nis) }}" method="POST">
-                @csrf
+            <form action="{{ route('monitoring.store', $siswa->nis) }}" method="POST">
+            @csrf
 
                 <input type="hidden" name="siswa_id" value="{{ $siswa->id }}">
 
