@@ -5,6 +5,7 @@ use App\Http\Controllers\SiswaController;
 use App\Http\Controllers\MonitoringController;
 use App\Http\Controllers\OrangTuaController;
 use App\Http\Controllers\KelasController;
+use App\Http\Controllers\MonitoringSholatController;
 use App\Http\Controllers\GuruController;
 use App\Models\Siswa;
 use App\Models\Monitoring;
@@ -38,6 +39,12 @@ Route::prefix('guru')->group(function () {
 
     Route::post('/monitoring/{nis}', [MonitoringController::class, 'store'])
         ->name('monitoring.store');
+        
+    Route::get('/monitoring-sholat', [MonitoringSholatController::class, 'index'])
+        ->name('monitoring-sholat.index');
+
+    Route::post('/monitoring-sholat', [MonitoringSholatController::class, 'store'])
+        ->name('monitoring-sholat.store');
 });
 
 Route::prefix('orangtua')->group(function () {
