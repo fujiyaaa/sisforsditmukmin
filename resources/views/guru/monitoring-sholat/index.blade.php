@@ -5,22 +5,35 @@
 <div class="space-y-8">
 
     <!-- HEADER -->
-    <div class="bg-white rounded-2xl shadow-lg p-8">
+    <div class="bg-white rounded-3xl shadow-lg p-8">
 
-        <h1 class="text-3xl font-bold text-[#2F6F4F] mb-2">
-            Monitoring Sholat Fardhu
-        </h1>
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
 
-        <p class="text-gray-500">
-            Pilih kelas dan tanggal, lalu checklist sholat siswa.
-        </p>
+            <div>
+                <h1 class="text-3xl font-bold text-[#2F6F4F]">
+                    Monitoring Sholat Fardhu
+                </h1>
+
+                <p class="text-gray-500 mt-2">
+                    Pilih kelas dan tanggal, lalu checklist sholat fardhu siswa.
+                </p>
+            </div>
+
+            <a href="{{ route('monitoring-sholat.riwayat') }}"
+               class="bg-white border border-[#4D9A72] text-[#2F6F4F] px-6 py-3 rounded-2xl hover:bg-[#F0F8F4] transition text-center">
+                Lihat Riwayat
+            </a>
+
+        </div>
 
     </div>
 
-    <!-- FILTER KELAS DAN TANGGAL -->
-    <div class="bg-white rounded-2xl shadow-lg p-8">
+    <!-- FILTER -->
+    <div class="bg-white rounded-3xl shadow-lg p-8">
 
-        <form action="{{ route('monitoring-sholat.index') }}" method="GET" class="grid grid-cols-1 md:grid-cols-3 gap-5">
+        <form action="{{ route('monitoring-sholat.index') }}"
+              method="GET"
+              class="grid grid-cols-1 md:grid-cols-3 gap-5">
 
             <div>
                 <label class="block mb-2 font-semibold text-gray-700">
@@ -28,7 +41,7 @@
                 </label>
 
                 <select name="kelas_id"
-                        class="w-full px-4 py-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-[#4D9A72]">
+                        class="w-full px-4 py-3 border border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#4D9A72]">
 
                     <option value="">-- Pilih Kelas --</option>
 
@@ -49,12 +62,12 @@
                 <input type="date"
                        name="tanggal"
                        value="{{ $tanggal }}"
-                       class="w-full px-4 py-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-[#4D9A72]">
+                       class="w-full px-4 py-3 border border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#4D9A72]">
             </div>
 
             <div class="flex items-end">
                 <button type="submit"
-                        class="w-full bg-[#4D9A72] text-white px-6 py-3 rounded-xl hover:bg-[#2F6F4F] transition">
+                        class="w-full bg-[#4D9A72] text-white px-6 py-3 rounded-2xl hover:bg-[#2F6F4F] transition">
                     Tampilkan Siswa
                 </button>
             </div>
@@ -64,12 +77,29 @@
     </div>
 
     @if(session('success'))
-        <div class="bg-green-100 text-green-700 px-5 py-4 rounded-xl">
-            {{ session('success') }}
-        </div>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                Swal.fire({
+                    icon: 'success',
+                    title: '<strong>Berhasil Disimpan</strong>',
+                    text: '{{ session('success') }}',
+                    showConfirmButton: true,
+                    confirmButtonText: 'Tutup',
+                    confirmButtonColor: '#28a745',
+                    timer: 3500,
+                    timerProgressBar: true,
+                    position: 'center',
+                    width: '500px',
+                    padding: '2.5rem',
+                    backdrop: `
+                        rgba(0,0,0,0.6)
+                    `
+                });
+            });
+        </script>
     @endif
 
-    <!-- DATA SISWA -->
+    <!-- DATA CHECKLIST -->
     @if($kelas_id)
 
         <form action="{{ route('monitoring-sholat.store') }}" method="POST">
@@ -78,41 +108,42 @@
             <input type="hidden" name="kelas_id" value="{{ $kelas_id }}">
             <input type="hidden" name="tanggal" value="{{ $tanggal }}">
 
-            <div class="bg-white rounded-2xl shadow-lg p-8">
+            <div class="bg-white rounded-3xl shadow-lg p-8">
 
-                <div class="flex justify-between items-center mb-6">
+                <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
 
                     <div>
                         <h2 class="text-2xl font-bold text-[#2F6F4F]">
-                            Data Checklist Sholat
+                            Checklist Sholat Siswa
                         </h2>
 
                         <p class="text-gray-500 mt-1">
-                            Tanggal: {{ $tanggal }}
+                            Tanggal: {{ \Carbon\Carbon::parse($tanggal)->format('d-m-Y') }}
                         </p>
                     </div>
 
                     <button type="submit"
-                            class="bg-[#4D9A72] text-white px-6 py-3 rounded-xl hover:bg-[#2F6F4F] transition">
+                            class="bg-[#4D9A72] text-white px-6 py-3 rounded-2xl hover:bg-[#2F6F4F] transition">
                         Simpan Monitoring
                     </button>
 
                 </div>
 
-                <div class="overflow-x-auto">
+                <div class="overflow-x-auto rounded-2xl border border-gray-100">
 
                     <table class="w-full border-collapse">
 
                         <thead>
                             <tr class="bg-[#4D9A72] text-white">
-                                <th class="p-4 text-left rounded-l-xl">NIS</th>
-                                <th class="p-4 text-left">Nama Siswa</th>
+                                <th class="p-4 text-left">No</th>
+                                <th class="p-4 text-left">NIS</th>
+                                <th class="p-4 text-left min-w-[180px]">Nama Siswa</th>
                                 <th class="p-4 text-center">Subuh</th>
                                 <th class="p-4 text-center">Dzuhur</th>
                                 <th class="p-4 text-center">Ashar</th>
                                 <th class="p-4 text-center">Maghrib</th>
                                 <th class="p-4 text-center">Isya</th>
-                                <th class="p-4 text-left rounded-r-xl">Keterangan</th>
+                                <th class="p-4 text-left min-w-[220px]">Keterangan</th>
                             </tr>
                         </thead>
 
@@ -124,13 +155,17 @@
                                     $data = $monitoring[$siswa->id] ?? null;
                                 @endphp
 
-                                <tr class="border-b hover:bg-gray-50 transition">
+                                <tr class="border-b hover:bg-[#F7FBF9] transition">
 
-                                    <td class="p-4">
+                                    <td class="p-4 text-gray-500">
+                                        {{ $loop->iteration }}
+                                    </td>
+
+                                    <td class="p-4 text-gray-700">
                                         {{ $siswa->nis }}
                                     </td>
 
-                                    <td class="p-4 font-medium">
+                                    <td class="p-4 font-semibold text-gray-800">
                                         {{ $siswa->nama }}
                                     </td>
 
@@ -138,7 +173,7 @@
                                         <input type="checkbox"
                                                name="sholat[{{ $siswa->id }}][subuh]"
                                                value="1"
-                                               class="w-5 h-5"
+                                               class="w-5 h-5 accent-[#4D9A72]"
                                                {{ $data && $data->subuh ? 'checked' : '' }}>
                                     </td>
 
@@ -146,7 +181,7 @@
                                         <input type="checkbox"
                                                name="sholat[{{ $siswa->id }}][dzuhur]"
                                                value="1"
-                                               class="w-5 h-5"
+                                               class="w-5 h-5 accent-[#4D9A72]"
                                                {{ $data && $data->dzuhur ? 'checked' : '' }}>
                                     </td>
 
@@ -154,7 +189,7 @@
                                         <input type="checkbox"
                                                name="sholat[{{ $siswa->id }}][ashar]"
                                                value="1"
-                                               class="w-5 h-5"
+                                               class="w-5 h-5 accent-[#4D9A72]"
                                                {{ $data && $data->ashar ? 'checked' : '' }}>
                                     </td>
 
@@ -162,7 +197,7 @@
                                         <input type="checkbox"
                                                name="sholat[{{ $siswa->id }}][maghrib]"
                                                value="1"
-                                               class="w-5 h-5"
+                                               class="w-5 h-5 accent-[#4D9A72]"
                                                {{ $data && $data->maghrib ? 'checked' : '' }}>
                                     </td>
 
@@ -170,7 +205,7 @@
                                         <input type="checkbox"
                                                name="sholat[{{ $siswa->id }}][isya]"
                                                value="1"
-                                               class="w-5 h-5"
+                                               class="w-5 h-5 accent-[#4D9A72]"
                                                {{ $data && $data->isya ? 'checked' : '' }}>
                                     </td>
 
@@ -179,7 +214,7 @@
                                                name="sholat[{{ $siswa->id }}][keterangan]"
                                                value="{{ $data->keterangan ?? '' }}"
                                                placeholder="Opsional"
-                                               class="w-full px-3 py-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-[#4D9A72]">
+                                               class="w-full px-3 py-2 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#4D9A72]">
                                     </td>
 
                                 </tr>
@@ -187,7 +222,7 @@
                             @empty
 
                                 <tr>
-                                    <td colspan="8" class="p-6 text-center text-gray-500">
+                                    <td colspan="9" class="p-10 text-center text-gray-500">
                                         Belum ada siswa di kelas ini.
                                     </td>
                                 </tr>
@@ -203,6 +238,24 @@
             </div>
 
         </form>
+
+    @else
+
+        <div class="bg-white rounded-3xl shadow-lg p-10 text-center">
+
+            <div class="text-5xl mb-4">
+                📋
+            </div>
+
+            <h2 class="text-2xl font-bold text-gray-700">
+                Pilih kelas terlebih dahulu
+            </h2>
+
+            <p class="text-gray-500 mt-2">
+                Setelah kelas dipilih, daftar siswa akan muncul untuk checklist sholat.
+            </p>
+
+        </div>
 
     @endif
 

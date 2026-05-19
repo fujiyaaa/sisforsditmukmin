@@ -72,4 +72,35 @@ class MonitoringSholatController extends Controller
             ])
             ->with('success', 'Monitoring sholat berhasil disimpan!');
     }
+
+    public function riwayat(Request $request)
+    {
+        $kelas = Kelas::all();
+
+        $kelas_id = $request->kelas_id;
+        $tanggal = $request->tanggal;
+
+        $query = MonitoringSholat::with(['siswa.kelas']);
+
+        if ($kelas_id) {
+            $query->whereHas('siswa', function ($q) use ($kelas_id) {
+                $q->where('kelas_id', $kelas_id);
+            });
+        }
+
+        if ($tanggal) {
+            $query->where('tanggal', $tanggal);
+        }
+
+        $riwayat = $query->orderBy('tanggal', 'desc')
+            ->get()
+            ->groupBy('tanggal');
+
+        return view('guru.monitoring-sholat.riwayat', compact(
+            'kelas',
+            'kelas_id',
+            'tanggal',
+            'riwayat'
+        ));
+    }
 }

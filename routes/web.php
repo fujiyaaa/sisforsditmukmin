@@ -39,12 +39,15 @@ Route::prefix('guru')->group(function () {
 
     Route::post('/monitoring/{nis}', [MonitoringController::class, 'store'])
         ->name('monitoring.store');
-        
+
     Route::get('/monitoring-sholat', [MonitoringSholatController::class, 'index'])
         ->name('monitoring-sholat.index');
 
     Route::post('/monitoring-sholat', [MonitoringSholatController::class, 'store'])
         ->name('monitoring-sholat.store');
+    
+    Route::get('/monitoring-sholat/riwayat', [MonitoringSholatController::class, 'riwayat'])
+        ->name('monitoring-sholat.riwayat');
 });
 
 Route::prefix('orangtua')->group(function () {
