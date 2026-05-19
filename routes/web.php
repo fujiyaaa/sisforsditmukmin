@@ -5,6 +5,7 @@ use App\Http\Controllers\SiswaController;
 use App\Http\Controllers\MonitoringController;
 use App\Http\Controllers\OrangTuaController;
 use App\Http\Controllers\KelasController;
+use App\Http\Controllers\GuruController;
 use App\Models\Siswa;
 use App\Models\Monitoring;
 
@@ -19,6 +20,11 @@ Route::prefix('admin')->group(function () {
     Route::post('/kelas', [KelasController::class, 'store']);
     Route::put('/kelas/{id}', [KelasController::class, 'update']);
     Route::delete('/kelas/{id}', [KelasController::class, 'destroy']);
+
+    Route::get('/guru', [GuruController::class, 'index']);
+    Route::post('/guru', [GuruController::class, 'store']);
+    Route::put('/guru/{id}', [GuruController::class, 'update']);
+    Route::delete('/guru/{id}', [GuruController::class, 'destroy']);
 });
 
 Route::prefix('guru')->group(function () {

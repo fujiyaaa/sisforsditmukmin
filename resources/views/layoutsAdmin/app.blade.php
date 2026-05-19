@@ -14,10 +14,10 @@
 
 <body class="bg-[#F3F3F3] font-sans">
 
-<div class="flex min-h-screen">
+<div class="flex h-screen overflow-hidden">
 
     <!-- SIDEBAR -->
-    <aside class="w-72 bg-[#4D9A72] text-white flex flex-col justify-between shadow-2xl">
+    <aside class="w-72 h-screen fixed bg-[#4D9A72] text-white flex flex-col justify-between shadow-2xl">
 
         <div>
 
@@ -37,31 +37,28 @@
             <!-- NAVBAR -->
             <nav class="mt-8 px-4 space-y-3">
 
-                <!-- DASHBOARD -->
                 <a href="/dashboard-admin"
                    class="flex items-center gap-3 px-5 py-4 rounded-2xl hover:bg-white/10 transition">
-
                     <span>🏠</span>
                     <span>Dashboard</span>
-
                 </a>
 
-                <!-- KELOLA SISWA -->
                 <a href="/admin/siswa"
                    class="flex items-center gap-3 px-5 py-4 rounded-2xl hover:bg-white/10 transition">
-
                     <span>👨‍🎓</span>
                     <span>Kelola Siswa</span>
-
                 </a>
 
-                <!-- KELOLA KELAS -->
                 <a href="/admin/kelas"
                    class="flex items-center gap-3 px-5 py-4 rounded-2xl hover:bg-white/10 transition">
-
                     <span>🏫</span>
                     <span>Kelola Kelas</span>
+                </a>
 
+                <a href="/admin/guru"
+                   class="flex items-center gap-3 px-5 py-4 rounded-2xl hover:bg-white/10 transition">
+                    <span>👨‍🏫</span>
+                    <span>Kelola Guru</span>
                 </a>
 
             </nav>
@@ -88,7 +85,7 @@
     </aside>
 
     <!-- CONTENT -->
-    <main class="flex-1 p-8">
+    <main class="ml-72 flex-1 p-8 h-screen overflow-y-auto">
 
         @yield('content')
 
