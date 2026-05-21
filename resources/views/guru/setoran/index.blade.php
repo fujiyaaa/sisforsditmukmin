@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layoutsGuru.app')
 
 @section('content')
 
@@ -23,7 +23,7 @@
 
     <!-- FILTER KELAS -->
     <form method="GET"
-          action="/guru/monitoring"
+          action="/guru/setoran"
           class="mb-6">
 
         <select name="kelas_id"
@@ -148,7 +148,7 @@
                         <!-- Aksi -->
                         <td class="px-6 py-5 text-center">
 
-                            <a href="{{ url('/guru/monitoring/' . $siswa->nis) }}"
+                            <a href="{{ url('/guru/setoran/' . $siswa->nis) }}"
                                class="bg-[#4D9A72] text-white px-5 py-3 rounded-xl hover:bg-[#3F825F] transition shadow-sm">
 
                                 Input Setoran

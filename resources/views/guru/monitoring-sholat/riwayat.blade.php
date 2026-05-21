@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layoutsGuru.app')
 
 @section('content')
 

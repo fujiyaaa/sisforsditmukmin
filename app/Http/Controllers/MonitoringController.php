@@ -23,7 +23,7 @@ class MonitoringController extends Controller
         $siswas = $query->get()
             ->groupBy('kelas.nama_kelas');
 
-        return view('guru.monitoring.index', compact(
+        return view('guru.setoran.index', compact(
             'siswas',
             'kelas'
         ));
@@ -35,7 +35,7 @@ class MonitoringController extends Controller
             ->where('nis', $nis)
             ->firstOrFail();
 
-        return view('guru.monitoring.create', compact('siswa'));
+        return view('guru.setoran.create', compact('siswa'));
     }
 
     public function store(Request $request, $nis)
@@ -62,7 +62,7 @@ class MonitoringController extends Controller
         'jenis'      => $validated['jenis'],
         'nilai'      => $validated['nilai'] ?? null,
         'keterangan' => $validated['keterangan'] ?? null,
-        'tanggal'    => now()->toDateString(),   
+        'tanggal'    => now()->toDateString(),
     ]);
 
     return back()->with('success', 'Setoran berhasil disimpan! ✅');

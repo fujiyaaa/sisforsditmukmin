@@ -56,15 +56,12 @@ Route::prefix('admin')->group(function () {
 Route::prefix('guru')->group(function () {
 
     Route::get('/siswa', [SiswaController::class, 'listGuru']);
-
-    Route::get('/monitoring', [MonitoringController::class, 'index'])
-        ->name('monitoring.index');
-
-    Route::get('/monitoring/{nis}', [MonitoringController::class, 'create'])
-        ->name('monitoring.create');
-
-    Route::post('/monitoring/{nis}', [MonitoringController::class, 'store'])
-        ->name('monitoring.store');
+    Route::get('/setoran', [MonitoringController::class, 'index'])
+        ->name('setoran.index');
+    Route::get('/setoran/{nis}', [MonitoringController::class, 'create'])
+        ->name('setoran.create');
+    Route::post('/setoran/{nis}', [MonitoringController::class, 'store'])
+        ->name('setoran.store');
 
     Route::get('/monitoring-sholat', [MonitoringSholatController::class, 'index'])
         ->name('monitoring-sholat.index');
