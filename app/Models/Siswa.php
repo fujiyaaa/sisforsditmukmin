@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\LaporanSiswa;
 
 class Siswa extends Model
 {
@@ -20,6 +21,11 @@ class Siswa extends Model
 
     public function monitoringSholat()
     {
-    return $this->hasMany(MonitoringSholat::class);
+        return $this->hasMany(MonitoringSholat::class);
+    }
+
+    public function laporanSiswas()
+    {
+        return $this->hasMany(LaporanSiswa::class);
     }
 }

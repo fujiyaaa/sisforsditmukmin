@@ -7,6 +7,7 @@ use App\Http\Controllers\MonitoringController;
 use App\Http\Controllers\OrangTuaController;
 use App\Http\Controllers\KelasController;
 use App\Http\Controllers\MonitoringSholatController;
+use App\Http\Controllers\LaporanSiswaController;
 use App\Http\Controllers\GuruController;
 
 use App\Models\Siswa;
@@ -45,15 +46,18 @@ Route::prefix('admin')->group(function () {
     Route::put('/guru/{id}', [GuruController::class, 'update']);
     Route::delete('/guru/{id}', [GuruController::class, 'destroy']);
 
+    Route::get('/admin/laporan-prestasi-pelanggaran', [LaporanSiswaController::class, 'adminIndex'])->name('admin.laporan.index');
+    Route::get('/admin/laporan-prestasi-pelanggaran/{nis}', [LaporanSiswaController::class, 'adminCreate'])->name('admin.laporan.create');
+    Route::post('/admin/laporan-prestasi-pelanggaran/{nis}', [LaporanSiswaController::class, 'adminStore'])->name('admin.laporan.store');
+
 });
 
-/*
-|--------------------------------------------------------------------------
-| GURU
-|--------------------------------------------------------------------------
-*/
+
 
 Route::prefix('guru')->group(function () {
+    Route::get('/guru', function () {
+        return redirect()->route('guru.dashboard');
+    });
 
     Route::get('/siswa', [SiswaController::class, 'listGuru']);
     Route::get('/setoran', [MonitoringController::class, 'index'])
@@ -72,13 +76,17 @@ Route::prefix('guru')->group(function () {
     Route::get('/monitoring-sholat/riwayat', [MonitoringSholatController::class, 'riwayat'])
         ->name('monitoring-sholat.riwayat');
 
+    Route::get('/laporan-prestasi-pelanggaran', [LaporanSiswaController::class, 'index'])
+    ->name('laporan.index');
+
+    Route::get('/laporan-prestasi-pelanggaran/{nis}', [LaporanSiswaController::class, 'create'])
+        ->name('laporan.create');
+
+    Route::post('/laporan-prestasi-pelanggaran/{nis}', [LaporanSiswaController::class, 'store'])
+        ->name('laporan.store');
+
 });
 
-/*
-|--------------------------------------------------------------------------
-| ORANG TUA
-|--------------------------------------------------------------------------
-*/
 
 Route::prefix('orangtua')->group(function () {
 
@@ -87,37 +95,25 @@ Route::prefix('orangtua')->group(function () {
 
 });
 
-/*
-|--------------------------------------------------------------------------
-| DASHBOARD GURU
-|--------------------------------------------------------------------------
-*/
 
-Route::get('/dashboard-guru', function () {
-
-    $totalSiswa = Siswa::count();
-
-    $totalMonitoring = Monitoring::count();
+Route::get('/guru', function () {
+    $totalSiswa = Schema::hasTable('siswas') ? DB::table('siswas')->count() : 0;
+    $totalMonitoring = Schema::hasTable('monitorings') ? DB::table('monitorings')->count() : 0;
+    $totalSetoran = Schema::hasTable('setorans') ? DB::table('setorans')->count() : 0;
 
     $aktivitas = [
-
-        'Monitoring ibadah berhasil diperbarui',
-        'Absensi siswa berhasil disimpan',
-        'Setoran Qur’an berhasil ditambahkan',
-        'Data siswa berhasil diperbarui',
-
+        'Monitoring ibadah siswa diperbarui',
+        'Setoran Quran siswa berhasil ditambahkan',
+        'Data absensi siswa diperiksa',
     ];
 
-    return view('guru.monitoring.dashboard', compact(
-
+    return view('guru.dashboard', compact(
         'totalSiswa',
         'totalMonitoring',
+        'totalSetoran',
         'aktivitas'
-
     ));
-
-});
-
+})->name('guru.dashboard');
 /*
 |--------------------------------------------------------------------------
 | DASHBOARD ORANG TUA
