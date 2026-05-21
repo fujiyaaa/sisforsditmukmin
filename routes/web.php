@@ -90,9 +90,8 @@ Route::prefix('guru')->group(function () {
 
 Route::prefix('orangtua')->group(function () {
 
-    Route::get('/monitoring', [OrangTuaController::class, 'monitoring'])
-        ->name('orangtua.monitoring');
-
+    Route::get('/monitoring', [OrangTuaController::class, 'monitoring'])->name('orangtua.monitoring');
+    Route::get('/laporan', [OrangTuaController::class, 'laporan'])->name('laporan');
 });
 
 

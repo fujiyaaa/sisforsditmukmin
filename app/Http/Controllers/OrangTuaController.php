@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Siswa;
 use App\Models\Monitoring;
+use App\Models\LaporanSiswa;
 use Illuminate\Support\Facades\Auth;
 
 class OrangTuaController extends Controller
@@ -35,13 +36,55 @@ class OrangTuaController extends Controller
         $rataNilai = Monitoring::where('siswa_id', $siswa->id)
                         ->avg('nilai');
 
-        return view('orangtua.monitoring', compact(
+        return view('orangtua.monitoring.index', compact(
             'siswa',
             'monitorings',
             'totalSetoran',
             'totalTahfidz',
             'totalTilawah',
             'rataNilai'
+        ));
+    }
+    public function laporan(Request $request)
+    {
+        // Sementara ambil siswa pertama dulu.
+        // Nanti kalau sudah ada relasi orang tua-anak, bagian ini bisa disesuaikan.
+        $siswa = Siswa::with('kelas')->first();
+
+        if (!$siswa) {
+            $laporans = collect();
+
+            return view('orangtua.laporan.index', compact('siswa', 'laporans'));
+        }
+
+        $laporans = LaporanSiswa::where('siswa_id', $siswa->id)
+            ->when($request->jenis, function ($query) use ($request) {
+                $query->where('jenis', $request->jenis);
+            })
+            ->latest()
+            ->get();
+
+        $totalSemua = LaporanSiswa::where('siswa_id', $siswa->id)->count();
+
+        $totalPrestasi = LaporanSiswa::where('siswa_id', $siswa->id)
+            ->where('jenis', 'prestasi')
+            ->count();
+
+        $totalPelanggaran = LaporanSiswa::where('siswa_id', $siswa->id)
+            ->where('jenis', 'pelanggaran')
+            ->count();
+
+        $totalInformasi = LaporanSiswa::where('siswa_id', $siswa->id)
+            ->where('jenis', 'informasi')
+            ->count();
+
+        return view('orangtua.laporan.index', compact(
+            'siswa',
+            'laporans',
+            'totalSemua',
+            'totalPrestasi',
+            'totalPelanggaran',
+            'totalInformasi'
         ));
     }
 }
