@@ -63,7 +63,7 @@
 
                 <a href="{{ route('admin.laporan.index') }}"
                     class="flex items-center gap-3 px-5 py-4 rounded-2xl hover:bg-white/10 transition
-                    {{ request()->is('admin/laporan-prestasi-pelanggaran*') ? 'bg-white/20 font-semibold' : '' }}">
+                    {{ request()->is('/laporan-prestasi-pelanggaran*') ? 'bg-white/20 font-semibold' : '' }}">
                         <span>🏅</span>
                         <span>Laporan Prestasi & Pelanggaran</span>
                 </a>

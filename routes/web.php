@@ -46,9 +46,9 @@ Route::prefix('admin')->group(function () {
     Route::put('/guru/{id}', [GuruController::class, 'update']);
     Route::delete('/guru/{id}', [GuruController::class, 'destroy']);
 
-    Route::get('/admin/laporan-prestasi-pelanggaran', [LaporanSiswaController::class, 'adminIndex'])->name('admin.laporan.index');
-    Route::get('/admin/laporan-prestasi-pelanggaran/{nis}', [LaporanSiswaController::class, 'adminCreate'])->name('admin.laporan.create');
-    Route::post('/admin/laporan-prestasi-pelanggaran/{nis}', [LaporanSiswaController::class, 'adminStore'])->name('admin.laporan.store');
+    Route::get('/laporan-prestasi-pelanggaran', [LaporanSiswaController::class, 'adminIndex'])->name('admin.laporan.index');
+    Route::get('/laporan-prestasi-pelanggaran/{nis}', [LaporanSiswaController::class, 'adminCreate'])->name('admin.laporan.create');
+    Route::post('/laporan-prestasi-pelanggaran/{nis}', [LaporanSiswaController::class, 'adminStore'])->name('admin.laporan.store');
 
 });
 
