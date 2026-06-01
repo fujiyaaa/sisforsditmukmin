@@ -9,25 +9,16 @@ use App\Http\Controllers\KelasController;
 use App\Http\Controllers\MonitoringSholatController;
 use App\Http\Controllers\LaporanSiswaController;
 use App\Http\Controllers\GuruController;
+use App\Http\Controllers\AbsensiController;
 
 use App\Models\Siswa;
 use App\Models\Monitoring;
 
-/*
-|--------------------------------------------------------------------------
-| LANDING PAGE
-|--------------------------------------------------------------------------
-*/
 
 Route::get('/', function () {
     return view('welcome');
 });
 
-/*
-|--------------------------------------------------------------------------
-| ADMIN
-|--------------------------------------------------------------------------
-*/
 
 Route::prefix('admin')->group(function () {
 
@@ -84,6 +75,12 @@ Route::prefix('guru')->group(function () {
 
     Route::post('/laporan-prestasi-pelanggaran/{nis}', [LaporanSiswaController::class, 'store'])
         ->name('laporan.store');
+
+    Route::get('/rekap-absensi', [AbsensiController::class, 'index'])
+        ->name('guru.absensi.index');
+
+    Route::post('/rekap-absensi', [AbsensiController::class, 'store'])
+        ->name('guru.absensi.store');
 
 });
 

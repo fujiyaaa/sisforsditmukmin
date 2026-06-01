@@ -52,11 +52,11 @@
                     <span>Setoran Quran</span>
                 </a>
 
-                <a href="{{ url('/guru/rekap-absensi') }}"
-                   class="flex items-center gap-3 px-5 py-4 rounded-2xl hover:bg-white/10 transition
-                   {{ request()->is('guru/rekap-absensi*') ? 'bg-white/20 font-semibold' : '' }}">
-                    <span>🗓️</span>
-                    <span>Rekap Absensi</span>
+                <a href="{{ route('guru.absensi.index') }}"
+                    class="flex items-center gap-3 px-5 py-4 rounded-2xl hover:bg-white/10 transition
+                    {{ request()->routeIs('guru.absensi.*') ? 'bg-white/20 font-semibold' : '' }}">
+                        <span>🗓️</span>
+                        <span>Rekap Absensi</span>
                 </a>
 
                 <a href="{{ url('/guru/laporan-prestasi-pelanggaran') }}"
