@@ -88,8 +88,10 @@ Route::prefix('guru')->group(function () {
 
 Route::prefix('orangtua')->group(function () {
 
+    
+    Route::get('/dashboard', function () {return view('orangtua.dashboard');})->name('orangtua.dashboard');
     Route::get('/monitoring', [OrangTuaController::class, 'monitoring'])->name('orangtua.monitoring');
-    Route::get('/laporan', [OrangTuaController::class, 'laporan'])->name('laporan');
+   Route::get('/laporan', [OrangTuaController::class, 'laporan'])->name('orangtua.laporan');
     Route::get('/ibadah-sholat',[OrangTuaSholatController::class, 'index'])->name('orangtua.ibadah-sholat');
     Route::post('/ibadah-sholat',[OrangTuaSholatController::class, 'store'])->name('orangtua.ibadah-sholat.store');
 
@@ -119,12 +121,6 @@ Route::get('/guru', function () {
 | DASHBOARD ORANG TUA
 |--------------------------------------------------------------------------
 */
-
-Route::get('/dashboard', function () {
-
-    return view('orangtua.dashboard');
-
-});
 
 
 /*

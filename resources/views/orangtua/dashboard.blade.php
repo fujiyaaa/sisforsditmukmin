@@ -1,100 +1,71 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Orang Tua</title>
+@extends('layoutsOrtu.app')
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+@section('content')
 
-    <style>
+<div class="space-y-6">
 
-        body{
-            background:#f3f3f3;
-            font-family:Arial,sans-serif;
-        }
+    <!-- HEADER -->
+    <div class="bg-white rounded-3xl shadow-lg p-8">
 
-        .sidebar{
-            width:250px;
-            height:100vh;
-            background:#4f9b72;
-            position:fixed;
-            left:0;
-            top:0;
-            padding:30px;
-            color:white;
-        }
+        <h1 class="text-4xl font-bold text-[#2e8b57]">
+            Dashboard
+        </h1>
 
-        .sidebar h2{
-            font-weight:bold;
-            margin-bottom:40px;
-        }
+        <p class="text-gray-500 mt-2">
+            Selamat datang di Sistem Informasi Monitoring Siswa SDIT Mukmin.
+        </p>
 
-        .sidebar a{
-            display:block;
-            color:white;
-            text-decoration:none;
-            padding:15px;
-            border-radius:12px;
-            margin-bottom:10px;
-        }
+    </div>
 
-        .sidebar a:hover{
-            background:rgba(255,255,255,0.15);
-        }
+    <!-- STATISTIK -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
 
-        .main{
-            margin-left:270px;
-            padding:30px;
-        }
+        <div class="bg-white rounded-3xl shadow-lg p-6">
+            <p class="text-gray-500">
+                Total Monitoring
+            </p>
 
-        .card-custom{
-            background:white;
-            border-radius:20px;
-            padding:30px;
-            box-shadow:0 4px 15px rgba(0,0,0,0.08);
-        }
+            <h2 class="text-4xl font-bold text-[#2e8b57] mt-3">
+                12
+            </h2>
+        </div>
 
-    </style>
+        <div class="bg-white rounded-3xl shadow-lg p-6">
+            <p class="text-gray-500">
+                Absensi Bulan Ini
+            </p>
 
-</head>
-<body>
+            <h2 class="text-4xl font-bold text-[#2e8b57] mt-3">
+                98%
+            </h2>
+        </div>
 
-<div class="sidebar">
+        <div class="bg-white rounded-3xl shadow-lg p-6">
+            <p class="text-gray-500">
+                Prestasi Anak
+            </p>
 
-    <h2>SiMukmin</h2>
+            <h2 class="text-4xl font-bold text-[#2e8b57] mt-3">
+                5
+            </h2>
+        </div>
 
-    <a href="#">
-        Dashboard
-    </a>
+    </div>
 
-    <a href="#">
-        Monitoring Anak
-    </a>
+    <!-- INFORMASI -->
+    <div class="bg-white rounded-3xl shadow-lg p-8">
 
-    <a href="#">
-        Rekap Absensi
-    </a>
+        <h3 class="text-2xl font-bold text-[#2e8b57] mb-4">
+            Informasi
+        </h3>
 
-    <a href="#">
-        Prestasi Anak
-    </a>
-
-</div>
-
-<div class="main">
-
-    <div class="card-custom">
-
-        <h1>Dashboard Orang Tua</h1>
-
-        <p class="text-muted mt-3">
-            Selamat datang di sistem monitoring siswa.
+        <p class="text-gray-600">
+            Gunakan menu di sebelah kiri untuk melihat monitoring,
+            ibadah sholat, serta laporan prestasi dan pelanggaran siswa.
         </p>
 
     </div>
 
 </div>
 
-</body>
-</html>
+@endsection
