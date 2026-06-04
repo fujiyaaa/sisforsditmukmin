@@ -16,7 +16,7 @@ class Siswa extends Model
 
     public function kelas()
     {
-        return $this->belongsTo(Kelas::class);
+        return $this->belongsTo(Kelas::class, 'kelas_id');
     }
 
     public function monitoringSholat()

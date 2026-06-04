@@ -14,6 +14,7 @@ class LaporanSiswa extends Model
         'tanggal',
         'tingkat',
         'catatan',
+        'sertifikat',
     ];
 
     public function siswa()

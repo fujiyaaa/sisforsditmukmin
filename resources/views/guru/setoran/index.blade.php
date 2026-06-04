@@ -5,21 +5,26 @@
 <div class="bg-white rounded-3xl shadow-md p-8">
 
     <!-- Header -->
-    <div class="flex items-center justify-between mb-8">
+<div class="flex items-center justify-between mb-8">
 
-        <div>
+    <div>
 
-            <h1 class="text-4xl font-bold text-[#1F252D]">
-                Data Siswa Monitoring Quran
-            </h1>
+        <h1 class="text-4xl font-bold text-[#1F252D]">
+            Data Siswa Monitoring Quran
+        </h1>
 
-            <p class="text-gray-500 mt-2">
-                Monitoring hafalan dan ibadah siswa
-            </p>
-
-        </div>
+        <p class="text-gray-500 mt-2">
+            Monitoring hafalan dan ibadah siswa
+        </p>
 
     </div>
+
+    <a href="{{ route('setoran.riwayat') }}"
+       class="bg-[#2F6F4F] text-white px-6 py-3 rounded-xl hover:bg-[#24583e] transition shadow-sm">
+        Riwayat Setoran
+    </a>
+
+</div>
 
     <!-- FILTER KELAS -->
     <form method="GET"

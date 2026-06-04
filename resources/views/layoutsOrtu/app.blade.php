@@ -47,7 +47,7 @@
                     <span>Setoran Quran</span>
                 </a>
 
-                <a href="{{ route('orangtua.ibadah-sholat') }}"
+                <a href="{{ url('/orangtua/ibadah-sholat') }}"
                    class="flex items-center gap-3 px-5 py-4 rounded-2xl hover:bg-white/10 transition
                    {{ request()->is('orangtua/ibadah-sholat*') ? 'bg-white/20 font-semibold' : '' }}">
                     <span>🕌</span>

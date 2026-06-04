@@ -11,6 +11,7 @@ use App\Http\Controllers\MonitoringSholatController;
 use App\Http\Controllers\LaporanSiswaController;
 use App\Http\Controllers\GuruController;
 use App\Http\Controllers\AbsensiController;
+use App\Http\Controllers\OrangTuaAbsensiController;
 
 use App\Models\Siswa;
 use App\Models\Monitoring;
@@ -54,6 +55,8 @@ Route::prefix('guru')->group(function () {
     Route::get('/siswa', [SiswaController::class, 'listGuru']);
     Route::get('/setoran', [MonitoringController::class, 'index'])
         ->name('setoran.index');
+     Route::get('/setoran/riwayat', [MonitoringController::class, 'riwayat'])
+        ->name('setoran.riwayat');
     Route::get('/setoran/{nis}', [MonitoringController::class, 'create'])
         ->name('setoran.create');
     Route::post('/setoran/{nis}', [MonitoringController::class, 'store'])
@@ -88,13 +91,27 @@ Route::prefix('guru')->group(function () {
 
 Route::prefix('orangtua')->group(function () {
 
-    
-    Route::get('/dashboard', function () {return view('orangtua.dashboard');})->name('orangtua.dashboard');
-    Route::get('/monitoring', [OrangTuaController::class, 'monitoring'])->name('orangtua.monitoring');
-   Route::get('/laporan', [OrangTuaController::class, 'laporan'])->name('orangtua.laporan');
-    Route::get('/ibadah-sholat',[OrangTuaSholatController::class, 'index'])->name('orangtua.ibadah-sholat');
-    Route::post('/ibadah-sholat',[OrangTuaSholatController::class, 'store'])->name('orangtua.ibadah-sholat.store');
 
+   Route::get('/', function () {
+        return view('orangtua.dashboard');
+    })->name('orangtua.dashboard');
+
+    Route::get('/dashboard', function () {
+        return redirect()->route('orangtua.dashboard');
+    });
+    Route::get('/monitoring', [OrangTuaController::class, 'monitoring'])->name('orangtua.monitoring');
+    Route::get('/laporan', [OrangTuaController::class, 'laporan'])->name('orangtua.laporan');
+   Route::get('/ibadah-sholat', [OrangTuaSholatController::class, 'index'])
+        ->name('orangtua.ibadah-sholat.index');
+
+    Route::post('/ibadah-sholat', [OrangTuaSholatController::class, 'store'])
+        ->name('orangtua.ibadah-sholat.store');
+
+    Route::get('/ibadah-sholat/riwayat', [OrangTuaSholatController::class, 'riwayatKalender'])
+        ->name('orangtua.ibadah-sholat.riwayat');
+
+    Route::get('/absensi', [OrangTuaAbsensiController::class, 'index'])
+        ->name('orangtua.absensi');
 });
 
 

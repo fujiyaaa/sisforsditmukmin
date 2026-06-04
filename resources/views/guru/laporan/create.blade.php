@@ -70,7 +70,10 @@
     <!-- FORM -->
     <div class="bg-white rounded-3xl shadow-lg p-8">
 
-        <form action="{{ route('laporan.store', $siswa->nis) }}" method="POST" class="space-y-6">
+        <form action="{{ route('laporan.store', $siswa->nis) }}"
+              method="POST"
+              enctype="multipart/form-data"
+              class="space-y-6">
             @csrf
 
             <!-- JENIS LAPORAN -->
@@ -164,6 +167,28 @@
 
             </div>
 
+            <!-- LAMPIRAN PRESTASI -->
+            <div id="box-lampiran" class="hidden">
+                <label class="block mb-2 font-semibold">
+                    Lampiran Prestasi
+                </label>
+
+                <input type="file"
+                       name="lampiran"
+                       accept="image/*,.pdf"
+                       class="w-full px-4 py-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-[#4D9A72] bg-white">
+
+                <p class="text-sm text-gray-400 mt-2">
+                    Upload lampiran prestasi berupa gambar atau PDF. Maksimal 2MB.
+                </p>
+
+                @error('lampiran')
+                    <p class="text-red-500 text-sm mt-1">
+                        {{ $message }}
+                    </p>
+                @enderror
+            </div>
+
             <!-- CATATAN -->
             <div>
                 <label class="block mb-2 font-semibold">
@@ -203,11 +228,13 @@
         const box = document.getElementById('box-detail-jenis');
         const label = document.getElementById('label-detail-jenis');
         const select = document.getElementById('tingkat');
+        const boxLampiran = document.getElementById('box-lampiran');
 
         select.innerHTML = '<option value="">-- Pilih --</option>';
 
         if (!jenis) {
             box.classList.add('hidden');
+            boxLampiran.classList.add('hidden');
             return;
         }
 
@@ -217,6 +244,7 @@
 
         if (jenis === 'prestasi') {
             label.innerText = 'Tingkat Prestasi';
+            boxLampiran.classList.remove('hidden');
 
             options = [
                 'Sekolah',
@@ -230,6 +258,7 @@
 
         if (jenis === 'pelanggaran') {
             label.innerText = 'Jenis Pelanggaran';
+            boxLampiran.classList.add('hidden');
 
             options = [
                 'Terlambat',
@@ -244,6 +273,7 @@
 
         if (jenis === 'informasi') {
             label.innerText = 'Jenis Informasi';
+            boxLampiran.classList.add('hidden');
 
             options = [
                 'Pengumuman',

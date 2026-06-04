@@ -66,5 +66,31 @@ class MonitoringController extends Controller
     ]);
 
     return back()->with('success', 'Setoran berhasil disimpan! ✅');
+    }
+    public function riwayat(Request $request)
+{
+    $kelas = Kelas::all();
+
+    $query = Monitoring::with('siswa.kelas')
+        ->latest('tanggal')
+        ->latest();
+
+    if ($request->kelas_id) {
+        $query->whereHas('siswa', function ($q) use ($request) {
+            $q->where('kelas_id', $request->kelas_id);
+        });
+    }
+
+    if ($request->tanggal) {
+        $query->whereDate('tanggal', $request->tanggal);
+    }
+
+    if ($request->jenis) {
+        $query->where('jenis', $request->jenis);
+    }
+
+    $riwayat = $query->get();
+
+    return view('guru.setoran.riwayat', compact('riwayat', 'kelas'));
 }
 }

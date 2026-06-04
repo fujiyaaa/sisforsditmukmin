@@ -212,7 +212,7 @@
                             </h3>
 
                             <p class="text-sm text-gray-500 mt-2">
-                                {{ \Carbon\Carbon::parse($laporan->tanggal)->format('d M Y') }}
+                                {{ $laporan->tanggal ? \Carbon\Carbon::parse($laporan->tanggal)->format('d M Y') : '-' }}
 
                                 @if ($laporan->tingkat)
                                     • {{ $laporan->tingkat }}
@@ -222,7 +222,7 @@
                         </div>
 
                         <div class="text-sm text-gray-400">
-                            Dibuat: {{ $laporan->created_at->format('d M Y') }}
+                            Dibuat: {{ $laporan->created_at ? $laporan->created_at->format('d M Y') : '-' }}
                         </div>
 
                     </div>
@@ -230,6 +230,58 @@
                     <p class="text-gray-600 mt-5 leading-relaxed">
                         {{ $laporan->deskripsi }}
                     </p>
+
+                    <!-- LAMPIRAN PRESTASI -->
+                    @if ($laporan->jenis == 'prestasi' && !empty($laporan->sertifikat))
+
+                        @php
+                            $fileUrl = asset('storage/' . $laporan->sertifikat);
+                            $extension = strtolower(pathinfo($laporan->sertifikat, PATHINFO_EXTENSION));
+                        @endphp
+
+                        <div class="mt-5 bg-white rounded-2xl p-4 border border-gray-100">
+
+                            <div class="flex items-center justify-between mb-3">
+                                <p class="text-sm text-gray-500">
+                                    Lampiran Prestasi
+                                </p>
+
+                                <a href="{{ $fileUrl }}"
+                                   target="_blank"
+                                   class="text-sm font-semibold text-[#2F7D55] hover:underline">
+                                    Buka Lampiran
+                                </a>
+                            </div>
+
+                            @if (in_array($extension, ['jpg', 'jpeg', 'png', 'webp']))
+
+                                <a href="{{ $fileUrl }}" target="_blank">
+                                    <img src="{{ $fileUrl }}"
+                                         alt="Lampiran Prestasi"
+                                         class="w-full max-h-[420px] object-contain rounded-2xl border border-gray-100 bg-gray-50">
+                                </a>
+
+                            @elseif ($extension == 'pdf')
+
+                                <a href="{{ $fileUrl }}"
+                                   target="_blank"
+                                   class="inline-flex items-center gap-2 bg-yellow-100 text-yellow-700 px-5 py-3 rounded-xl font-semibold hover:bg-yellow-200 transition">
+                                    📄 Lihat Lampiran PDF
+                                </a>
+
+                            @else
+
+                                <a href="{{ $fileUrl }}"
+                                   target="_blank"
+                                   class="inline-flex items-center gap-2 bg-gray-100 text-gray-700 px-5 py-3 rounded-xl font-semibold hover:bg-gray-200 transition">
+                                    📎 Unduh Lampiran
+                                </a>
+
+                            @endif
+
+                        </div>
+
+                    @endif
 
                     @if ($laporan->catatan)
                         <div class="mt-5 bg-white rounded-2xl p-4 border border-gray-100">

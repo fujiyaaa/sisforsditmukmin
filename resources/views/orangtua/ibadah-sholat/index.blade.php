@@ -8,14 +8,15 @@
     <div class="flex items-center justify-between mb-8">
 
         <div>
-            <h1 class="text-4xl font-bold text-[#1F252D]">
-                Monitoring Sholat Fardhu
-            </h1>
+                <h1 class="text-4xl font-bold text-[#1F252D]">
+                    Monitoring Sholat Fardhu
+                </h1>
 
-            <p class="text-gray-500 mt-2">
-                Orang tua hanya dapat memonitoring sholat fardhu anak sendiri
-            </p>
         </div>
+        <a href="{{ route('orangtua.ibadah-sholat.riwayat') }}"
+   class="bg-[#2F6F4F] text-white px-6 py-3 rounded-xl hover:bg-[#24583e] transition shadow-sm">
+    Lihat Riwayat
+</a>
 
     </div>
 
@@ -126,6 +127,10 @@
         </form>
 
     </div>
+
+    <h1 class="text-4xl font-semibold text-[#1F252D]">
+                    Terkini
+                </h1>
 
             <!-- RIWAYAT MONITORING -->
 
