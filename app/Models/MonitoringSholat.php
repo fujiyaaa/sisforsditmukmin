@@ -9,6 +9,7 @@ class MonitoringSholat extends Model
     protected $fillable = [
         'siswa_id',
         'tanggal',
+        'sumber',
         'subuh',
         'dzuhur',
         'ashar',

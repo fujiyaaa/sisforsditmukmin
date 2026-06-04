@@ -25,7 +25,11 @@ class MonitoringSholatController extends Controller
                 ->orderBy('nama')
                 ->get();
 
+            // Penting:
+            // Form guru hanya mengambil data sumber guru.
+            // Jadi input orang tua tidak ikut diedit oleh guru.
             $monitoring = MonitoringSholat::where('tanggal', $tanggal)
+                ->where('sumber', 'guru')
                 ->whereIn('siswa_id', $siswas->pluck('id'))
                 ->get()
                 ->keyBy('siswa_id');
@@ -53,6 +57,7 @@ class MonitoringSholatController extends Controller
                 [
                     'siswa_id' => $siswa_id,
                     'tanggal'  => $request->tanggal,
+                    'sumber'   => 'guru',
                 ],
                 [
                     'subuh'      => isset($data['subuh']) ? 1 : 0,
@@ -89,10 +94,15 @@ class MonitoringSholatController extends Controller
         }
 
         if ($tanggal) {
-            $query->where('tanggal', $tanggal);
+            $query->whereDate('tanggal', $tanggal);
         }
 
-        $riwayat = $query->orderBy('tanggal', 'desc')
+        // Riwayat menampilkan semua sumber:
+        // guru dan orang tua
+        $riwayat = $query
+            ->orderBy('tanggal', 'desc')
+            ->orderBy('sumber', 'asc')
+            ->orderBy('created_at', 'desc')
             ->get()
             ->groupBy('tanggal');
 

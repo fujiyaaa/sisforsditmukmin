@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SiswaController;
 use App\Http\Controllers\MonitoringController;
 use App\Http\Controllers\OrangTuaController;
+use App\Http\Controllers\OrangTuaSholatController;
 use App\Http\Controllers\KelasController;
 use App\Http\Controllers\MonitoringSholatController;
 use App\Http\Controllers\LaporanSiswaController;
@@ -89,6 +90,9 @@ Route::prefix('orangtua')->group(function () {
 
     Route::get('/monitoring', [OrangTuaController::class, 'monitoring'])->name('orangtua.monitoring');
     Route::get('/laporan', [OrangTuaController::class, 'laporan'])->name('laporan');
+    Route::get('/ibadah-sholat',[OrangTuaSholatController::class, 'index'])->name('orangtua.ibadah-sholat');
+    Route::post('/ibadah-sholat',[OrangTuaSholatController::class, 'store'])->name('orangtua.ibadah-sholat.store');
+
 });
 
 
