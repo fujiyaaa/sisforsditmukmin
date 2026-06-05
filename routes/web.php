@@ -24,6 +24,26 @@ Route::get('/', function () {
 
 Route::prefix('admin')->group(function () {
 
+ Route::get('/dashboard', function () {
+
+        return view('admin.dashboard', [
+
+            'totalSiswa' => \App\Models\Siswa::count(),
+            'totalGuru' => \App\Models\User::count(),
+            'totalKelas' => \App\Models\Kelas::count(),
+            'totalLaporan' => \App\Models\LaporanSiswa::count(),
+
+            'aktivitas' => [
+                'Data siswa berhasil diperbarui',
+                'Data guru berhasil ditambahkan',
+                'Laporan prestasi siswa berhasil dibuat',
+                'Monitoring ibadah berhasil diperbarui',
+            ]
+
+        ]);
+
+    })->name('admin.dashboard');
+
     Route::get('/siswa', [SiswaController::class, 'index']);
     Route::post('/siswa', [SiswaController::class, 'store']);
     Route::put('/siswa/{id}', [SiswaController::class, 'update']);

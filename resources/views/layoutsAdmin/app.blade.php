@@ -37,8 +37,8 @@
             <!-- NAVBAR -->
             <nav class="mt-8 px-4 space-y-3">
 
-                <a href="/dashboard-admin"
-                   class="flex items-center gap-3 px-5 py-4 rounded-2xl hover:bg-white/10 transition">
+                <a href="{{ route('admin.dashboard') }}"
+                    class="flex items-center gap-3 px-5 py-4 rounded-2xl hover:bg-white/10 transition">
                     <span>🏠</span>
                     <span>Dashboard</span>
                 </a>
