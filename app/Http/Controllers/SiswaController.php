@@ -67,9 +67,16 @@ public function destroy($id)
 
     // GURU
     public function listGuru()
-    {
-        $data = Siswa::with('kelas')->get();
+{
+    $kelasIds = auth()->user()
+        ->kelasDiampu()
+        ->pluck('kelas.id');
 
-        return view('guru.siswa.index', compact('data'));
-    }
+    $siswas = Siswa::with('kelas')
+        ->whereIn('kelas_id', $kelasIds)
+        ->orderBy('nama')
+        ->get();
+
+    return view('guru.siswa.index', compact('siswas'));
+}
 }

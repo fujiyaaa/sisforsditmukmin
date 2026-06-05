@@ -3,18 +3,33 @@
 namespace App\Http\Controllers;
 
 use App\Models\Absensi;
-use App\Models\Kelas;
 use App\Models\Siswa;
 use Illuminate\Http\Request;
 
 class AbsensiController extends Controller
 {
+    private function kelasIdsGuru()
+    {
+        return auth()->user()
+            ->kelasDiampu()
+            ->pluck('kelas.id');
+    }
+
     public function index(Request $request)
     {
-        $kelasList = Kelas::all();
+        $kelasIds = $this->kelasIdsGuru();
+
+        $kelasList = auth()->user()
+            ->kelasDiampu()
+            ->orderBy('nama_kelas')
+            ->get();
 
         $tanggal = $request->tanggal ?? date('Y-m-d');
         $kelasId = $request->kelas_id;
+
+        if ($kelasId && !$kelasIds->contains((int) $kelasId)) {
+            abort(403, 'Anda tidak memiliki akses ke kelas ini.');
+        }
 
         $siswas = collect();
         $absensiHariIni = collect();
@@ -22,6 +37,8 @@ class AbsensiController extends Controller
         if ($kelasId) {
             $siswas = Siswa::with('kelas')
                 ->where('kelas_id', $kelasId)
+                ->whereIn('kelas_id', $kelasIds)
+                ->orderBy('nama')
                 ->get();
 
             $absensiHariIni = Absensi::whereDate('tanggal', $tanggal)
@@ -38,10 +55,12 @@ class AbsensiController extends Controller
         $alpha = $absensiHariIni->where('status', 'alpha')->count();
 
         $riwayatAbsensi = Absensi::with(['siswa.kelas'])
-            ->when($kelasId, function ($query) use ($kelasId) {
-                $query->whereHas('siswa', function ($q) use ($kelasId) {
-                    $q->where('kelas_id', $kelasId);
-                });
+            ->whereHas('siswa', function ($query) use ($kelasIds, $kelasId) {
+                $query->whereIn('kelas_id', $kelasIds);
+
+                if ($kelasId) {
+                    $query->where('kelas_id', $kelasId);
+                }
             })
             ->latest('tanggal')
             ->latest()
@@ -73,6 +92,16 @@ class AbsensiController extends Controller
             'keterlambatan' => 'nullable|array',
             'keterangan' => 'nullable|array',
         ]);
+
+        $kelasIds = $this->kelasIdsGuru();
+
+        $jumlahSiswaValid = Siswa::whereIn('id', $request->siswa_id)
+            ->whereIn('kelas_id', $kelasIds)
+            ->count();
+
+        if ($jumlahSiswaValid !== count($request->siswa_id)) {
+            abort(403, 'Anda tidak memiliki akses untuk menyimpan absensi siswa ini.');
+        }
 
         foreach ($request->siswa_id as $siswaId) {
             Absensi::updateOrCreate(

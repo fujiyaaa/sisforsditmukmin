@@ -67,6 +67,14 @@
                         <span>🏅</span>
                         <span>Laporan Prestasi & Pelanggaran</span>
                 </a>
+                <a href="{{ route('admin.akun.index') }}"
+                    class="block px-5 py-3 rounded-2xl hover:bg-[#EEF7F1] transition">
+                        Kelola Akun
+                </a>
+                <a href="{{ route('admin.hak-akses-guru.index') }}"
+   class="block px-5 py-3 rounded-2xl hover:bg-[#EEF7F1] transition">
+    Hak Akses Guru
+</a>
 
             </nav>
 
@@ -81,9 +89,15 @@
                     {{ Auth::user()->name ?? 'Admin' }}
                 </h2>
 
-                <p class="text-sm text-white/70 mt-1">
-                    Dashboard Admin
-                </p>
+                <form method="POST" action="{{ route('logout') }}">
+    @csrf
+
+    <button type="submit"
+            class="w-full text-left px-5 py-3 rounded-2xl text-red-600 hover:bg-red-50 transition">
+        Logout
+    </button>
+</form>
+</form>
 
             </div>
 

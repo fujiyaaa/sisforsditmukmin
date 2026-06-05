@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
 
 use App\Http\Controllers\SiswaController;
 use App\Http\Controllers\MonitoringController;
@@ -12,24 +14,46 @@ use App\Http\Controllers\LaporanSiswaController;
 use App\Http\Controllers\GuruController;
 use App\Http\Controllers\AbsensiController;
 use App\Http\Controllers\OrangTuaAbsensiController;
-
-use App\Models\Siswa;
-use App\Models\Monitoring;
-
+use App\Http\Controllers\Auth\ChangePasswordController;
+use App\Http\Controllers\Admin\AkunController;
+use App\Http\Controllers\Admin\HakAksesGuruController;
 
 Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/dashboard', function () {
+    $user = auth()->user();
 
-Route::prefix('admin')->group(function () {
+    if ($user->role === 'admin') {
+        return redirect()->route('admin.dashboard');
+    }
 
- Route::get('/dashboard', function () {
+    if ($user->role === 'guru') {
+        return redirect()->route('guru.dashboard');
+    }
 
+    if ($user->role === 'orangtua') {
+        return redirect()->route('orangtua.dashboard');
+    }
+
+    return redirect('/');
+})->middleware(['auth'])->name('dashboard');
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/change-password', [ChangePasswordController::class, 'edit'])
+        ->name('password.change');
+
+    Route::put('/change-password', [ChangePasswordController::class, 'update'])
+        ->name('password.change.update');
+});
+
+Route::middleware(['auth', 'must.change.password', 'role:admin'])->prefix('admin')->group(function () {
+
+    Route::get('/dashboard', function () {
         return view('admin.dashboard', [
-
             'totalSiswa' => \App\Models\Siswa::count(),
-            'totalGuru' => \App\Models\User::count(),
+            'totalGuru' => \App\Models\User::where('role', 'guru')->count(),
             'totalKelas' => \App\Models\Kelas::count(),
             'totalLaporan' => \App\Models\LaporanSiswa::count(),
 
@@ -38,10 +62,8 @@ Route::prefix('admin')->group(function () {
                 'Data guru berhasil ditambahkan',
                 'Laporan prestasi siswa berhasil dibuat',
                 'Monitoring ibadah berhasil diperbarui',
-            ]
-
+            ],
         ]);
-
     })->name('admin.dashboard');
 
     Route::get('/siswa', [SiswaController::class, 'index']);
@@ -59,26 +81,66 @@ Route::prefix('admin')->group(function () {
     Route::put('/guru/{id}', [GuruController::class, 'update']);
     Route::delete('/guru/{id}', [GuruController::class, 'destroy']);
 
-    Route::get('/laporan-prestasi-pelanggaran', [LaporanSiswaController::class, 'adminIndex'])->name('admin.laporan.index');
-    Route::get('/laporan-prestasi-pelanggaran/{nis}', [LaporanSiswaController::class, 'adminCreate'])->name('admin.laporan.create');
-    Route::post('/laporan-prestasi-pelanggaran/{nis}', [LaporanSiswaController::class, 'adminStore'])->name('admin.laporan.store');
+    Route::get('/laporan-prestasi-pelanggaran', [LaporanSiswaController::class, 'adminIndex'])
+        ->name('admin.laporan.index');
+
+    Route::get('/laporan-prestasi-pelanggaran/{nis}', [LaporanSiswaController::class, 'adminCreate'])
+        ->name('admin.laporan.create');
+
+    Route::post('/laporan-prestasi-pelanggaran/{nis}', [LaporanSiswaController::class, 'adminStore'])
+        ->name('admin.laporan.store');
+    Route::get('/akun', [AkunController::class, 'index'])
+    ->name('admin.akun.index');
+
+    Route::post('/akun', [AkunController::class, 'store'])
+        ->name('admin.akun.store');
+
+    Route::delete('/akun/{user}', [AkunController::class, 'destroy'])
+        ->name('admin.akun.destroy');
+    Route::get('/hak-akses-guru', [HakAksesGuruController::class, 'index'])
+    ->name('admin.hak-akses-guru.index');
+
+Route::put('/hak-akses-guru/{guru}', [HakAksesGuruController::class, 'update'])
+    ->name('admin.hak-akses-guru.update');
 
 });
 
+Route::middleware(['auth', 'must.change.password', 'role:guru'])->prefix('guru')->group(function () {
 
+    Route::get('/dashboard', function () {
+        $totalSiswa = Schema::hasTable('siswas') ? DB::table('siswas')->count() : 0;
+        $totalMonitoring = Schema::hasTable('monitorings') ? DB::table('monitorings')->count() : 0;
+        $totalSetoran = Schema::hasTable('setorans') ? DB::table('setorans')->count() : 0;
 
-Route::prefix('guru')->group(function () {
-    Route::get('/guru', function () {
+        $aktivitas = [
+            'Monitoring ibadah siswa diperbarui',
+            'Setoran Quran siswa berhasil ditambahkan',
+            'Data absensi siswa diperiksa',
+        ];
+
+        return view('guru.dashboard', compact(
+            'totalSiswa',
+            'totalMonitoring',
+            'totalSetoran',
+            'aktivitas'
+        ));
+    })->name('guru.dashboard');
+
+    Route::get('/', function () {
         return redirect()->route('guru.dashboard');
     });
 
     Route::get('/siswa', [SiswaController::class, 'listGuru']);
+
     Route::get('/setoran', [MonitoringController::class, 'index'])
         ->name('setoran.index');
-     Route::get('/setoran/riwayat', [MonitoringController::class, 'riwayat'])
+
+    Route::get('/setoran/riwayat', [MonitoringController::class, 'riwayat'])
         ->name('setoran.riwayat');
+
     Route::get('/setoran/{nis}', [MonitoringController::class, 'create'])
         ->name('setoran.create');
+
     Route::post('/setoran/{nis}', [MonitoringController::class, 'store'])
         ->name('setoran.store');
 
@@ -92,7 +154,7 @@ Route::prefix('guru')->group(function () {
         ->name('monitoring-sholat.riwayat');
 
     Route::get('/laporan-prestasi-pelanggaran', [LaporanSiswaController::class, 'index'])
-    ->name('laporan.index');
+        ->name('laporan.index');
 
     Route::get('/laporan-prestasi-pelanggaran/{nis}', [LaporanSiswaController::class, 'create'])
         ->name('laporan.create');
@@ -105,23 +167,24 @@ Route::prefix('guru')->group(function () {
 
     Route::post('/rekap-absensi', [AbsensiController::class, 'store'])
         ->name('guru.absensi.store');
-
 });
 
-
-Route::prefix('orangtua')->group(function () {
-
-
-   Route::get('/', function () {
+Route::middleware(['auth', 'must.change.password', 'role:orangtua'])->prefix('orangtua')->group(function () {
+    Route::get('/', function () {
         return view('orangtua.dashboard');
     })->name('orangtua.dashboard');
 
     Route::get('/dashboard', function () {
         return redirect()->route('orangtua.dashboard');
     });
-    Route::get('/monitoring', [OrangTuaController::class, 'monitoring'])->name('orangtua.monitoring');
-    Route::get('/laporan', [OrangTuaController::class, 'laporan'])->name('orangtua.laporan');
-   Route::get('/ibadah-sholat', [OrangTuaSholatController::class, 'index'])
+
+    Route::get('/monitoring', [OrangTuaController::class, 'monitoring'])
+        ->name('orangtua.monitoring');
+
+    Route::get('/laporan', [OrangTuaController::class, 'laporan'])
+        ->name('orangtua.laporan');
+
+    Route::get('/ibadah-sholat', [OrangTuaSholatController::class, 'index'])
         ->name('orangtua.ibadah-sholat.index');
 
     Route::post('/ibadah-sholat', [OrangTuaSholatController::class, 'store'])
@@ -134,36 +197,4 @@ Route::prefix('orangtua')->group(function () {
         ->name('orangtua.absensi');
 });
 
-
-Route::get('/guru', function () {
-    $totalSiswa = Schema::hasTable('siswas') ? DB::table('siswas')->count() : 0;
-    $totalMonitoring = Schema::hasTable('monitorings') ? DB::table('monitorings')->count() : 0;
-    $totalSetoran = Schema::hasTable('setorans') ? DB::table('setorans')->count() : 0;
-
-    $aktivitas = [
-        'Monitoring ibadah siswa diperbarui',
-        'Setoran Quran siswa berhasil ditambahkan',
-        'Data absensi siswa diperiksa',
-    ];
-
-    return view('guru.dashboard', compact(
-        'totalSiswa',
-        'totalMonitoring',
-        'totalSetoran',
-        'aktivitas'
-    ));
-})->name('guru.dashboard');
-/*
-|--------------------------------------------------------------------------
-| DASHBOARD ORANG TUA
-|--------------------------------------------------------------------------
-*/
-
-
-/*
-|--------------------------------------------------------------------------
-| AUTH
-|--------------------------------------------------------------------------
-*/
-
-//require __DIR__.'/auth.php';
+require __DIR__.'/auth.php';

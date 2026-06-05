@@ -11,25 +11,34 @@ use Carbon\Carbon;
 class OrangTuaSholatController extends Controller
 {
     public function index()
-    {
-        $siswa = Siswa::with('kelas')
-            ->where('orangtua_id', Auth::id())
-            ->firstOrFail();
+{
+    $user = Auth::user();
 
-        $monitoringSholats = MonitoringSholat::where('siswa_id', $siswa->id)
-            ->with(['siswa.kelas'])
-            ->orderBy('tanggal', 'desc')
-            ->orderBy('sumber', 'asc')
-            ->orderBy('created_at', 'desc')
-            ->get()
-            ->groupBy('tanggal');
-
-        return view('orangtua.ibadah-sholat.index', compact(
-            'siswa',
-            'monitoringSholats'
-        ));
+    if (!$user->siswa_id) {
+        return redirect()->route('orangtua.dashboard')
+            ->with('error', 'Akun orang tua belum terhubung dengan siswa.');
     }
 
+    $siswa = Siswa::with('kelas')->find($user->siswa_id);
+
+    if (!$siswa) {
+        return redirect()->route('orangtua.dashboard')
+            ->with('error', 'Data siswa tidak ditemukan.');
+    }
+
+    $monitoringSholats = MonitoringSholat::where('siswa_id', $siswa->id)
+        ->with(['siswa.kelas'])
+        ->orderBy('tanggal', 'desc')
+        ->orderBy('sumber', 'asc')
+        ->orderBy('created_at', 'desc')
+        ->get()
+        ->groupBy('tanggal');
+
+    return view('orangtua.ibadah-sholat.index', compact(
+        'siswa',
+        'monitoringSholats'
+    ));
+}
     public function store(Request $request)
     {
         $request->validate([
@@ -62,9 +71,19 @@ class OrangTuaSholatController extends Controller
     }
     public function riwayatKalender(Request $request)
 {
-    $siswa = Siswa::with('kelas')
-        ->where('orangtua_id', Auth::id())
-        ->firstOrFail();
+    $user = Auth::user();
+
+    if (!$user->siswa_id) {
+        return redirect()->route('orangtua.dashboard')
+            ->with('error', 'Akun orang tua belum terhubung dengan siswa.');
+    }
+
+    $siswa = Siswa::with('kelas')->find($user->siswa_id);
+
+    if (!$siswa) {
+        return redirect()->route('orangtua.dashboard')
+            ->with('error', 'Data siswa tidak ditemukan.');
+    }
 
     $bulan = $request->bulan ?? now()->format('Y-m');
 

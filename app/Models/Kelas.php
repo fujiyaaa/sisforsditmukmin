@@ -16,4 +16,9 @@ class Kelas extends Model
     {
         return $this->hasMany(Siswa::class);
     }
+    public function gurus()
+{
+    return $this->belongsToMany(User::class, 'guru_kelas', 'kelas_id', 'guru_id')
+        ->withTimestamps();
+}
 }
