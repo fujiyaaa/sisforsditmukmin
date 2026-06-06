@@ -138,11 +138,52 @@
                                 <th class="p-4 text-left">No</th>
                                 <th class="p-4 text-left">NIS</th>
                                 <th class="p-4 text-left min-w-[180px]">Nama Siswa</th>
-                                <th class="p-4 text-center">Subuh</th>
-                                <th class="p-4 text-center">Dzuhur</th>
-                                <th class="p-4 text-center">Ashar</th>
-                                <th class="p-4 text-center">Maghrib</th>
-                                <th class="p-4 text-center">Isya</th>
+
+                                <th class="p-4 text-center">
+                                    <div class="flex flex-col items-center gap-2">
+                                        <span>Subuh</span>
+                                        <input type="checkbox"
+                                               class="check-all w-4 h-4 accent-white cursor-pointer"
+                                               data-target="subuh">
+                                    </div>
+                                </th>
+
+                                <th class="p-4 text-center">
+                                    <div class="flex flex-col items-center gap-2">
+                                        <span>Dzuhur</span>
+                                        <input type="checkbox"
+                                               class="check-all w-4 h-4 accent-white cursor-pointer"
+                                               data-target="dzuhur">
+                                    </div>
+                                </th>
+
+                                <th class="p-4 text-center">
+                                    <div class="flex flex-col items-center gap-2">
+                                        <span>Ashar</span>
+                                        <input type="checkbox"
+                                               class="check-all w-4 h-4 accent-white cursor-pointer"
+                                               data-target="ashar">
+                                    </div>
+                                </th>
+
+                                <th class="p-4 text-center">
+                                    <div class="flex flex-col items-center gap-2">
+                                        <span>Maghrib</span>
+                                        <input type="checkbox"
+                                               class="check-all w-4 h-4 accent-white cursor-pointer"
+                                               data-target="maghrib">
+                                    </div>
+                                </th>
+
+                                <th class="p-4 text-center">
+                                    <div class="flex flex-col items-center gap-2">
+                                        <span>Isya</span>
+                                        <input type="checkbox"
+                                               class="check-all w-4 h-4 accent-white cursor-pointer"
+                                               data-target="isya">
+                                    </div>
+                                </th>
+
                                 <th class="p-4 text-left min-w-[220px]">Keterangan</th>
                             </tr>
                         </thead>
@@ -173,7 +214,7 @@
                                         <input type="checkbox"
                                                name="sholat[{{ $siswa->id }}][subuh]"
                                                value="1"
-                                               class="w-5 h-5 accent-[#4D9A72]"
+                                               class="subuh w-5 h-5 accent-[#4D9A72] cursor-pointer"
                                                {{ $data && $data->subuh ? 'checked' : '' }}>
                                     </td>
 
@@ -181,7 +222,7 @@
                                         <input type="checkbox"
                                                name="sholat[{{ $siswa->id }}][dzuhur]"
                                                value="1"
-                                               class="w-5 h-5 accent-[#4D9A72]"
+                                               class="dzuhur w-5 h-5 accent-[#4D9A72] cursor-pointer"
                                                {{ $data && $data->dzuhur ? 'checked' : '' }}>
                                     </td>
 
@@ -189,7 +230,7 @@
                                         <input type="checkbox"
                                                name="sholat[{{ $siswa->id }}][ashar]"
                                                value="1"
-                                               class="w-5 h-5 accent-[#4D9A72]"
+                                               class="ashar w-5 h-5 accent-[#4D9A72] cursor-pointer"
                                                {{ $data && $data->ashar ? 'checked' : '' }}>
                                     </td>
 
@@ -197,7 +238,7 @@
                                         <input type="checkbox"
                                                name="sholat[{{ $siswa->id }}][maghrib]"
                                                value="1"
-                                               class="w-5 h-5 accent-[#4D9A72]"
+                                               class="maghrib w-5 h-5 accent-[#4D9A72] cursor-pointer"
                                                {{ $data && $data->maghrib ? 'checked' : '' }}>
                                     </td>
 
@@ -205,7 +246,7 @@
                                         <input type="checkbox"
                                                name="sholat[{{ $siswa->id }}][isya]"
                                                value="1"
-                                               class="w-5 h-5 accent-[#4D9A72]"
+                                               class="isya w-5 h-5 accent-[#4D9A72] cursor-pointer"
                                                {{ $data && $data->isya ? 'checked' : '' }}>
                                     </td>
 
@@ -260,5 +301,22 @@
     @endif
 
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const checkAllBoxes = document.querySelectorAll('.check-all');
+
+        checkAllBoxes.forEach(function (checkAll) {
+            checkAll.addEventListener('change', function () {
+                const targetClass = this.getAttribute('data-target');
+                const checkboxes = document.querySelectorAll('input.' + targetClass);
+
+                checkboxes.forEach(function (checkbox) {
+                    checkbox.checked = checkAll.checked;
+                });
+            });
+        });
+    });
+</script>
 
 @endsection

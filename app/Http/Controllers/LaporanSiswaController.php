@@ -74,11 +74,22 @@ class LaporanSiswaController extends Controller
             ->latest()
             ->get();
 
+        // Untuk tombol View di tabel Daftar Siswa
+        // Data ini dikelompokkan berdasarkan siswa_id
+        $laporanSiswa = LaporanSiswa::with(['siswa.kelas'])
+            ->whereHas('siswa', function ($query) use ($kelasIds) {
+                $query->whereIn('kelas_id', $kelasIds);
+            })
+            ->latest()
+            ->get()
+            ->groupBy('siswa_id');
+
         return view('guru.laporan.index', compact(
             'kelas',
             'siswas',
             'laporans',
-            'filterSiswas'
+            'filterSiswas',
+            'laporanSiswa'
         ));
     }
 
@@ -103,7 +114,7 @@ class LaporanSiswaController extends Controller
             'judul' => 'required|string|max:255',
             'deskripsi' => 'required|string',
             'tanggal' => 'required|date',
-            'tingkat' => 'required|string|max:255',
+            'tingkat' => 'nullable|string|max:255',
             'catatan' => 'nullable|string',
             'lampiran' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
         ]);
@@ -145,7 +156,17 @@ class LaporanSiswaController extends Controller
             ->latest()
             ->get();
 
-        return view('admin.laporan.index', compact('kelas', 'siswas', 'laporans'));
+        $laporanSiswa = LaporanSiswa::with(['siswa.kelas'])
+            ->latest()
+            ->get()
+            ->groupBy('siswa_id');
+
+        return view('admin.laporan.index', compact(
+            'kelas',
+            'siswas',
+            'laporans',
+            'laporanSiswa'
+        ));
     }
 
     public function adminCreate($nis)
@@ -166,9 +187,16 @@ class LaporanSiswaController extends Controller
             'judul' => 'required|string|max:255',
             'deskripsi' => 'required|string',
             'tanggal' => 'required|date',
-            'tingkat' => 'required|string|max:255',
+            'tingkat' => 'nullable|string|max:255',
             'catatan' => 'nullable|string',
+            'lampiran' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
         ]);
+
+        $sertifikatPath = null;
+
+        if ($request->jenis === 'prestasi' && $request->hasFile('lampiran')) {
+            $sertifikatPath = $request->file('lampiran')->store('lampiran-prestasi', 'public');
+        }
 
         LaporanSiswa::create([
             'siswa_id' => $siswa->id,
@@ -178,6 +206,7 @@ class LaporanSiswaController extends Controller
             'tanggal' => $request->tanggal,
             'tingkat' => $request->tingkat,
             'catatan' => $request->catatan,
+            'sertifikat' => $sertifikatPath,
         ]);
 
         return redirect()

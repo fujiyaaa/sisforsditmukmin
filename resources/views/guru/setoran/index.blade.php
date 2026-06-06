@@ -5,26 +5,26 @@
 <div class="bg-white rounded-3xl shadow-md p-8">
 
     <!-- Header -->
-<div class="flex items-center justify-between mb-8">
+    <div class="flex items-center justify-between mb-8">
 
-    <div>
+        <div>
 
-        <h1 class="text-4xl font-bold text-[#1F252D]">
-            Data Siswa Monitoring Quran
-        </h1>
+            <h1 class="text-4xl font-bold text-[#1F252D]">
+                Data Siswa Monitoring Quran
+            </h1>
 
-        <p class="text-gray-500 mt-2">
-            Monitoring hafalan dan ibadah siswa
-        </p>
+            <p class="text-gray-500 mt-2">
+                Monitoring hafalan dan ibadah siswa
+            </p>
+
+        </div>
+
+        <a href="{{ route('setoran.riwayat') }}"
+           class="bg-[#2F6F4F] text-white px-6 py-3 rounded-xl hover:bg-[#24583e] transition shadow-sm">
+            Riwayat Setoran
+        </a>
 
     </div>
-
-    <a href="{{ route('setoran.riwayat') }}"
-       class="bg-[#2F6F4F] text-white px-6 py-3 rounded-xl hover:bg-[#24583e] transition shadow-sm">
-        Riwayat Setoran
-    </a>
-
-</div>
 
     <!-- FILTER KELAS -->
     <form method="GET"
@@ -65,6 +65,10 @@
                 <tr>
 
                     <th class="px-6 py-4 text-left font-semibold">
+                        No
+                    </th>
+
+                    <th class="px-6 py-4 text-left font-semibold">
                         NIS
                     </th>
 
@@ -87,12 +91,16 @@
             <!-- TABLE BODY -->
             <tbody class="divide-y divide-gray-100 bg-white">
 
+                @php
+                    $no = 1;
+                @endphp
+
                 @forelse($siswas as $kelasNama => $dataSiswa)
 
                     <!-- HEADER KELAS -->
                     <tr>
 
-                        <td colspan="4"
+                        <td colspan="5"
                             class="bg-gray-100 px-6 py-4 font-bold text-[#1F252D] text-lg">
 
                             Kelas {{ $kelasNama }}
@@ -103,81 +111,86 @@
 
                     @foreach($dataSiswa as $siswa)
 
-                    <tr class="hover:bg-gray-50 transition">
+                        <tr class="hover:bg-gray-50 transition">
 
-                        <!-- NIS -->
-                        <td class="px-6 py-5 text-gray-700 font-medium">
-                            {{ $siswa->nis }}
-                        </td>
+                            <!-- No -->
+                            <td class="px-6 py-5 text-gray-700 font-medium">
+                                {{ $no++ }}
+                            </td>
 
-                        <!-- Nama -->
-                        <td class="px-6 py-5">
+                            <!-- NIS -->
+                            <td class="px-6 py-5 text-gray-700 font-medium">
+                                {{ $siswa->nis }}
+                            </td>
 
-                            <div class="flex items-center gap-4">
+                            <!-- Nama -->
+                            <td class="px-6 py-5">
 
-                                <!-- Avatar -->
-                                <div class="w-12 h-12 rounded-full bg-[#DDF3E7] flex items-center justify-center text-[#2F7D55] font-bold text-lg">
+                                <div class="flex items-center gap-4">
 
-                                    {{ strtoupper(substr($siswa->nama, 0, 1)) }}
+                                    <!-- Avatar -->
+                                    <div class="w-12 h-12 rounded-full bg-[#DDF3E7] flex items-center justify-center text-[#2F7D55] font-bold text-lg">
+
+                                        {{ strtoupper(substr($siswa->nama, 0, 1)) }}
+
+                                    </div>
+
+                                    <!-- Nama -->
+                                    <div>
+
+                                        <h2 class="font-semibold text-[#1F252D]">
+                                            {{ $siswa->nama }}
+                                        </h2>
+
+                                        <p class="text-sm text-gray-400">
+                                            Siswa Aktif
+                                        </p>
+
+                                    </div>
 
                                 </div>
 
-                                <!-- Nama -->
-                                <div>
+                            </td>
 
-                                    <h2 class="font-semibold text-[#1F252D]">
-                                        {{ $siswa->nama }}
-                                    </h2>
+                            <!-- Kelas -->
+                            <td class="px-6 py-5">
 
-                                    <p class="text-sm text-gray-400">
-                                        Siswa Aktif
-                                    </p>
+                                <span class="bg-[#EEF7F1] text-[#2F7D55] px-4 py-2 rounded-xl text-sm font-semibold">
 
-                                </div>
+                                    {{ $siswa->kelas->nama_kelas ?? '-' }}
 
-                            </div>
+                                </span>
 
-                        </td>
+                            </td>
 
-                        <!-- Kelas -->
-                        <td class="px-6 py-5">
+                            <!-- Aksi -->
+                            <td class="px-6 py-5 text-center">
 
-                            <span class="bg-[#EEF7F1] text-[#2F7D55] px-4 py-2 rounded-xl text-sm font-semibold">
+                                <a href="{{ url('/guru/setoran/' . $siswa->nis) }}"
+                                   class="bg-[#4D9A72] text-white px-5 py-3 rounded-xl hover:bg-[#3F825F] transition shadow-sm">
 
-                                {{ $siswa->kelas->nama_kelas }}
+                                    Input Setoran
 
-                            </span>
+                                </a>
 
-                        </td>
+                            </td>
 
-                        <!-- Aksi -->
-                        <td class="px-6 py-5 text-center">
-
-                            <a href="{{ url('/guru/setoran/' . $siswa->nis) }}"
-                               class="bg-[#4D9A72] text-white px-5 py-3 rounded-xl hover:bg-[#3F825F] transition shadow-sm">
-
-                                Input Setoran
-
-                            </a>
-
-                        </td>
-
-                    </tr>
+                        </tr>
 
                     @endforeach
 
                 @empty
 
-                <tr>
+                    <tr>
 
-                    <td colspan="4"
-                        class="text-center py-10 text-gray-400">
+                        <td colspan="5"
+                            class="text-center py-10 text-gray-400">
 
-                        Belum ada data siswa
+                            Belum ada data siswa
 
-                    </td>
+                        </td>
 
-                </tr>
+                    </tr>
 
                 @endforelse
 

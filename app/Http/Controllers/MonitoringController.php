@@ -94,7 +94,7 @@ class MonitoringController extends Controller
         abort(403, 'Anda tidak memiliki akses ke kelas ini.');
     }
 
-    $monitorings = Monitoring::with(['siswa.kelas'])
+    $riwayat = Monitoring::with(['siswa.kelas'])
         ->whereHas('siswa', function ($query) use ($kelasIds, $request) {
             $query->whereIn('kelas_id', $kelasIds);
 
@@ -105,7 +105,7 @@ class MonitoringController extends Controller
         ->latest()
         ->get();
 
-    return view('guru.setoran.riwayat', compact('monitorings', 'kelas'));
+    return view('guru.setoran.riwayat', compact('riwayat', 'kelas'));
 }
 
 }
