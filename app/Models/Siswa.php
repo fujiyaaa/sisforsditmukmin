@@ -7,7 +7,10 @@ use App\Models\LaporanSiswa;
 
 class Siswa extends Model
 {
-    protected $fillable = ['nis', 'nama', 'kelas_id'];
+    protected $fillable = [
+        'nis',
+        'nama',
+        'kelas_id'];
 
     public function monitoring()
     {

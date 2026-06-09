@@ -18,6 +18,9 @@ use App\Http\Controllers\Auth\ChangePasswordController;
 use App\Http\Controllers\Admin\AkunController;
 use App\Http\Controllers\Admin\HakAksesGuruController;
 use App\Http\Controllers\Admin\RekapPersentaseController;
+use App\Http\Controllers\Admin\AdminAbsensiController;
+use App\Http\Controllers\Admin\AdminSetoranController;
+use App\Http\Controllers\Admin\AdminMonitoringSholatController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -98,6 +101,10 @@ Route::middleware(['auth', 'must.change.password', 'role:admin'])->prefix('admin
 
     Route::delete('/akun/{user}', [AkunController::class, 'destroy'])
         ->name('admin.akun.destroy');
+
+    Route::post('/akun/{id}/reset-password', [AkunController::class, 'resetPassword'])
+    ->name('admin.akun.reset-password');
+    
     Route::get('/hak-akses-guru', [HakAksesGuruController::class, 'index'])
     ->name('admin.hak-akses-guru.index');
 
@@ -106,6 +113,32 @@ Route::middleware(['auth', 'must.change.password', 'role:admin'])->prefix('admin
 
     Route::get('/rekap-persentase', [RekapPersentaseController::class, 'index'])
     ->name('admin.rekap-persentase.index');
+
+    Route::get('/absensi', [AdminAbsensiController::class, 'index'])
+    ->name('admin.absensi.index');
+
+    Route::post('/absensi', [AdminAbsensiController::class, 'store'])
+    ->name('admin.absensi.store');
+    Route::get('/setoran', [AdminSetoranController::class, 'index'])
+    ->name('admin.setoran.index');
+
+    Route::get('/setoran/riwayat', [AdminSetoranController::class, 'riwayat'])
+        ->name('admin.setoran.riwayat');
+
+    Route::get('/setoran/{nis}', [AdminSetoranController::class, 'create'])
+        ->name('admin.setoran.create');
+
+    Route::post('/setoran/{nis}', [AdminSetoranController::class, 'store'])
+        ->name('admin.setoran.store');
+
+    Route::get('/monitoring-sholat', [AdminMonitoringSholatController::class, 'index'])
+    ->name('admin.monitoring-sholat.index');
+
+    Route::post('/monitoring-sholat', [AdminMonitoringSholatController::class, 'store'])
+        ->name('admin.monitoring-sholat.store');
+
+    Route::get('/monitoring-sholat/riwayat', [AdminMonitoringSholatController::class, 'riwayat'])
+        ->name('admin.monitoring-sholat.riwayat');
 
 });
 

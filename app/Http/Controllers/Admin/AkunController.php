@@ -6,21 +6,23 @@ use App\Http\Controllers\Controller;
 use App\Models\Siswa;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class AkunController extends Controller
 {
     public function index()
-    {
-        $users = User::with('siswa')
-            ->whereIn('role', ['admin', 'guru', 'orangtua'])
-            ->orderBy('role')
-            ->orderBy('name')
-            ->get();
+{
+    $siswas = \App\Models\Siswa::with('kelas')
+        ->orderBy('nama')
+        ->get();
 
-        $siswas = Siswa::orderBy('nama')->get();
+    $users = \App\Models\User::with('siswa')
+        ->orderBy('role')
+        ->orderBy('name')
+        ->get();
 
-        return view('admin.akun.index', compact('users', 'siswas'));
-    }
+    return view('admin.akun.index', compact('users', 'siswas'));
+}
 
     public function store(Request $request)
     {
@@ -61,5 +63,23 @@ class AkunController extends Controller
         $user->delete();
 
         return back()->with('success', 'Akun berhasil dihapus.');
+    }
+
+    public function resetPassword(Request $request, $id)
+    {
+        $request->validate([
+            'password_baru' => 'required|string|min:6',
+        ]);
+
+        $user = User::findOrFail($id);
+
+        $user->update([
+            'password' => Hash::make($request->password_baru),
+            'must_change_password' => true,
+        ]);
+
+        return redirect()
+            ->back()
+            ->with('success', 'Password berhasil direset. User wajib mengganti password saat login berikutnya.');
     }
 }

@@ -47,6 +47,7 @@
             <!-- NAVBAR -->
             <nav class="mt-6 px-4 space-y-2">
 
+                <!-- DASHBOARD -->
                 <a href="{{ route('admin.dashboard') }}"
                    class="group flex items-center gap-3 px-4 py-3 rounded-2xl transition
                           {{ request()->routeIs('admin.dashboard') ? 'bg-[#EEF7F1] text-[#2F7D55] font-semibold' : 'text-gray-600 hover:bg-gray-50 hover:text-[#2F7D55]' }}">
@@ -58,6 +59,7 @@
                     </span>
                 </a>
 
+                <!-- KELOLA SISWA -->
                 <a href="/admin/siswa"
                    class="group flex items-center gap-3 px-4 py-3 rounded-2xl transition
                           {{ request()->is('admin/siswa*') ? 'bg-[#EEF7F1] text-[#2F7D55] font-semibold' : 'text-gray-600 hover:bg-gray-50 hover:text-[#2F7D55]' }}">
@@ -69,6 +71,7 @@
                     </span>
                 </a>
 
+                <!-- KELOLA KELAS -->
                 <a href="/admin/kelas"
                    class="group flex items-center gap-3 px-4 py-3 rounded-2xl transition
                           {{ request()->is('admin/kelas*') ? 'bg-[#EEF7F1] text-[#2F7D55] font-semibold' : 'text-gray-600 hover:bg-gray-50 hover:text-[#2F7D55]' }}">
@@ -80,6 +83,7 @@
                     </span>
                 </a>
 
+                <!-- KELOLA GURU -->
                 <a href="/admin/guru"
                    class="group flex items-center gap-3 px-4 py-3 rounded-2xl transition
                           {{ request()->is('admin/guru*') ? 'bg-[#EEF7F1] text-[#2F7D55] font-semibold' : 'text-gray-600 hover:bg-gray-50 hover:text-[#2F7D55]' }}">
@@ -91,6 +95,43 @@
                     </span>
                 </a>
 
+                 <!-- SETORAN QURAN -->
+                <a href="{{ route('admin.setoran.index') }}"
+                    class="group flex items-center gap-3 px-4 py-3 rounded-2xl transition
+                            {{ request()->routeIs('admin.setoran.*') ? 'bg-[#EEF7F1] text-[#2F7D55] font-semibold' : 'text-gray-600 hover:bg-gray-50 hover:text-[#2F7D55]' }}">
+
+                        <span class="w-2 h-2 rounded-full {{ request()->routeIs('admin.setoran.*') ? 'bg-[#4D9A72]' : 'bg-gray-300 group-hover:bg-[#4D9A72]' }}"></span>
+
+                        <span>
+                            Setoran Quran
+                        </span>
+                </a>
+
+                <!-- Monitoring Sholat -->
+                <a href="{{ route('admin.monitoring-sholat.index') }}"
+                    class="group flex items-center gap-3 px-4 py-3 rounded-2xl transition
+                            {{ request()->routeIs('admin.monitoring-sholat.*') ? 'bg-[#EEF7F1] text-[#2F7D55] font-semibold' : 'text-gray-600 hover:bg-gray-50 hover:text-[#2F7D55]' }}">
+
+                        <span class="w-2 h-2 rounded-full {{ request()->routeIs('admin.monitoring-sholat.*') ? 'bg-[#4D9A72]' : 'bg-gray-300 group-hover:bg-[#4D9A72]' }}"></span>
+
+                        <span>
+                            Monitoring Sholat
+                        </span>
+                </a>
+
+                <!-- ABSENSI SISWA -->
+                <a href="{{ route('admin.absensi.index') }}"
+                   class="group flex items-center gap-3 px-4 py-3 rounded-2xl transition
+                          {{ request()->routeIs('admin.absensi.*') ? 'bg-[#EEF7F1] text-[#2F7D55] font-semibold' : 'text-gray-600 hover:bg-gray-50 hover:text-[#2F7D55]' }}">
+
+                    <span class="w-2 h-2 rounded-full {{ request()->routeIs('admin.absensi.*') ? 'bg-[#4D9A72]' : 'bg-gray-300 group-hover:bg-[#4D9A72]' }}"></span>
+
+                    <span>
+                        Absensi Siswa
+                    </span>
+                </a>
+
+                <!-- LAPORAN -->
                 <a href="{{ route('admin.laporan.index') }}"
                    class="group flex items-center gap-3 px-4 py-3 rounded-2xl transition
                           {{ request()->routeIs('admin.laporan.*') ? 'bg-[#EEF7F1] text-[#2F7D55] font-semibold' : 'text-gray-600 hover:bg-gray-50 hover:text-[#2F7D55]' }}">
@@ -102,6 +143,7 @@
                     </span>
                 </a>
 
+                <!-- KELOLA AKUN -->
                 <a href="{{ route('admin.akun.index') }}"
                    class="group flex items-center gap-3 px-4 py-3 rounded-2xl transition
                           {{ request()->routeIs('admin.akun.*') ? 'bg-[#EEF7F1] text-[#2F7D55] font-semibold' : 'text-gray-600 hover:bg-gray-50 hover:text-[#2F7D55]' }}">
@@ -113,6 +155,7 @@
                     </span>
                 </a>
 
+                <!-- HAK AKSES GURU -->
                 <a href="{{ route('admin.hak-akses-guru.index') }}"
                    class="group flex items-center gap-3 px-4 py-3 rounded-2xl transition
                           {{ request()->routeIs('admin.hak-akses-guru.*') ? 'bg-[#EEF7F1] text-[#2F7D55] font-semibold' : 'text-gray-600 hover:bg-gray-50 hover:text-[#2F7D55]' }}">
@@ -124,6 +167,7 @@
                     </span>
                 </a>
 
+                <!-- REKAP PERSENTASE -->
                 <a href="{{ route('admin.rekap-persentase.index') }}"
                    class="group flex items-center gap-3 px-4 py-3 rounded-2xl transition
                           {{ request()->routeIs('admin.rekap-persentase.*') ? 'bg-[#EEF7F1] text-[#2F7D55] font-semibold' : 'text-gray-600 hover:bg-gray-50 hover:text-[#2F7D55]' }}">
