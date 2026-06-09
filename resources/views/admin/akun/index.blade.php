@@ -53,7 +53,7 @@
             </h2>
 
             <p class="text-gray-500 mt-1">
-                Buat akun baru dengan password default. User akan diminta mengganti password saat login pertama.
+                Buat akun baru dengan password default. Guru login menggunakan NIP, orang tua login menggunakan NIS anak.
             </p>
         </div>
 
@@ -63,6 +63,7 @@
 
             @csrf
 
+            <!-- NAMA -->
             <div>
                 <label class="block text-sm font-semibold text-gray-700 mb-2">
                     Nama
@@ -76,6 +77,7 @@
                        required>
             </div>
 
+            <!-- EMAIL -->
             <div>
                 <label class="block text-sm font-semibold text-gray-700 mb-2">
                     Email
@@ -87,8 +89,30 @@
                        placeholder="contoh@email.com"
                        class="w-full px-4 py-3 border border-gray-200 rounded-2xl bg-[#FAFCFB] focus:outline-none focus:ring-2 focus:ring-[#4D9A72]"
                        required>
+
+                <p class="text-sm text-gray-400 mt-2">
+                    Admin tetap login menggunakan email.
+                </p>
             </div>
 
+            <!-- NIP GURU -->
+            <div id="nip-wrapper">
+                <label class="block text-sm font-semibold text-gray-700 mb-2">
+                    NIP Guru
+                </label>
+
+                <input type="text"
+                       name="nip"
+                       value="{{ old('nip') }}"
+                       placeholder="Masukkan NIP guru"
+                       class="w-full px-4 py-3 border border-gray-200 rounded-2xl bg-[#FAFCFB] focus:outline-none focus:ring-2 focus:ring-[#4D9A72]">
+
+                <p class="text-sm text-gray-400 mt-2">
+                    Wajib diisi jika role akun adalah guru.
+                </p>
+            </div>
+
+            <!-- ROLE -->
             <div>
                 <label class="block text-sm font-semibold text-gray-700 mb-2">
                     Role
@@ -118,6 +142,7 @@
                 </select>
             </div>
 
+            <!-- PASSWORD DEFAULT -->
             <div>
                 <label class="block text-sm font-semibold text-gray-700 mb-2">
                     Password Default
@@ -134,6 +159,7 @@
                 </p>
             </div>
 
+            <!-- HUBUNGKAN SISWA -->
             <div class="md:col-span-2" id="siswa-wrapper">
                 <label class="block text-sm font-semibold text-gray-700 mb-2">
                     Hubungkan ke Siswa
@@ -148,17 +174,18 @@
 
                     @foreach($siswas as $siswa)
                         <option value="{{ $siswa->id }}" {{ old('siswa_id') == $siswa->id ? 'selected' : '' }}>
-                            {{ $siswa->nama }} - {{ $siswa->kelas->nama_kelas ?? '-' }}
+                            {{ $siswa->nis }} - {{ $siswa->nama }} - {{ $siswa->kelas->nama_kelas ?? '-' }}
                         </option>
                     @endforeach
 
                 </select>
 
                 <p class="text-sm text-gray-500 mt-2">
-                    Wajib dipilih jika role akun adalah orang tua.
+                    Wajib dipilih jika role akun adalah orang tua. Orang tua nanti login menggunakan NIS siswa.
                 </p>
             </div>
 
+            <!-- BUTTON -->
             <div class="md:col-span-2 flex justify-end">
                 <button type="submit"
                         class="bg-[#2F7D55] text-white px-7 py-3 rounded-2xl hover:bg-[#256B47] transition font-bold">
@@ -204,7 +231,7 @@
 
                     <input type="text"
                            id="searchInput"
-                           placeholder="Ketik nama atau email..."
+                           placeholder="Ketik nama, email, atau NIP..."
                            class="w-full px-4 py-3 border border-gray-200 rounded-2xl bg-white focus:outline-none focus:ring-2 focus:ring-[#4D9A72]">
                 </div>
 
@@ -265,7 +292,7 @@
 
         <div class="overflow-x-auto rounded-[2rem] border border-gray-100">
 
-            <table class="w-full min-w-[1200px]">
+            <table class="w-full min-w-[1350px]">
 
                 <thead class="bg-[#4D9A72] text-white">
                     <tr>
@@ -275,6 +302,10 @@
 
                         <th class="px-6 py-4 text-left font-semibold">
                             Email
+                        </th>
+
+                        <th class="px-6 py-4 text-left font-semibold">
+                            NIP
                         </th>
 
                         <th class="px-6 py-4 text-left font-semibold">
@@ -306,8 +337,10 @@
                         <tr class="hover:bg-[#FAFCFB] transition akun-row"
                             data-name="{{ strtolower($user->name) }}"
                             data-email="{{ strtolower($user->email) }}"
+                            data-nip="{{ strtolower($user->nip ?? '') }}"
                             data-role="{{ $user->role }}">
 
+                            <!-- NAMA -->
                             <td class="px-6 py-5">
                                 <div class="flex items-center gap-3">
 
@@ -328,10 +361,17 @@
                                 </div>
                             </td>
 
+                            <!-- EMAIL -->
                             <td class="px-6 py-5 text-gray-600">
                                 {{ $user->email }}
                             </td>
 
+                            <!-- NIP -->
+                            <td class="px-6 py-5 text-gray-600">
+                                {{ $user->nip ?? '-' }}
+                            </td>
+
+                            <!-- ROLE -->
                             <td class="px-6 py-5">
                                 @if($user->role == 'admin')
                                     <span class="px-4 py-2 rounded-2xl text-sm font-bold bg-purple-100 text-purple-700">
@@ -348,10 +388,24 @@
                                 @endif
                             </td>
 
+                            <!-- SISWA -->
                             <td class="px-6 py-5 text-gray-600">
-                                {{ $user->siswa->nama ?? '-' }}
+                                @if($user->siswa)
+                                    <div>
+                                        <p class="font-semibold text-[#1F252D]">
+                                            {{ $user->siswa->nama }}
+                                        </p>
+
+                                        <p class="text-sm text-gray-400">
+                                            NIS: {{ $user->siswa->nis }}
+                                        </p>
+                                    </div>
+                                @else
+                                    -
+                                @endif
                             </td>
 
+                            <!-- STATUS PASSWORD -->
                             <td class="px-6 py-5">
                                 @if($user->must_change_password)
                                     <span class="px-4 py-2 rounded-2xl text-sm font-bold bg-yellow-100 text-yellow-700">
@@ -364,6 +418,7 @@
                                 @endif
                             </td>
 
+                            <!-- RESET PASSWORD -->
                             <td class="px-6 py-5">
                                 <form method="POST"
                                       action="{{ route('admin.akun.reset-password', $user->id) }}"
@@ -385,6 +440,7 @@
                                 </form>
                             </td>
 
+                            <!-- AKSI HAPUS -->
                             <td class="px-6 py-5 text-center">
 
                                 <form action="{{ route('admin.akun.destroy', $user->id) }}"
@@ -408,7 +464,7 @@
                     @empty
 
                         <tr>
-                            <td colspan="7" class="px-6 py-12 text-center text-gray-500">
+                            <td colspan="8" class="px-6 py-12 text-center text-gray-500">
                                 Belum ada akun.
                             </td>
                         </tr>
@@ -417,7 +473,7 @@
 
                     <!-- EMPTY RESULT LIVE SEARCH -->
                     <tr id="emptySearchRow" class="hidden">
-                        <td colspan="7" class="px-6 py-12 text-center text-gray-500">
+                        <td colspan="8" class="px-6 py-12 text-center text-gray-500">
                             Tidak ada akun yang cocok dengan pencarian/filter.
                         </td>
                     </tr>
@@ -433,20 +489,30 @@
 </div>
 
 <script>
+    // TOGGLE FIELD ROLE
     const roleSelect = document.getElementById('role');
     const siswaWrapper = document.getElementById('siswa-wrapper');
+    const nipWrapper = document.getElementById('nip-wrapper');
 
-    function toggleSiswa() {
+    function toggleRoleFields() {
+        if (!roleSelect) return;
+
         if (roleSelect.value === 'orangtua') {
             siswaWrapper.style.display = 'block';
         } else {
             siswaWrapper.style.display = 'none';
         }
+
+        if (roleSelect.value === 'guru') {
+            nipWrapper.style.display = 'block';
+        } else {
+            nipWrapper.style.display = 'none';
+        }
     }
 
-    if (roleSelect && siswaWrapper) {
-        roleSelect.addEventListener('change', toggleSiswa);
-        toggleSiswa();
+    if (roleSelect && siswaWrapper && nipWrapper) {
+        roleSelect.addEventListener('change', toggleRoleFields);
+        toggleRoleFields();
     }
 
     // LIVE SEARCH AKUN
@@ -479,9 +545,15 @@
         akunRows.forEach(function(row) {
             const name = row.dataset.name || '';
             const email = row.dataset.email || '';
+            const nip = row.dataset.nip || '';
             const role = row.dataset.role || '';
 
-            const cocokSearch = keyword === '' || name.includes(keyword) || email.includes(keyword);
+            const cocokSearch =
+                keyword === '' ||
+                name.includes(keyword) ||
+                email.includes(keyword) ||
+                nip.includes(keyword);
+
             const cocokRole = selectedRole === '' || role === selectedRole;
 
             if (cocokSearch && cocokRole) {
@@ -492,8 +564,13 @@
             }
         });
 
-        jumlahAkun.textContent = totalTampil;
-        totalAkunDisplay.textContent = totalTampil;
+        if (jumlahAkun) {
+            jumlahAkun.textContent = totalTampil;
+        }
+
+        if (totalAkunDisplay) {
+            totalAkunDisplay.textContent = totalTampil;
+        }
 
         if (emptySearchRow) {
             if (totalTampil === 0 && akunRows.length > 0) {
@@ -503,7 +580,6 @@
             }
         }
 
-        // BADGE INFO FILTER
         if (keyword !== '' || selectedRole !== '') {
             filterInfo.classList.remove('hidden');
 

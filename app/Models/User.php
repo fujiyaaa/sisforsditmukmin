@@ -12,6 +12,7 @@ use Illuminate\Notifications\Notifiable;
 #[Fillable([
     'name',
     'email',
+    'nip',
     'password',
     'role',
     'must_change_password',

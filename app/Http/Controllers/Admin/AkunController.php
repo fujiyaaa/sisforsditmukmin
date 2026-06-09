@@ -27,29 +27,46 @@ class AkunController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'email', 'unique:users,email'],
-            'role' => ['required', 'in:admin,guru,orangtua'],
-            'password' => ['required', 'string', 'min:6'],
-            'siswa_id' => ['nullable', 'exists:siswas,id'],
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email',
+            'nip' => 'nullable|string|max:50|unique:users,nip',
+            'role' => 'required|in:admin,guru,orangtua',
+            'password' => 'required|string|min:6',
+            'siswa_id' => 'nullable|exists:siswa,id',
         ]);
 
-        if ($request->role === 'orangtua' && !$request->siswa_id) {
+        if ($request->role === 'guru' && !$request->nip) {
             return back()
-                ->withErrors(['siswa_id' => 'Akun orang tua wajib dihubungkan dengan siswa.'])
+                ->withErrors(['nip' => 'NIP wajib diisi untuk akun guru.'])
                 ->withInput();
         }
 
-        User::create([
+        if ($request->role === 'orangtua' && !$request->siswa_id) {
+            return back()
+                ->withErrors(['siswa_id' => 'Siswa wajib dipilih untuk akun orang tua.'])
+                ->withInput();
+        }
+
+        $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
-            'password' => $request->password,
+            'nip' => $request->role === 'guru' ? $request->nip : null,
+            'password' => Hash::make($request->password),
             'role' => $request->role,
-            'must_change_password' => $request->role === 'admin' ? false : true,
-            'siswa_id' => $request->role === 'orangtua' ? $request->siswa_id : null,
+            'must_change_password' => true,
         ]);
 
-        return back()->with('success', 'Akun berhasil dibuat.');
+        if ($request->role === 'orangtua') {
+            $siswa = Siswa::findOrFail($request->siswa_id);
+
+            $siswa->update([
+                'orangtua_id' => $user->id,
+            ]);
+        }
+
+        return redirect()
+            ->back()
+            ->with('success', 'Akun berhasil dibuat. User wajib mengganti password saat login pertama.');
     }
 
     public function destroy(User $user)

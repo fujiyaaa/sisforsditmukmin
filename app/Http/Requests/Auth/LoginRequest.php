@@ -2,10 +2,12 @@
 
 namespace App\Http\Requests\Auth;
 
+use App\Models\User;
+use App\Models\Siswa;
 use Illuminate\Auth\Events\Lockout;
-use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
@@ -28,7 +30,7 @@ class LoginRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'email' => ['required', 'string', 'email'],
+            'email' => ['required', 'string'],
             'password' => ['required', 'string'],
         ];
     }
@@ -42,13 +44,40 @@ class LoginRequest extends FormRequest
     {
         $this->ensureIsNotRateLimited();
 
-        if (! Auth::attempt($this->only('email', 'password'), $this->boolean('remember'))) {
+        $login = $this->input('email');
+        $password = $this->input('password');
+
+        // 1. Admin login pakai email
+        $user = User::where('email', $login)->first();
+
+        // 2. Guru login pakai NIP
+        if (!$user) {
+            $user = User::where('nip', $login)
+                ->where('role', 'guru')
+                ->first();
+        }
+
+        // 3. Orang tua login pakai NIS anak
+        if (!$user) {
+            $siswa = Siswa::with('orangtua')
+                ->where('nis', $login)
+                ->first();
+
+            if ($siswa && $siswa->orangtua) {
+                $user = $siswa->orangtua;
+            }
+        }
+
+        // 4. Cek password
+        if (!$user || ! Hash::check($password, $user->password)) {
             RateLimiter::hit($this->throttleKey());
 
             throw ValidationException::withMessages([
-                'email' => trans('auth.failed'),
+                'email' => 'Login atau password tidak sesuai.',
             ]);
         }
+
+        Auth::login($user, $this->boolean('remember'));
 
         RateLimiter::clear($this->throttleKey());
     }

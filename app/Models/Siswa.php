@@ -31,4 +31,8 @@ class Siswa extends Model
     {
         return $this->hasMany(LaporanSiswa::class);
     }
+    public function orangtua()
+    {
+        return $this->belongsTo(User::class, 'orangtua_id');
+    }
 }
