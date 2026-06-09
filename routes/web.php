@@ -17,6 +17,7 @@ use App\Http\Controllers\OrangTuaAbsensiController;
 use App\Http\Controllers\Auth\ChangePasswordController;
 use App\Http\Controllers\Admin\AkunController;
 use App\Http\Controllers\Admin\HakAksesGuruController;
+use App\Http\Controllers\Admin\RekapPersentaseController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -100,8 +101,11 @@ Route::middleware(['auth', 'must.change.password', 'role:admin'])->prefix('admin
     Route::get('/hak-akses-guru', [HakAksesGuruController::class, 'index'])
     ->name('admin.hak-akses-guru.index');
 
-Route::put('/hak-akses-guru/{guru}', [HakAksesGuruController::class, 'update'])
+    Route::put('/hak-akses-guru/{guru}', [HakAksesGuruController::class, 'update'])
     ->name('admin.hak-akses-guru.update');
+
+    Route::get('/rekap-persentase', [RekapPersentaseController::class, 'index'])
+    ->name('admin.rekap-persentase.index');
 
 });
 
