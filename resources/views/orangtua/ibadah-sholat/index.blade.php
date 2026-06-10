@@ -3,6 +3,15 @@
 @section('content')
 
 @php
+    /*
+     * Dzuhur dan Ashar hanya disabled kalau:
+     * - bukan hari libur
+     * - guru sudah input
+     *
+     * Kalau guru belum input, orang tua bisa input semua.
+     */
+    $disableDzuhurAshar = !$isLibur && $adaInputGuru;
+
     $jumlahHariIni = 0;
 
     if (isset($rekapHariIni)) {
@@ -29,7 +38,7 @@
 
             <div>
                 <p class="inline-flex items-center bg-white/15 text-white text-xs tracking-[0.22em] font-bold px-4 py-2 rounded-full mb-5">
-                    MONITORING IBADAH
+                    MONITORING SHOLAT
                 </p>
 
                 <h1 class="text-3xl md:text-4xl font-bold text-white">
@@ -37,16 +46,14 @@
                 </h1>
 
                 <p class="text-white/90 mt-3 max-w-2xl">
-                    Input dan pantau sholat fardhu anak berdasarkan tanggal secara lebih mudah.
+                    Input dan pantau sholat fardhu anak secara lebih mudah.
                 </p>
             </div>
 
-            <div class="flex flex-col sm:flex-row gap-3">
-                <a href="{{ route('orangtua.ibadah-sholat.riwayat') }}"
-                   class="inline-flex items-center justify-center bg-white text-[#2F7D55] hover:bg-[#F0F8F4] px-6 py-3 rounded-2xl font-bold transition shadow-sm">
-                    Lihat Kalender
-                </a>
-            </div>
+            <a href="{{ route('orangtua.ibadah-sholat.riwayat') }}"
+               class="inline-flex items-center justify-center bg-white text-[#2F7D55] hover:bg-[#F0F8F4] px-6 py-3 rounded-2xl font-bold transition shadow-sm">
+                Lihat Kalender
+            </a>
 
         </div>
 
@@ -105,13 +112,14 @@
         <div class="bg-white rounded-[2rem] shadow-sm border border-gray-100 p-7">
 
             <p class="text-sm text-gray-500">
-                Progress Hari Ini
+                Progress Tanggal Ini
             </p>
 
             <div class="mt-4 flex items-end gap-2">
                 <h2 class="text-5xl font-bold text-[#2F7D55]">
                     {{ $jumlahHariIni }}
                 </h2>
+
                 <span class="text-gray-400 font-semibold mb-2">
                     /5
                 </span>
@@ -124,7 +132,7 @@
             </div>
 
             <p class="text-sm text-gray-500 mt-4">
-                {{ $jumlahHariIni == 5 ? 'Sholat hari ini sudah lengkap.' : 'Masih ada sholat yang belum dicentang.' }}
+                {{ $jumlahHariIni == 5 ? 'Sholat pada tanggal ini sudah lengkap.' : 'Masih ada sholat yang belum dicentang.' }}
             </p>
 
         </div>
@@ -169,9 +177,6 @@
                     Input Monitoring Sholat
                 </h2>
 
-                <p class="text-gray-500 mt-1">
-                    Pilih tanggal, lalu centang sholat yang sudah dilaksanakan.
-                </p>
             </div>
 
             <div class="inline-flex items-center gap-2 bg-[#EEF7F1] text-[#2F7D55] px-5 py-3 rounded-2xl font-bold">
@@ -179,6 +184,14 @@
             </div>
 
         </div>
+
+        @if($isLibur)
+
+        @elseif($adaInputGuru)
+
+        @else
+
+        @endif
 
         <form action="{{ route('orangtua.ibadah-sholat.store') }}" method="POST" class="space-y-7">
             @csrf
@@ -196,9 +209,11 @@
 
             <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
 
+                {{-- SUBUH --}}
                 <label class="group relative overflow-hidden flex flex-col gap-4 bg-[#FAFCFB] border border-gray-200 rounded-[1.5rem] p-5 cursor-pointer hover:border-[#2F7D55] hover:bg-[#F6FAF8] transition">
                     <div class="flex items-center justify-between">
                         <span class="font-bold text-[#1F252D]">Subuh</span>
+
                         <input type="checkbox"
                                name="subuh"
                                value="1"
@@ -206,35 +221,50 @@
                                {{ isset($rekapHariIni) && $rekapHariIni->subuh ? 'checked' : '' }}>
                     </div>
 
+
                 </label>
 
-                <label class="group relative overflow-hidden flex flex-col gap-4 bg-[#FAFCFB] border border-gray-200 rounded-[1.5rem] p-5 cursor-pointer hover:border-[#2F7D55] hover:bg-[#F6FAF8] transition">
+                {{-- DZUHUR --}}
+                <label class="group relative overflow-hidden flex flex-col gap-4 bg-[#FAFCFB] border border-gray-200 rounded-[1.5rem] p-5 {{ $disableDzuhurAshar ? 'opacity-60 cursor-not-allowed' : 'cursor-pointer hover:border-[#2F7D55] hover:bg-[#F6FAF8]' }} transition">
                     <div class="flex items-center justify-between">
                         <span class="font-bold text-[#1F252D]">Dzuhur</span>
+
                         <input type="checkbox"
                                name="dzuhur"
                                value="1"
-                               class="peer w-5 h-5 accent-[#2F7D55]"
-                               {{ isset($rekapHariIni) && $rekapHariIni->dzuhur ? 'checked' : '' }}>
+                               class="peer w-5 h-5 accent-[#2F7D55] {{ $disableDzuhurAshar ? 'cursor-not-allowed opacity-50' : '' }}"
+                               {{ isset($rekapHariIni) && $rekapHariIni->dzuhur ? 'checked' : '' }}
+                               {{ $disableDzuhurAshar ? 'disabled' : '' }}>
                     </div>
 
+                    <p class="text-sm text-gray-400">
+                        {{ $disableDzuhurAshar ? '' : '' }}
+                    </p>
                 </label>
 
-                <label class="group relative overflow-hidden flex flex-col gap-4 bg-[#FAFCFB] border border-gray-200 rounded-[1.5rem] p-5 cursor-pointer hover:border-[#2F7D55] hover:bg-[#F6FAF8] transition">
+                {{-- ASHAR --}}
+                <label class="group relative overflow-hidden flex flex-col gap-4 bg-[#FAFCFB] border border-gray-200 rounded-[1.5rem] p-5 {{ $disableDzuhurAshar ? 'opacity-60 cursor-not-allowed' : 'cursor-pointer hover:border-[#2F7D55] hover:bg-[#F6FAF8]' }} transition">
                     <div class="flex items-center justify-between">
                         <span class="font-bold text-[#1F252D]">Ashar</span>
+
                         <input type="checkbox"
                                name="ashar"
                                value="1"
-                               class="peer w-5 h-5 accent-[#2F7D55]"
-                               {{ isset($rekapHariIni) && $rekapHariIni->ashar ? 'checked' : '' }}>
+                               class="peer w-5 h-5 accent-[#2F7D55] {{ $disableDzuhurAshar ? 'cursor-not-allowed opacity-50' : '' }}"
+                               {{ isset($rekapHariIni) && $rekapHariIni->ashar ? 'checked' : '' }}
+                               {{ $disableDzuhurAshar ? 'disabled' : '' }}>
                     </div>
 
+                    <p class="text-sm text-gray-400">
+                        {{ $disableDzuhurAshar ? '' : '' }}
+                    </p>
                 </label>
 
+                {{-- MAGHRIB --}}
                 <label class="group relative overflow-hidden flex flex-col gap-4 bg-[#FAFCFB] border border-gray-200 rounded-[1.5rem] p-5 cursor-pointer hover:border-[#2F7D55] hover:bg-[#F6FAF8] transition">
                     <div class="flex items-center justify-between">
                         <span class="font-bold text-[#1F252D]">Maghrib</span>
+
                         <input type="checkbox"
                                name="maghrib"
                                value="1"
@@ -242,17 +272,21 @@
                                {{ isset($rekapHariIni) && $rekapHariIni->maghrib ? 'checked' : '' }}>
                     </div>
 
+
                 </label>
 
+                {{-- ISYA --}}
                 <label class="group relative overflow-hidden flex flex-col gap-4 bg-[#FAFCFB] border border-gray-200 rounded-[1.5rem] p-5 cursor-pointer hover:border-[#2F7D55] hover:bg-[#F6FAF8] transition">
                     <div class="flex items-center justify-between">
                         <span class="font-bold text-[#1F252D]">Isya</span>
+
                         <input type="checkbox"
                                name="isya"
                                value="1"
                                class="peer w-5 h-5 accent-[#2F7D55]"
                                {{ isset($rekapHariIni) && $rekapHariIni->isya ? 'checked' : '' }}>
                     </div>
+
 
                 </label>
 
@@ -273,7 +307,7 @@
             <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pt-2">
 
                 <p class="text-sm text-gray-500">
-                    Data akan tersimpan sesuai tanggal yang dipilih.
+
                 </p>
 
                 <button type="submit"

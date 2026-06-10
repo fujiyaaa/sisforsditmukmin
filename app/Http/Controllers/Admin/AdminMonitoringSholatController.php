@@ -60,38 +60,38 @@ class AdminMonitoringSholatController extends Controller
     }
 
     public function store(Request $request)
-    {
-        $request->validate([
-            'tanggal' => 'required|date',
-            'siswa_ids' => 'required|array',
-            'sholat' => 'nullable|array',
-            'keterangan' => 'nullable|array',
-        ]);
+{
+    $request->validate([
+        'tanggal' => 'required|date',
+        'siswa_ids' => 'required|array',
+        'sholat' => 'nullable|array',
+        'keterangan' => 'nullable|array',
+    ]);
 
-        foreach ($request->siswa_ids as $siswaId) {
-            $data = $request->sholat[$siswaId] ?? [];
+    foreach ($request->siswa_ids as $siswaId) {
+        $data = $request->sholat[$siswaId] ?? [];
 
-            MonitoringSholat::updateOrCreate(
-                [
-                    'siswa_id' => $siswaId,
-                    'tanggal'  => $request->tanggal,
-                    'sumber'   => 'admin',
-                ],
-                [
-                    'subuh'      => isset($data['subuh']) ? 1 : 0,
-                    'dzuhur'     => isset($data['dzuhur']) ? 1 : 0,
-                    'ashar'      => isset($data['ashar']) ? 1 : 0,
-                    'maghrib'    => isset($data['maghrib']) ? 1 : 0,
-                    'isya'       => isset($data['isya']) ? 1 : 0,
-                    'keterangan' => $request->keterangan[$siswaId] ?? null,
-                ]
-            );
-        }
-
-        return redirect()
-            ->back()
-            ->with('success', 'Monitoring sholat berhasil disimpan oleh admin.');
+        MonitoringSholat::updateOrCreate(
+            [
+                'siswa_id' => $siswaId,
+                'tanggal'  => $request->tanggal,
+                'sumber'   => 'admin',
+            ],
+            [
+                'subuh'      => isset($data['subuh']) ? 1 : 0,
+                'dzuhur'     => isset($data['dzuhur']) ? 1 : 0,
+                'ashar'      => isset($data['ashar']) ? 1 : 0,
+                'maghrib'    => isset($data['maghrib']) ? 1 : 0,
+                'isya'       => isset($data['isya']) ? 1 : 0,
+                'keterangan' => $request->keterangan[$siswaId] ?? null,
+            ]
+        );
     }
+
+    return redirect()
+        ->back()
+        ->with('success', 'Monitoring sholat berhasil disimpan oleh admin.');
+}
 
     public function riwayat(Request $request)
     {

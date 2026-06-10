@@ -19,9 +19,7 @@
                     Monitoring Sholat Fardhu
                 </h1>
 
-                <p class="text-white/90 mt-3 max-w-2xl">
-                    Guru dapat menginput monitoring sholat fardhu siswa berdasarkan kelas dan tanggal.
-                </p>
+                
             </div>
 
             <a href="{{ route('monitoring-sholat.riwayat') }}"
@@ -36,12 +34,9 @@
 
         <div class="mb-6">
             <h2 class="text-2xl font-bold text-[#1F252D]">
-                Pilih Kelas & Tanggal
+                Daftar Kelas
             </h2>
 
-            <p class="text-gray-500 mt-1">
-                Pilih kelas dan tanggal untuk menampilkan daftar siswa.
-            </p>
         </div>
 
         <form action="{{ route('monitoring-sholat.index') }}"
@@ -55,9 +50,7 @@
 
                 <select name="kelas_id"
                         class="w-full px-4 py-3.5 border border-gray-200 rounded-2xl bg-[#FAFCFB] focus:outline-none focus:ring-2 focus:ring-[#4D9A72]">
-                    <option value="">
-                        Semua Kelas
-                    </option>
+                    <option value="">Semua Kelas</option>
 
                     @foreach($kelas as $k)
                         <option value="{{ $k->id }}" {{ $kelas_id == $k->id ? 'selected' : '' }}>
@@ -116,7 +109,7 @@
 
                 <div>
                     <h2 class="text-2xl font-bold text-[#1F252D]">
-                        Checklist Sholat Siswa
+                        Monitoring Sholat Fardhu
                     </h2>
 
                     <p class="text-gray-500 mt-1">
@@ -131,6 +124,8 @@
 
             </div>
 
+
+
             @if($siswas->count() > 0)
 
                 <div class="overflow-x-auto rounded-[1.5rem] border border-gray-100">
@@ -143,14 +138,7 @@
                                 <th class="p-4 text-left whitespace-nowrap">NIS</th>
                                 <th class="p-4 text-left whitespace-nowrap">Nama Siswa</th>
 
-                                <th class="p-4 text-center whitespace-nowrap">
-                                    <div class="flex flex-col items-center gap-2">
-                                        <span>Subuh</span>
-                                        <input type="checkbox"
-                                               class="check-all w-4 h-4 accent-white cursor-pointer"
-                                               data-target="subuh">
-                                    </div>
-                                </th>
+                                <th class="p-4 text-center whitespace-nowrap">Subuh</th>
 
                                 <th class="p-4 text-center whitespace-nowrap">
                                     <div class="flex flex-col items-center gap-2">
@@ -170,24 +158,8 @@
                                     </div>
                                 </th>
 
-                                <th class="p-4 text-center whitespace-nowrap">
-                                    <div class="flex flex-col items-center gap-2">
-                                        <span>Maghrib</span>
-                                        <input type="checkbox"
-                                               class="check-all w-4 h-4 accent-white cursor-pointer"
-                                               data-target="maghrib">
-                                    </div>
-                                </th>
-
-                                <th class="p-4 text-center whitespace-nowrap">
-                                    <div class="flex flex-col items-center gap-2">
-                                        <span>Isya</span>
-                                        <input type="checkbox"
-                                               class="check-all w-4 h-4 accent-white cursor-pointer"
-                                               data-target="isya">
-                                    </div>
-                                </th>
-
+                                <th class="p-4 text-center whitespace-nowrap">Maghrib</th>
+                                <th class="p-4 text-center whitespace-nowrap">Isya</th>
                                 <th class="p-4 text-left whitespace-nowrap">Keterangan</th>
                             </tr>
                         </thead>
@@ -240,14 +212,15 @@
                                             </div>
                                         </td>
 
+                                        {{-- SUBUH DISABLED --}}
                                         <td class="p-4 text-center">
                                             <input type="checkbox"
-                                                   name="sholat[{{ $siswa->id }}][subuh]"
-                                                   value="1"
-                                                   class="subuh w-5 h-5 accent-[#2F7D55] cursor-pointer rounded"
+                                                   disabled
+                                                   class="w-5 h-5 accent-[#2F7D55] cursor-not-allowed rounded opacity-40"
                                                    {{ $data && $data->subuh ? 'checked' : '' }}>
                                         </td>
 
+                                        {{-- DZUHUR AKTIF --}}
                                         <td class="p-4 text-center">
                                             <input type="checkbox"
                                                    name="sholat[{{ $siswa->id }}][dzuhur]"
@@ -256,6 +229,7 @@
                                                    {{ $data && $data->dzuhur ? 'checked' : '' }}>
                                         </td>
 
+                                        {{-- ASHAR AKTIF --}}
                                         <td class="p-4 text-center">
                                             <input type="checkbox"
                                                    name="sholat[{{ $siswa->id }}][ashar]"
@@ -264,19 +238,19 @@
                                                    {{ $data && $data->ashar ? 'checked' : '' }}>
                                         </td>
 
+                                        {{-- MAGHRIB DISABLED --}}
                                         <td class="p-4 text-center">
                                             <input type="checkbox"
-                                                   name="sholat[{{ $siswa->id }}][maghrib]"
-                                                   value="1"
-                                                   class="maghrib w-5 h-5 accent-[#2F7D55] cursor-pointer rounded"
+                                                   disabled
+                                                   class="w-5 h-5 accent-[#2F7D55] cursor-not-allowed rounded opacity-40"
                                                    {{ $data && $data->maghrib ? 'checked' : '' }}>
                                         </td>
 
+                                        {{-- ISYA DISABLED --}}
                                         <td class="p-4 text-center">
                                             <input type="checkbox"
-                                                   name="sholat[{{ $siswa->id }}][isya]"
-                                                   value="1"
-                                                   class="isya w-5 h-5 accent-[#2F7D55] cursor-pointer rounded"
+                                                   disabled
+                                                   class="w-5 h-5 accent-[#2F7D55] cursor-not-allowed rounded opacity-40"
                                                    {{ $data && $data->isya ? 'checked' : '' }}>
                                         </td>
 

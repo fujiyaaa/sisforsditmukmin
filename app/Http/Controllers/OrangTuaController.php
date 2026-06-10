@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Auth;
 
 class OrangTuaController extends Controller
 {
-    public function monitoring()
+    public function monitoring(Request $request)
     {
        $siswa = Siswa::first();
 
@@ -19,9 +19,12 @@ class OrangTuaController extends Controller
         }
 
         $monitorings = Monitoring::where('siswa_id', $siswa->id)
-                        ->latest()
-                        ->take(10)
-                        ->get();
+            ->when($request->filled('tanggal'), function ($query) use ($request) {
+                $query->whereDate('tanggal', $request->tanggal);
+            })
+            ->orderBy('tanggal', 'desc')
+            ->orderBy('created_at', 'desc')
+            ->get();
 
         $totalSetoran = Monitoring::where('siswa_id', $siswa->id)->count();
 

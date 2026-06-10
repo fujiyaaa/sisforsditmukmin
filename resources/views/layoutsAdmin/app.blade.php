@@ -179,6 +179,12 @@
                     </span>
                 </a>
 
+                <a href="{{ route('admin.hari-libur.index') }}"
+                    class="flex items-center gap-3 px-5 py-4 rounded-2xl hover:bg-white/10 transition
+                    {{ request()->is('admin/hari-libur*') ? 'bg-white/20 font-semibold' : '' }}">
+                        <span>Hari Libur</span>
+                </a>
+
             </nav>
 
         </div>

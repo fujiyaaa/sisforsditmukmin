@@ -265,17 +265,7 @@
                         </p>
 
                         <div class="login-info">
-                            <p>
-                                <strong>Admin</strong> login menggunakan email.
-                            </p>
-
-                            <p>
-                                <strong>Guru</strong> login menggunakan NIP.
-                            </p>
-
-                            <p>
-                                <strong>Orang Tua</strong> login menggunakan NIS anak.
-                            </p>
+                            
                         </div>
 
                     </div>
@@ -336,9 +326,7 @@
                                 autocomplete="username"
                             >
 
-                            <p class="input-help">
-                                Admin pakai email, guru pakai NIP, orang tua pakai NIS anak.
-                            </p>
+
 
                         </div>
 
@@ -384,13 +372,6 @@
 
                         <!-- REGISTER -->
                         @if (Route::has('register'))
-                            <div class="text-center mt-4">
-                                Belum punya akun?
-
-                                <a href="{{ route('register') }}" class="register-link">
-                                    Register
-                                </a>
-                            </div>
                         @endif
 
                     </form>

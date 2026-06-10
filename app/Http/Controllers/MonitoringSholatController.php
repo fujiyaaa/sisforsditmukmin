@@ -102,20 +102,20 @@ class MonitoringSholatController extends Controller
             }
 
             MonitoringSholat::updateOrCreate(
-                [
-                    'siswa_id' => $siswa_id,
-                    'tanggal'  => $request->tanggal,
-                    'sumber'   => 'guru',
-                ],
-                [
-                    'subuh'      => isset($data['subuh']) ? 1 : 0,
-                    'dzuhur'     => isset($data['dzuhur']) ? 1 : 0,
-                    'ashar'      => isset($data['ashar']) ? 1 : 0,
-                    'maghrib'    => isset($data['maghrib']) ? 1 : 0,
-                    'isya'       => isset($data['isya']) ? 1 : 0,
-                    'keterangan' => $data['keterangan'] ?? null,
-                ]
-            );
+    [
+        'siswa_id' => $siswa_id,
+        'tanggal'  => $request->tanggal,
+        'sumber'   => 'guru',
+    ],
+    [
+        'subuh'      => 0,
+        'dzuhur'     => isset($data['dzuhur']) ? 1 : 0,
+        'ashar'      => isset($data['ashar']) ? 1 : 0,
+        'maghrib'    => 0,
+        'isya'       => 0,
+        'keterangan' => $data['keterangan'] ?? null,
+    ]
+);
         }
 
         return redirect()

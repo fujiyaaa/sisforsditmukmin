@@ -21,6 +21,7 @@ use App\Http\Controllers\Admin\RekapPersentaseController;
 use App\Http\Controllers\Admin\AdminAbsensiController;
 use App\Http\Controllers\Admin\AdminSetoranController;
 use App\Http\Controllers\Admin\AdminMonitoringSholatController;
+use App\Http\Controllers\Admin\HariLiburController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -135,6 +136,15 @@ Route::middleware(['auth', 'must.change.password', 'role:admin'])->prefix('admin
 
     Route::get('/monitoring-sholat/riwayat', [AdminMonitoringSholatController::class, 'riwayat'])
         ->name('admin.monitoring-sholat.riwayat');
+
+    Route::get('/hari-libur', [HariLiburController::class, 'index'])
+    ->name('admin.hari-libur.index');
+
+    Route::post('/hari-libur', [HariLiburController::class, 'store'])
+        ->name('admin.hari-libur.store');
+
+    Route::delete('/hari-libur/{hariLibur}', [HariLiburController::class, 'destroy'])
+        ->name('admin.hari-libur.destroy');
 
 });
 
