@@ -4,46 +4,72 @@
 
 <div class="space-y-8">
 
-    <!-- HEADER -->
-    <div class="bg-white rounded-3xl shadow-lg p-8 flex flex-col md:flex-row md:items-center md:justify-between gap-6">
-        <div>
-            <h1 class="text-3xl font-bold text-[#1F6B4A]">
-                Laporan Prestasi & Pelanggaran
-            </h1>
+    {{-- HEADER --}}
+    <div class="relative overflow-hidden rounded-[32px] bg-gradient-to-r from-[#1F6B4A] via-[#2F7D55] to-[#5AA578] p-8 md:p-10 shadow-xl">
+        <div class="absolute top-0 right-0 w-72 h-72 bg-white/10 rounded-full -translate-y-20 translate-x-20"></div>
+        <div class="absolute bottom-0 left-0 w-52 h-52 bg-white/10 rounded-full translate-y-20 -translate-x-16"></div>
 
-            <p class="text-gray-500 mt-2">
-                Pilih kelas dan siswa untuk menginput laporan prestasi atau pelanggaran.
-            </p>
-        </div>
+        <div class="relative z-10 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
+            <div class="text-white">
+                <span class="inline-flex items-center px-4 py-2 rounded-full bg-white/15 text-sm font-semibold tracking-wide">
+                    PANEL GURU
+                </span>
 
-        <div class="bg-[#EEF7F1] px-6 py-4 rounded-2xl">
-            <p class="text-sm text-gray-500">Hari Ini</p>
-            <h2 class="text-xl font-bold text-[#2F7D55] mt-1">
-                {{ now()->format('d M Y') }}
-            </h2>
+                <h1 class="text-3xl md:text-4xl font-bold mt-4 leading-tight">
+                    Laporan Prestasi & Pelanggaran
+                </h1>
+
+                <p class="text-white/85 mt-3 max-w-2xl">
+                    Kelola laporan siswa dengan lebih cepat. Pilih kelas, lihat riwayat laporan,
+                    lalu tulis laporan baru untuk siswa yang dipilih.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 min-w-[260px]">
+                <div class="rounded-2xl bg-white/15 backdrop-blur-sm border border-white/10 p-5 text-white">
+                    <p class="text-sm text-white/75">Total Siswa Ditampilkan</p>
+                    <h2 class="text-3xl font-bold mt-1">{{ $siswas->count() }}</h2>
+                    <p class="text-sm text-white/70 mt-1">siswa aktif</p>
+                </div>
+
+                <div class="rounded-2xl bg-white/15 backdrop-blur-sm border border-white/10 p-5 text-white">
+                    <p class="text-sm text-white/75">Hari Ini</p>
+                    <h2 class="text-2xl font-bold mt-1">{{ now()->format('d M Y') }}</h2>
+                    <p class="text-sm text-white/70 mt-1">{{ now()->format('l') }}</p>
+                </div>
+            </div>
         </div>
     </div>
 
-    <!-- FILTER KELAS UNTUK INPUT LAPORAN -->
-    <div class="bg-white rounded-3xl shadow-lg p-8">
+    {{-- FILTER KELAS --}}
+    <div class="bg-white rounded-[28px] shadow-lg border border-gray-100 p-8">
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3 mb-6">
+            <div>
+                <h2 class="text-2xl font-bold text-[#1F2937]">
+                    Pilih Kelas & Siswa
+                </h2>
+                <p class="text-gray-500 mt-1">
+                    Pilih kelas untuk menampilkan daftar siswa.
+                </p>
+            </div>
 
-        <h2 class="text-xl font-bold text-gray-800 mb-5">
-            Pilih Kelas & Siswa
-        </h2>
+            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-2xl bg-[#EEF7F1] text-[#2F7D55] font-semibold text-sm">
+                {{ $kelas->count() }} kelas tersedia
+            </div>
+        </div>
 
         <form method="GET"
               action="{{ route('laporan.index') }}"
               class="grid grid-cols-1 md:grid-cols-3 gap-5">
 
-            <div>
-                <label class="block mb-2 font-semibold text-gray-700">
+            <div class="md:col-span-1">
+                <label class="block text-sm font-semibold text-gray-700 mb-2">
                     Kelas
                 </label>
 
                 <select name="kelas_id"
-                        class="w-full px-4 py-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-[#4D9A72]">
+                        class="w-full px-4 py-3.5 border border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#4D9A72] focus:border-[#4D9A72]">
                     <option value="">-- Semua Kelas --</option>
-
                     @foreach ($kelas as $item)
                         <option value="{{ $item->id }}" {{ request('kelas_id') == $item->id ? 'selected' : '' }}>
                             {{ $item->nama_kelas ?? $item->kelas ?? 'Kelas' }}
@@ -52,286 +78,307 @@
                 </select>
             </div>
 
-            <div class="flex items-end">
+            <div class="md:col-span-1">
+                <label class="block text-sm font-semibold text-gray-700 mb-2">
+                    Cari Siswa
+                </label>
+
+                <input type="text"
+                       id="searchSiswa"
+                       placeholder="Cari nama atau NIS siswa..."
+                       class="w-full px-4 py-3.5 border border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#4D9A72] focus:border-[#4D9A72]">
+            </div>
+
+            <div class="md:col-span-1 flex items-end">
                 <button type="submit"
-                        class="w-full bg-[#4D9A72] text-white px-6 py-3 rounded-xl hover:bg-[#3F8260] transition">
+                        class="w-full bg-[#4D9A72] text-white px-6 py-3.5 rounded-2xl font-semibold hover:bg-[#3E845F] transition shadow-sm">
                     Tampilkan Siswa
                 </button>
             </div>
-
         </form>
-
     </div>
 
-    <!-- DAFTAR SISWA -->
-    <div class="bg-white rounded-3xl shadow-lg p-8">
+    {{-- DAFTAR SISWA --}}
+    <div class="bg-white rounded-[28px] shadow-lg border border-gray-100 p-8">
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
+            <div>
+                <h2 class="text-2xl font-bold text-[#1F2937]">
+                    Daftar Siswa
+                </h2>
+                <p class="text-gray-500 mt-1">
+                    Klik <span class="font-semibold text-[#2F7D55]">View Laporan</span> untuk melihat riwayat laporan siswa.
+                </p>
+            </div>
 
-        <h2 class="text-xl font-bold text-gray-800 mb-5">
-            Daftar Siswa
-        </h2>
+            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-2xl bg-[#EEF7F1] text-[#2F7D55] font-semibold text-sm">
+                {{ $siswas->count() }} siswa
+            </div>
+        </div>
 
-        <div class="overflow-x-auto">
+        <div class="overflow-x-auto rounded-3xl border border-gray-100">
             <table class="w-full border-collapse">
                 <thead>
                     <tr class="bg-[#4D9A72] text-white">
-                        <th class="px-4 py-3 text-left rounded-l-xl">No</th>
-                        <th class="px-4 py-3 text-left">NIS</th>
-                        <th class="px-4 py-3 text-left">Nama</th>
-                        <th class="px-4 py-3 text-left">Kelas</th>
-                        <th class="px-4 py-3 text-center">View</th>
-                        <th class="px-4 py-3 text-center rounded-r-xl">Aksi</th>
+                        <th class="px-5 py-4 text-left rounded-tl-2xl">No</th>
+                        <th class="px-5 py-4 text-left">Siswa</th>
+                        <th class="px-5 py-4 text-left">Kelas</th>
+                        <th class="px-5 py-4 text-center">Riwayat</th>
+                        <th class="px-5 py-4 text-center rounded-tr-2xl">Aksi</th>
                     </tr>
                 </thead>
 
-                <tbody>
+                <tbody id="siswaTableBody">
                     @forelse ($siswas as $siswa)
 
                         @php
                             $dataLaporanSiswa = $laporanSiswa[$siswa->id] ?? collect();
+                            $inisial = strtoupper(substr($siswa->nama, 0, 1));
                         @endphp
 
-                        <tr class="border-b hover:bg-gray-50">
-                            <td class="px-4 py-4">
+                        <tr class="border-b border-gray-100 hover:bg-[#FAFCFB] transition siswa-row"
+                            data-nama="{{ strtolower($siswa->nama) }}"
+                            data-nis="{{ strtolower($siswa->nis) }}">
+
+                            <td class="px-5 py-4 text-gray-700 font-medium">
                                 {{ $loop->iteration }}
                             </td>
 
-                            <td class="px-4 py-4">
-                                {{ $siswa->nis }}
+                            <td class="px-5 py-4">
+                                <div class="flex items-center gap-4">
+                                    <div class="w-12 h-12 rounded-2xl bg-[#DDEFE4] text-[#2F7D55] font-bold flex items-center justify-center">
+                                        {{ $inisial }}
+                                    </div>
+
+                                    <div>
+                                        <p class="font-bold text-gray-800">
+                                            {{ $siswa->nama }}
+                                        </p>
+                                        <p class="text-sm text-gray-500">
+                                            NIS: {{ $siswa->nis }}
+                                        </p>
+                                    </div>
+                                </div>
                             </td>
 
-                            <td class="px-4 py-4 font-semibold">
-                                {{ $siswa->nama }}
+                            <td class="px-5 py-4">
+                                <span class="inline-flex items-center px-3 py-1.5 rounded-full bg-[#EEF7F1] text-[#2F7D55] font-semibold text-sm">
+                                    {{ $siswa->kelas->nama_kelas ?? '-' }}
+                                </span>
                             </td>
 
-                            <td class="px-4 py-4">
-                                {{ $siswa->kelas->nama_kelas ?? '-' }}
-                            </td>
-
-                            <td class="px-4 py-4 text-center">
+                            <td class="px-5 py-4 text-center">
                                 <button type="button"
                                         onclick="openModalLaporan({{ $siswa->id }})"
-                                        class="inline-block bg-blue-600 text-white px-4 py-2 rounded-xl hover:bg-blue-700 transition">
+                                        class="inline-flex items-center justify-center px-4 py-2.5 rounded-xl bg-blue-600 text-white font-semibold hover:bg-blue-700 transition shadow-sm">
                                     View Laporan
                                 </button>
                             </td>
 
-                            <td class="px-4 py-4 text-center">
+                            <td class="px-5 py-4 text-center">
                                 <a href="{{ route('laporan.create', $siswa->nis) }}"
-                                   class="inline-block bg-[#4D9A72] text-white px-4 py-2 rounded-xl hover:bg-[#3F8260] transition">
+                                   class="inline-flex items-center justify-center px-4 py-2.5 rounded-xl bg-[#4D9A72] text-white font-semibold hover:bg-[#3E845F] transition shadow-sm">
                                     Tulis Laporan
                                 </a>
                             </td>
                         </tr>
 
-                        <!-- MODAL VIEW LAPORAN SISWA -->
+                        {{-- MODAL RIWAYAT LAPORAN --}}
                         <div id="modal-laporan-{{ $siswa->id }}"
-                             class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 items-center justify-center px-4">
+                             class="hidden fixed inset-0 bg-black/50 backdrop-blur-[2px] z-50 items-center justify-center px-4 py-8">
 
-                            <div class="bg-white w-full max-w-4xl rounded-3xl shadow-xl p-8 relative max-h-[85vh] overflow-y-auto">
+                            <div class="bg-white w-full max-w-5xl rounded-[30px] shadow-2xl relative max-h-[90vh] overflow-y-auto">
+                                <div class="sticky top-0 bg-white/95 backdrop-blur-sm border-b border-gray-100 px-8 py-6 rounded-t-[30px] z-10">
+                                    <button type="button"
+                                            onclick="closeModalLaporan({{ $siswa->id }})"
+                                            class="absolute top-5 right-6 w-11 h-11 rounded-full bg-gray-100 text-gray-500 hover:bg-red-100 hover:text-red-500 text-2xl font-bold transition">
+                                        &times;
+                                    </button>
 
-                                <button type="button"
-                                        onclick="closeModalLaporan({{ $siswa->id }})"
-                                        class="absolute top-4 right-5 text-gray-500 hover:text-red-500 text-3xl font-bold">
-                                    &times;
-                                </button>
+                                    <div class="pr-14">
+                                        <h2 class="text-3xl font-bold text-[#1F6B4A]">
+                                            Riwayat Laporan Siswa
+                                        </h2>
 
-                                <div class="mb-6">
-                                    <h2 class="text-2xl font-bold text-[#1F6B4A]">
-                                        Riwayat Laporan Siswa
-                                    </h2>
+                                        <p class="text-gray-500 mt-2">
+                                            {{ $siswa->nama }} |
+                                            {{ $siswa->nis }} |
+                                            {{ $siswa->kelas->nama_kelas ?? '-' }}
+                                        </p>
 
-                                    <p class="text-gray-500 mt-1">
-                                        {{ $siswa->nama }} |
-                                        {{ $siswa->nis }} |
-                                        {{ $siswa->kelas->nama_kelas ?? '-' }}
-                                    </p>
+                                        @if ($dataLaporanSiswa->count() > 0)
+                                            <div class="flex flex-wrap gap-2 mt-5">
+                                                <button type="button"
+                                                        onclick="filterLaporanSiswa({{ $siswa->id }}, 'semua')"
+                                                        class="filter-btn-{{ $siswa->id }} bg-[#4D9A72] text-white px-4 py-2 rounded-xl text-sm font-semibold transition"
+                                                        data-filter="semua">
+                                                    Semua
+                                                </button>
 
+                                                <button type="button"
+                                                        onclick="filterLaporanSiswa({{ $siswa->id }}, 'prestasi')"
+                                                        class="filter-btn-{{ $siswa->id }} bg-gray-100 text-gray-700 px-4 py-2 rounded-xl text-sm font-semibold hover:bg-yellow-100 hover:text-yellow-700 transition"
+                                                        data-filter="prestasi">
+                                                    Prestasi
+                                                </button>
+
+                                                <button type="button"
+                                                        onclick="filterLaporanSiswa({{ $siswa->id }}, 'pelanggaran')"
+                                                        class="filter-btn-{{ $siswa->id }} bg-gray-100 text-gray-700 px-4 py-2 rounded-xl text-sm font-semibold hover:bg-red-100 hover:text-red-700 transition"
+                                                        data-filter="pelanggaran">
+                                                    Pelanggaran
+                                                </button>
+
+                                                <button type="button"
+                                                        onclick="filterLaporanSiswa({{ $siswa->id }}, 'informasi')"
+                                                        class="filter-btn-{{ $siswa->id }} bg-gray-100 text-gray-700 px-4 py-2 rounded-xl text-sm font-semibold hover:bg-blue-100 hover:text-blue-700 transition"
+                                                        data-filter="informasi">
+                                                    Informasi
+                                                </button>
+                                            </div>
+                                        @endif
+                                    </div>
+                                </div>
+
+                                <div class="p-8">
                                     @if ($dataLaporanSiswa->count() > 0)
-                                        <div class="flex flex-wrap gap-2 mt-5">
-                                            <button type="button"
-                                                    onclick="filterLaporanSiswa({{ $siswa->id }}, 'semua')"
-                                                    class="filter-btn-{{ $siswa->id }} bg-[#4D9A72] text-white px-4 py-2 rounded-xl text-sm font-semibold transition"
-                                                    data-filter="semua">
-                                                Semua
-                                            </button>
+                                        <div class="space-y-5">
+                                            @foreach ($dataLaporanSiswa as $laporan)
 
-                                            <button type="button"
-                                                    onclick="filterLaporanSiswa({{ $siswa->id }}, 'prestasi')"
-                                                    class="filter-btn-{{ $siswa->id }} bg-gray-100 text-gray-700 px-4 py-2 rounded-xl text-sm font-semibold hover:bg-yellow-100 hover:text-yellow-700 transition"
-                                                    data-filter="prestasi">
-                                                Prestasi
-                                            </button>
+                                                <div class="laporan-card-{{ $siswa->id }} border border-gray-100 rounded-[24px] p-6 bg-[#FBFDFC] shadow-sm"
+                                                     data-jenis="{{ $laporan->jenis }}">
 
-                                            <button type="button"
-                                                    onclick="filterLaporanSiswa({{ $siswa->id }}, 'pelanggaran')"
-                                                    class="filter-btn-{{ $siswa->id }} bg-gray-100 text-gray-700 px-4 py-2 rounded-xl text-sm font-semibold hover:bg-red-100 hover:text-red-700 transition"
-                                                    data-filter="pelanggaran">
-                                                Pelanggaran
-                                            </button>
+                                                    <div class="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-4">
+                                                        <div>
+                                                            <div class="flex flex-wrap items-center gap-2">
+                                                                <span class="inline-flex px-3 py-1 rounded-full text-sm font-semibold
+                                                                    {{ $laporan->jenis == 'prestasi' ? 'bg-yellow-100 text-yellow-700' : '' }}
+                                                                    {{ $laporan->jenis == 'pelanggaran' ? 'bg-red-100 text-red-700' : '' }}
+                                                                    {{ $laporan->jenis == 'informasi' ? 'bg-blue-100 text-blue-700' : '' }}">
+                                                                    {{ ucfirst($laporan->jenis) }}
+                                                                </span>
+                                                            </div>
 
-                                            <button type="button"
-                                                    onclick="filterLaporanSiswa({{ $siswa->id }}, 'informasi')"
-                                                    class="filter-btn-{{ $siswa->id }} bg-gray-100 text-gray-700 px-4 py-2 rounded-xl text-sm font-semibold hover:bg-blue-100 hover:text-blue-700 transition"
-                                                    data-filter="informasi">
-                                                Informasi
-                                            </button>
+                                                            <h3 class="text-2xl font-bold text-gray-800 mt-4">
+                                                                {{ $laporan->judul }}
+                                                            </h3>
+
+                                                            <p class="text-sm text-gray-500 mt-2">
+                                                                Tanggal Laporan:
+                                                                {{ $laporan->tanggal ? \Carbon\Carbon::parse($laporan->tanggal)->format('d M Y') : '-' }}
+                                                            </p>
+                                                        </div>
+
+                                                        <div class="text-sm text-gray-400">
+                                                            Diinput:
+                                                            {{ $laporan->created_at ? $laporan->created_at->format('d M Y') : '-' }}
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="mt-5 text-gray-700 leading-relaxed">
+                                                        {{ $laporan->deskripsi }}
+                                                    </div>
+
+                                                    @if ($laporan->tingkat)
+                                                        <p class="text-sm text-gray-600 mt-4">
+                                                            <span class="font-semibold">Detail:</span> {{ $laporan->tingkat }}
+                                                        </p>
+                                                    @endif
+
+                                                    @if ($laporan->jenis == 'prestasi' && $laporan->sertifikat)
+                                                        @php
+                                                            $fileUrl = asset('storage/' . $laporan->sertifikat);
+                                                            $extension = strtolower(pathinfo($laporan->sertifikat, PATHINFO_EXTENSION));
+                                                        @endphp
+
+                                                        <div class="mt-5 bg-white border border-gray-100 rounded-[22px] p-4">
+                                                            <div class="flex items-center justify-between mb-4">
+                                                                <p class="text-sm font-medium text-gray-500">
+                                                                    Lampiran Prestasi
+                                                                </p>
+
+                                                                <a href="{{ $fileUrl }}"
+                                                                   target="_blank"
+                                                                   class="text-sm font-semibold text-[#2F7D55] hover:underline">
+                                                                    Buka Lampiran
+                                                                </a>
+                                                            </div>
+
+                                                            @if (in_array($extension, ['jpg', 'jpeg', 'png', 'webp']))
+                                                                <a href="{{ $fileUrl }}" target="_blank">
+                                                                    <img src="{{ $fileUrl }}"
+                                                                         alt="Lampiran Prestasi"
+                                                                         class="w-full max-h-[320px] object-contain rounded-2xl border border-gray-100 bg-gray-50">
+                                                                </a>
+                                                            @elseif ($extension == 'pdf')
+                                                                <a href="{{ $fileUrl }}"
+                                                                   target="_blank"
+                                                                   class="inline-flex items-center bg-yellow-100 text-yellow-700 px-5 py-3 rounded-xl font-semibold hover:bg-yellow-200 transition">
+                                                                    Lihat Lampiran PDF
+                                                                </a>
+                                                            @else
+                                                                <a href="{{ $fileUrl }}"
+                                                                   target="_blank"
+                                                                   class="inline-flex items-center bg-gray-100 text-gray-700 px-5 py-3 rounded-xl font-semibold hover:bg-gray-200 transition">
+                                                                    Unduh Lampiran
+                                                                </a>
+                                                            @endif
+                                                        </div>
+                                                    @endif
+
+                                                    @if ($laporan->catatan)
+                                                        <p class="text-sm text-gray-600 mt-4">
+                                                            <span class="font-semibold">Catatan:</span> {{ $laporan->catatan }}
+                                                        </p>
+                                                    @endif
+
+                                                    <div class="mt-6 flex flex-wrap gap-3 justify-end">
+                                                        <a href="{{ route('laporan.edit', $laporan->id) }}"
+                                                           class="inline-flex items-center justify-center bg-blue-100 text-blue-700 px-5 py-2.5 rounded-xl font-semibold hover:bg-blue-200 transition">
+                                                            Edit
+                                                        </a>
+
+                                                        <form method="POST"
+                                                              action="{{ route('laporan.destroy', $laporan->id) }}"
+                                                              onsubmit="return confirm('Yakin ingin menghapus laporan ini?')">
+                                                            @csrf
+                                                            @method('DELETE')
+
+                                                            <button type="submit"
+                                                                    class="bg-red-100 text-red-700 px-5 py-2.5 rounded-xl font-semibold hover:bg-red-200 transition">
+                                                                Hapus
+                                                            </button>
+                                                        </form>
+                                                    </div>
+                                                </div>
+
+                                            @endforeach
+
+                                            <div id="empty-filter-{{ $siswa->id }}" class="hidden text-center py-12">
+                                                <h3 class="text-xl font-bold text-gray-700">
+                                                    Tidak Ada Laporan
+                                                </h3>
+                                                <p class="text-gray-500 mt-2">
+                                                    Tidak ada laporan sesuai filter yang dipilih.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    @else
+                                        <div class="text-center py-16">
+                                            <h3 class="text-xl font-bold text-gray-700">
+                                                Belum Ada Laporan
+                                            </h3>
+                                            <p class="text-gray-500 mt-2">
+                                                Siswa ini belum memiliki laporan.
+                                            </p>
                                         </div>
                                     @endif
                                 </div>
-
-                                @if ($dataLaporanSiswa->count() > 0)
-
-                                    <div class="space-y-4">
-
-                                        @foreach ($dataLaporanSiswa as $laporan)
-
-                                            <div class="laporan-card-{{ $siswa->id }} border rounded-2xl p-5 bg-[#F8FBF9]"
-                                                 data-jenis="{{ $laporan->jenis }}">
-
-                                                <div class="flex flex-col md:flex-row md:justify-between md:items-start gap-4">
-
-                                                    <div>
-                                                        <span class="inline-block px-3 py-1 rounded-full text-sm font-semibold
-                                                            {{ $laporan->jenis == 'prestasi' ? 'bg-yellow-100 text-yellow-700' : '' }}
-                                                            {{ $laporan->jenis == 'pelanggaran' ? 'bg-red-100 text-red-700' : '' }}
-                                                            {{ $laporan->jenis == 'informasi' ? 'bg-blue-100 text-blue-700' : '' }}">
-
-                                                            @if ($laporan->jenis == 'prestasi')
-                                                                🏆 Prestasi
-                                                            @elseif ($laporan->jenis == 'pelanggaran')
-                                                                ⚠️ Pelanggaran
-                                                            @else
-                                                                ℹ️ Informasi
-                                                            @endif
-                                                        </span>
-
-                                                        <h3 class="text-lg font-bold text-gray-800 mt-3">
-                                                            {{ $laporan->judul }}
-                                                        </h3>
-
-                                                        <p class="text-sm text-gray-500 mt-1">
-                                                            Tanggal Laporan:
-                                                            {{ $laporan->tanggal ? \Carbon\Carbon::parse($laporan->tanggal)->format('d M Y') : '-' }}
-                                                        </p>
-                                                    </div>
-
-                                                    <div class="text-sm text-gray-400">
-                                                        Diinput:
-                                                        {{ $laporan->created_at ? $laporan->created_at->format('d M Y') : '-' }}
-                                                    </div>
-
-                                                </div>
-
-                                                <p class="text-gray-600 mt-4">
-                                                    {{ $laporan->deskripsi }}
-                                                </p>
-
-                                                @if ($laporan->tingkat)
-                                                    <p class="text-sm text-gray-500 mt-3">
-                                                        <strong>Detail:</strong> {{ $laporan->tingkat }}
-                                                    </p>
-                                                @endif
-
-                                                @if ($laporan->catatan)
-                                                    <p class="text-sm text-gray-500 mt-2">
-                                                        <strong>Catatan:</strong> {{ $laporan->catatan }}
-                                                    </p>
-                                                @endif
-
-                                                @if ($laporan->jenis == 'prestasi' && $laporan->sertifikat)
-                                                    @php
-                                                        $fileUrl = asset('storage/' . $laporan->sertifikat);
-                                                        $extension = strtolower(pathinfo($laporan->sertifikat, PATHINFO_EXTENSION));
-                                                    @endphp
-
-                                                    <div class="mt-4 bg-white rounded-2xl p-4 border border-gray-100">
-
-                                                        <div class="flex items-center justify-between mb-3">
-                                                            <p class="text-sm text-gray-500">
-                                                                Lampiran Prestasi
-                                                            </p>
-
-                                                            <a href="{{ $fileUrl }}"
-                                                               target="_blank"
-                                                               class="text-sm font-semibold text-[#2F7D55] hover:underline">
-                                                                Buka Lampiran
-                                                            </a>
-                                                        </div>
-
-                                                        @if (in_array($extension, ['jpg', 'jpeg', 'png', 'webp']))
-
-                                                            <a href="{{ $fileUrl }}" target="_blank">
-                                                                <img src="{{ $fileUrl }}"
-                                                                     alt="Lampiran Prestasi"
-                                                                     class="w-full max-h-[250px] object-contain rounded-2xl border border-gray-100 bg-gray-50">
-                                                            </a>
-
-                                                        @elseif ($extension == 'pdf')
-
-                                                            <a href="{{ $fileUrl }}"
-                                                               target="_blank"
-                                                               class="inline-flex items-center gap-2 bg-yellow-100 text-yellow-700 px-5 py-3 rounded-xl font-semibold hover:bg-yellow-200 transition">
-                                                                📄 Lihat Lampiran PDF
-                                                            </a>
-
-                                                        @else
-
-                                                            <a href="{{ $fileUrl }}"
-                                                               target="_blank"
-                                                               class="inline-flex items-center gap-2 bg-gray-100 text-gray-700 px-5 py-3 rounded-xl font-semibold hover:bg-gray-200 transition">
-                                                                📎 Unduh Lampiran
-                                                            </a>
-
-                                                        @endif
-
-                                                    </div>
-                                                @endif
-
-                                            </div>
-
-                                        @endforeach
-
-                                        <div id="empty-filter-{{ $siswa->id }}"
-                                             class="hidden text-center py-12">
-                                            <div class="text-5xl mb-4">
-                                                🔍
-                                            </div>
-
-                                            <h3 class="text-xl font-bold text-gray-700">
-                                                Tidak Ada Laporan
-                                            </h3>
-
-                                            <p class="text-gray-500 mt-2">
-                                                Tidak ada laporan sesuai filter yang dipilih.
-                                            </p>
-                                        </div>
-
-                                    </div>
-
-                                @else
-
-                                    <div class="text-center py-12">
-                                        <div class="text-5xl mb-4">
-                                            📄
-                                        </div>
-
-                                        <h3 class="text-xl font-bold text-gray-700">
-                                            Belum Ada Laporan
-                                        </h3>
-
-                                        <p class="text-gray-500 mt-2">
-                                            Siswa ini belum memiliki laporan prestasi, pelanggaran, atau informasi.
-                                        </p>
-                                    </div>
-
-                                @endif
-
                             </div>
                         </div>
 
                     @empty
                         <tr>
-                            <td colspan="6" class="px-4 py-6 text-center text-gray-500">
+                            <td colspan="5" class="px-5 py-10 text-center text-gray-500">
                                 Belum ada data siswa.
                             </td>
                         </tr>
@@ -339,245 +386,7 @@
                 </tbody>
             </table>
         </div>
-
     </div>
-
-    <!-- FILTER RIWAYAT LAPORAN -->
-    <div class="bg-white rounded-3xl shadow-lg p-8">
-
-        <div class="mb-5">
-            <h2 class="text-xl font-bold text-[#1F6B4A]">
-                Filter Riwayat Laporan
-            </h2>
-
-            <p class="text-gray-500 mt-1">
-                Gunakan filter untuk menampilkan laporan berdasarkan kelas, siswa, atau jenis laporan.
-            </p>
-        </div>
-
-        <form id="formFilterRiwayat"
-              method="GET"
-              action="{{ route('laporan.index') }}"
-              class="grid grid-cols-1 md:grid-cols-4 gap-5">
-
-            <div>
-                <label class="block mb-2 font-semibold text-gray-700">
-                    Kelas
-                </label>
-
-                <select name="filter_kelas_id"
-                        onchange="document.getElementById('formFilterRiwayat').submit()"
-                        class="w-full px-4 py-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-[#4D9A72]">
-                    <option value="">Semua Kelas</option>
-
-                    @foreach ($kelas as $item)
-                        <option value="{{ $item->id }}" {{ request('filter_kelas_id') == $item->id ? 'selected' : '' }}>
-                            {{ $item->nama_kelas ?? $item->kelas ?? 'Kelas' }}
-                        </option>
-                    @endforeach
-                </select>
-            </div>
-
-            <div>
-                <label class="block mb-2 font-semibold text-gray-700">
-                    Siswa
-                </label>
-
-                <select name="filter_siswa_id"
-                        onchange="document.getElementById('formFilterRiwayat').submit()"
-                        class="w-full px-4 py-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-[#4D9A72]">
-                    <option value="">Semua Siswa</option>
-
-                    @foreach ($filterSiswas as $siswa)
-                        <option value="{{ $siswa->id }}" {{ request('filter_siswa_id') == $siswa->id ? 'selected' : '' }}>
-                            {{ $siswa->nama }} - {{ $siswa->nis }} | {{ $siswa->kelas->nama_kelas ?? '-' }}
-                        </option>
-                    @endforeach
-                </select>
-            </div>
-
-            <div>
-                <label class="block mb-2 font-semibold text-gray-700">
-                    Jenis Laporan
-                </label>
-
-                <select name="filter_jenis"
-                        onchange="document.getElementById('formFilterRiwayat').submit()"
-                        class="w-full px-4 py-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-[#4D9A72]">
-                    <option value="">Semua Jenis</option>
-
-                    <option value="prestasi" {{ request('filter_jenis') == 'prestasi' ? 'selected' : '' }}>
-                        Prestasi
-                    </option>
-
-                    <option value="pelanggaran" {{ request('filter_jenis') == 'pelanggaran' ? 'selected' : '' }}>
-                        Pelanggaran
-                    </option>
-
-                    <option value="informasi" {{ request('filter_jenis') == 'informasi' ? 'selected' : '' }}>
-                        Informasi
-                    </option>
-                </select>
-            </div>
-
-            <div class="flex items-end gap-3">
-                <button type="submit"
-                        class="w-full bg-[#4D9A72] text-white px-6 py-3 rounded-xl hover:bg-[#3F8260] transition">
-                    Filter
-                </button>
-
-                <a href="{{ route('laporan.index') }}"
-                   class="w-full text-center bg-gray-100 text-gray-700 px-6 py-3 rounded-xl hover:bg-gray-200 transition">
-                    Reset
-                </a>
-            </div>
-
-        </form>
-
-    </div>
-
-    <!-- RIWAYAT LAPORAN -->
-    <div class="bg-white rounded-3xl shadow-lg p-8">
-
-        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-5">
-            <div>
-                <h2 class="text-xl font-bold text-gray-800">
-                    Riwayat Laporan
-                </h2>
-
-                <p class="text-gray-500 text-sm mt-1">
-                    Menampilkan {{ $laporans->count() }} laporan.
-                </p>
-            </div>
-
-            @if (request('filter_kelas_id') || request('filter_siswa_id') || request('filter_jenis'))
-                <div class="text-sm text-[#2F7D55] bg-[#EEF7F1] px-4 py-2 rounded-xl font-semibold">
-                    Filter sedang aktif
-                </div>
-            @endif
-        </div>
-
-        <div class="space-y-4">
-
-            @forelse ($laporans as $laporan)
-
-                <div class="border rounded-2xl p-5 bg-[#F8FBF9]">
-
-                    <div class="flex flex-col md:flex-row md:justify-between md:items-start gap-4">
-
-                        <div>
-                            <span class="inline-block px-3 py-1 rounded-full text-sm font-semibold
-                                {{ $laporan->jenis == 'prestasi' ? 'bg-yellow-100 text-yellow-700' : '' }}
-                                {{ $laporan->jenis == 'pelanggaran' ? 'bg-red-100 text-red-700' : '' }}
-                                {{ $laporan->jenis == 'informasi' ? 'bg-blue-100 text-blue-700' : '' }}">
-
-                                @if ($laporan->jenis == 'prestasi')
-                                    🏆 Prestasi
-                                @elseif ($laporan->jenis == 'pelanggaran')
-                                    ⚠️ Pelanggaran
-                                @else
-                                    ℹ️ Informasi
-                                @endif
-                            </span>
-
-                            <h3 class="text-lg font-bold text-gray-800 mt-3">
-                                {{ $laporan->judul }}
-                            </h3>
-
-                            <p class="text-sm text-gray-500 mt-1">
-                                {{ $laporan->siswa->nama ?? '-' }}
-                                |
-                                {{ $laporan->siswa->kelas->nama_kelas ?? '-' }}
-                                |
-                                {{ $laporan->tanggal ? \Carbon\Carbon::parse($laporan->tanggal)->format('d M Y') : '-' }}
-                            </p>
-                        </div>
-
-                        <div class="text-sm text-gray-400">
-                            {{ $laporan->created_at ? $laporan->created_at->format('d M Y') : '-' }}
-                        </div>
-
-                    </div>
-
-                    <p class="text-gray-600 mt-4">
-                        {{ $laporan->deskripsi }}
-                    </p>
-
-                    @if ($laporan->tingkat)
-                        <p class="text-sm text-gray-500 mt-3">
-                            <strong>Detail:</strong> {{ $laporan->tingkat }}
-                        </p>
-                    @endif
-
-                    @if ($laporan->jenis == 'prestasi' && $laporan->sertifikat)
-                        @php
-                            $fileUrl = asset('storage/' . $laporan->sertifikat);
-                            $extension = strtolower(pathinfo($laporan->sertifikat, PATHINFO_EXTENSION));
-                        @endphp
-
-                        <div class="mt-4 bg-white rounded-2xl p-4 border border-gray-100">
-
-                            <div class="flex items-center justify-between mb-3">
-                                <p class="text-sm text-gray-500">
-                                    Lampiran Prestasi
-                                </p>
-
-                                <a href="{{ $fileUrl }}"
-                                   target="_blank"
-                                   class="text-sm font-semibold text-[#2F7D55] hover:underline">
-                                    Buka Lampiran
-                                </a>
-                            </div>
-
-                            @if (in_array($extension, ['jpg', 'jpeg', 'png', 'webp']))
-
-                                <a href="{{ $fileUrl }}" target="_blank">
-                                    <img src="{{ $fileUrl }}"
-                                         alt="Lampiran Prestasi"
-                                         class="w-full max-h-[280px] object-contain rounded-2xl border border-gray-100 bg-gray-50">
-                                </a>
-
-                            @elseif ($extension == 'pdf')
-
-                                <a href="{{ $fileUrl }}"
-                                   target="_blank"
-                                   class="inline-flex items-center gap-2 bg-yellow-100 text-yellow-700 px-5 py-3 rounded-xl font-semibold hover:bg-yellow-200 transition">
-                                    📄 Lihat Lampiran PDF
-                                </a>
-
-                            @else
-
-                                <a href="{{ $fileUrl }}"
-                                   target="_blank"
-                                   class="inline-flex items-center gap-2 bg-gray-100 text-gray-700 px-5 py-3 rounded-xl font-semibold hover:bg-gray-200 transition">
-                                    📎 Unduh Lampiran
-                                </a>
-
-                            @endif
-
-                        </div>
-                    @endif
-
-                    @if ($laporan->catatan)
-                        <p class="text-sm text-gray-500 mt-2">
-                            <strong>Catatan:</strong> {{ $laporan->catatan }}
-                        </p>
-                    @endif
-
-                </div>
-
-            @empty
-
-                <div class="text-center text-gray-500 py-8">
-                    Belum ada riwayat laporan sesuai filter.
-                </div>
-
-            @endforelse
-
-        </div>
-
-    </div>
-
 </div>
 
 @if (session('success'))
@@ -594,21 +403,20 @@
 <script>
     function openModalLaporan(id) {
         const modal = document.getElementById('modal-laporan-' + id);
-
         if (modal) {
             modal.classList.remove('hidden');
             modal.classList.add('flex');
-
+            document.body.classList.add('overflow-hidden');
             filterLaporanSiswa(id, 'semua');
         }
     }
 
     function closeModalLaporan(id) {
         const modal = document.getElementById('modal-laporan-' + id);
-
         if (modal) {
             modal.classList.add('hidden');
             modal.classList.remove('flex');
+            document.body.classList.remove('overflow-hidden');
         }
     }
 
@@ -619,7 +427,7 @@
 
         let totalTampil = 0;
 
-        cards.forEach(function (card) {
+        cards.forEach(function(card) {
             const jenisLaporan = card.getAttribute('data-jenis');
 
             if (jenis === 'semua' || jenisLaporan === jenis) {
@@ -638,7 +446,7 @@
             }
         }
 
-        buttons.forEach(function (button) {
+        buttons.forEach(function(button) {
             button.classList.remove('bg-[#4D9A72]', 'text-white');
             button.classList.add('bg-gray-100', 'text-gray-700');
 
@@ -649,16 +457,36 @@
         });
     }
 
-    document.addEventListener('keydown', function (event) {
+    document.addEventListener('keydown', function(event) {
         if (event.key === 'Escape') {
             const modals = document.querySelectorAll('[id^="modal-laporan-"]');
-
-            modals.forEach(function (modal) {
+            modals.forEach(function(modal) {
                 modal.classList.add('hidden');
                 modal.classList.remove('flex');
             });
+            document.body.classList.remove('overflow-hidden');
         }
     });
+
+    const searchInput = document.getElementById('searchSiswa');
+    const siswaRows = document.querySelectorAll('.siswa-row');
+
+    if (searchInput) {
+        searchInput.addEventListener('keyup', function() {
+            const keyword = this.value.toLowerCase();
+
+            siswaRows.forEach(function(row) {
+                const nama = row.getAttribute('data-nama');
+                const nis = row.getAttribute('data-nis');
+
+                if (nama.includes(keyword) || nis.includes(keyword)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        });
+    }
 </script>
 
 @endsection

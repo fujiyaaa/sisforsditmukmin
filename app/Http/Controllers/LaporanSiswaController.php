@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Kelas;
 use App\Models\Siswa;
 use App\Models\LaporanSiswa;
+use Illuminate\Support\Facades\Storage;
 
 class LaporanSiswaController extends Controller
 {
@@ -141,9 +142,91 @@ class LaporanSiswaController extends Controller
             ->with('success', 'Laporan prestasi/pelanggaran berhasil disimpan.');
     }
 
+    public function edit($id)
+    {
+        $laporan = LaporanSiswa::with('siswa.kelas')->findOrFail($id);
+
+        if (!$this->kelasIdsGuru()->contains($laporan->siswa->kelas_id)) {
+            abort(403, 'Anda tidak memiliki akses ke laporan ini.');
+        }
+
+        return view('guru.laporan.edit', compact('laporan'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $laporan = LaporanSiswa::with('siswa')->findOrFail($id);
+
+        if (!$this->kelasIdsGuru()->contains($laporan->siswa->kelas_id)) {
+            abort(403, 'Anda tidak memiliki akses ke laporan ini.');
+        }
+
+        $request->validate([
+            'jenis' => 'required|in:prestasi,pelanggaran,informasi',
+            'judul' => 'required|string|max:255',
+            'deskripsi' => 'required|string',
+            'tanggal' => 'required|date',
+            'tingkat' => 'nullable|string|max:255',
+            'catatan' => 'nullable|string',
+            'lampiran' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
+        ]);
+
+        $sertifikatPath = $laporan->sertifikat;
+
+        if ($request->jenis === 'prestasi' && $request->hasFile('lampiran')) {
+            if ($laporan->sertifikat && Storage::disk('public')->exists($laporan->sertifikat)) {
+                Storage::disk('public')->delete($laporan->sertifikat);
+            }
+
+            $sertifikatPath = $request->file('lampiran')->store('lampiran-prestasi', 'public');
+        }
+
+        if ($request->jenis !== 'prestasi') {
+            if ($laporan->sertifikat && Storage::disk('public')->exists($laporan->sertifikat)) {
+                Storage::disk('public')->delete($laporan->sertifikat);
+            }
+
+            $sertifikatPath = null;
+        }
+
+        $laporan->update([
+            'jenis' => $request->jenis,
+            'judul' => $request->judul,
+            'deskripsi' => $request->deskripsi,
+            'tanggal' => $request->tanggal,
+            'tingkat' => $request->jenis === 'prestasi' ? $request->tingkat : null,
+            'catatan' => $request->catatan,
+            'sertifikat' => $sertifikatPath,
+        ]);
+
+        return redirect()
+            ->route('laporan.index')
+            ->with('success', 'Laporan berhasil diperbarui.');
+    }
+
+    public function destroy($id)
+    {
+        $laporan = LaporanSiswa::with('siswa')->findOrFail($id);
+
+        if (!$this->kelasIdsGuru()->contains($laporan->siswa->kelas_id)) {
+            abort(403, 'Anda tidak memiliki akses ke laporan ini.');
+        }
+
+        if ($laporan->sertifikat && Storage::disk('public')->exists($laporan->sertifikat)) {
+            Storage::disk('public')->delete($laporan->sertifikat);
+        }
+
+        $laporan->delete();
+
+        return redirect()
+            ->back()
+            ->with('success', 'Laporan berhasil dihapus.');
+    }
+
+
     public function adminIndex(Request $request)
     {
-        $kelas = Kelas::all();
+        $kelas = Kelas::orderBy('nama_kelas')->get();
 
         $siswas = Siswa::with('kelas')
             ->when($request->kelas_id, function ($query) use ($request) {
@@ -153,6 +236,17 @@ class LaporanSiswaController extends Controller
             ->get();
 
         $laporans = LaporanSiswa::with(['siswa.kelas'])
+            ->when($request->filter_kelas_id, function ($query) use ($request) {
+                $query->whereHas('siswa', function ($q) use ($request) {
+                    $q->where('kelas_id', $request->filter_kelas_id);
+                });
+            })
+            ->when($request->filter_siswa_id, function ($query) use ($request) {
+                $query->where('siswa_id', $request->filter_siswa_id);
+            })
+            ->when($request->filter_jenis, function ($query) use ($request) {
+                $query->where('jenis', $request->filter_jenis);
+            })
             ->latest()
             ->get();
 
@@ -213,4 +307,75 @@ class LaporanSiswaController extends Controller
             ->route('admin.laporan.index')
             ->with('success', 'Laporan berhasil disimpan oleh admin.');
     }
+
+    public function adminEdit($id)
+    {
+        $laporan = LaporanSiswa::with('siswa.kelas')->findOrFail($id);
+
+        return view('admin.laporan.edit', compact('laporan'));
+    }
+
+    public function adminUpdate(Request $request, $id)
+    {
+        $laporan = LaporanSiswa::findOrFail($id);
+
+        $request->validate([
+            'jenis' => 'required|in:prestasi,pelanggaran,informasi',
+            'judul' => 'required|string|max:255',
+            'deskripsi' => 'required|string',
+            'tanggal' => 'required|date',
+            'tingkat' => 'nullable|string|max:255',
+            'catatan' => 'nullable|string',
+            'lampiran' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
+        ]);
+
+        $sertifikatPath = $laporan->sertifikat;
+
+        if ($request->jenis === 'prestasi' && $request->hasFile('lampiran')) {
+            if ($laporan->sertifikat && Storage::disk('public')->exists($laporan->sertifikat)) {
+                Storage::disk('public')->delete($laporan->sertifikat);
+            }
+
+            $sertifikatPath = $request->file('lampiran')->store('lampiran-prestasi', 'public');
+        }
+
+        if ($request->jenis !== 'prestasi') {
+            if ($laporan->sertifikat && Storage::disk('public')->exists($laporan->sertifikat)) {
+                Storage::disk('public')->delete($laporan->sertifikat);
+            }
+
+            $sertifikatPath = null;
+        }
+
+        $laporan->update([
+            'jenis' => $request->jenis,
+            'judul' => $request->judul,
+            'deskripsi' => $request->deskripsi,
+            'tanggal' => $request->tanggal,
+            'tingkat' => $request->jenis === 'prestasi' ? $request->tingkat : null,
+            'catatan' => $request->catatan,
+            'sertifikat' => $sertifikatPath,
+        ]);
+
+        return redirect()
+            ->route('admin.laporan.index')
+            ->with('success', 'Laporan berhasil diperbarui.');
+    }
+
+    public function adminDestroy($id)
+    {
+        $laporan = LaporanSiswa::findOrFail($id);
+
+        if ($laporan->sertifikat && Storage::disk('public')->exists($laporan->sertifikat)) {
+            Storage::disk('public')->delete($laporan->sertifikat);
+        }
+
+        $laporan->delete();
+
+        return redirect()
+            ->back()
+            ->with('success', 'Laporan berhasil dihapus.');
+    }
+
+
 }

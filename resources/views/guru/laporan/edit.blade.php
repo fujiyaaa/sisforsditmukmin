@@ -4,89 +4,61 @@
 
 <div class="space-y-8">
 
-    {{-- HEADER --}}
-    <div class="bg-white rounded-[2rem] shadow-sm border border-gray-100 p-8">
-        <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
+    <div class="bg-white rounded-3xl shadow-md p-8">
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
             <div>
-                <p class="text-sm font-semibold text-[#2F7D55] mb-2">
-                    Laporan Siswa
-                </p>
-
-                <h1 class="text-3xl md:text-4xl font-bold text-[#1F252D]">
-                    Tulis Laporan Siswa
+                <h1 class="text-3xl font-bold text-[#1F252D]">
+                    Edit Laporan Siswa
                 </h1>
 
-                <p class="text-gray-500 mt-3 max-w-2xl">
-                    Input laporan prestasi, pelanggaran, atau informasi siswa.
+                <p class="text-gray-500 mt-2">
+                    Perbarui laporan prestasi, pelanggaran, atau informasi siswa.
                 </p>
             </div>
 
             <a href="{{ route('laporan.index') }}"
-               class="inline-flex items-center justify-center bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold px-6 py-3 rounded-2xl transition">
+               class="bg-gray-100 text-gray-700 px-6 py-3 rounded-2xl hover:bg-gray-200 transition font-bold text-center">
                 Kembali
             </a>
         </div>
     </div>
 
-    {{-- INFO SISWA --}}
-    <div class="bg-white rounded-[2rem] shadow-sm border border-gray-100 p-8">
+    <div class="bg-white rounded-3xl shadow-md p-8">
         <div class="flex items-center gap-4">
             <div class="w-14 h-14 rounded-2xl bg-[#DDF3E7] text-[#2F7D55] flex items-center justify-center font-bold text-xl">
-                {{ strtoupper(substr($siswa->nama ?? '-', 0, 1)) }}
+                {{ strtoupper(substr($laporan->siswa->nama ?? '-', 0, 1)) }}
             </div>
 
             <div>
                 <h2 class="text-2xl font-bold text-[#1F252D]">
-                    {{ $siswa->nama }}
+                    {{ $laporan->siswa->nama ?? '-' }}
                 </h2>
 
                 <p class="text-gray-500 mt-1">
-                    NIS: {{ $siswa->nis }}
+                    NIS: {{ $laporan->siswa->nis ?? '-' }}
                     |
-                    Kelas: {{ $siswa->kelas->nama_kelas ?? $siswa->kelas ?? '-' }}
+                    Kelas: {{ $laporan->siswa->kelas->nama_kelas ?? '-' }}
                 </p>
             </div>
         </div>
     </div>
 
-    {{-- ERROR VALIDATION --}}
-    @if ($errors->any())
-        <div class="bg-red-50 border border-red-200 text-red-700 rounded-[2rem] p-6 shadow-sm">
-            <h3 class="font-bold mb-3">
-                Data belum lengkap:
-            </h3>
+    <div class="bg-white rounded-3xl shadow-md p-8">
 
-            <ul class="list-disc list-inside space-y-1">
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
-
-    {{-- FORM --}}
-    <div class="bg-white rounded-[2rem] shadow-sm border border-gray-100 p-8">
-
-        <div class="mb-7">
-            <h2 class="text-2xl font-bold text-[#1F252D]">
-                Form Laporan
-            </h2>
-
-            <p class="text-gray-500 mt-1">
-                Isi data laporan dengan lengkap.
-            </p>
-        </div>
+        <h2 class="text-2xl font-bold text-[#1F252D] mb-6">
+            Form Edit Laporan
+        </h2>
 
         <form method="POST"
-              action="{{ route('laporan.store', $siswa->nis) }}"
+              action="{{ route('laporan.update', $laporan->id) }}"
               enctype="multipart/form-data"
               class="space-y-6">
 
             @csrf
+            @method('PUT')
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 
-                {{-- JENIS --}}
                 <div>
                     <label class="block text-sm font-semibold text-gray-700 mb-2">
                         Jenis Laporan
@@ -97,32 +69,21 @@
                             class="w-full px-4 py-3 border border-gray-200 rounded-2xl bg-[#FAFCFB] focus:outline-none focus:ring-2 focus:ring-[#4D9A72]"
                             required>
 
-                        <option value="">
-                            Pilih jenis laporan
-                        </option>
-
-                        <option value="prestasi" {{ old('jenis') == 'prestasi' ? 'selected' : '' }}>
+                        <option value="prestasi" {{ old('jenis', $laporan->jenis) == 'prestasi' ? 'selected' : '' }}>
                             Prestasi
                         </option>
 
-                        <option value="pelanggaran" {{ old('jenis') == 'pelanggaran' ? 'selected' : '' }}>
+                        <option value="pelanggaran" {{ old('jenis', $laporan->jenis) == 'pelanggaran' ? 'selected' : '' }}>
                             Pelanggaran
                         </option>
 
-                        <option value="informasi" {{ old('jenis') == 'informasi' ? 'selected' : '' }}>
+                        <option value="informasi" {{ old('jenis', $laporan->jenis) == 'informasi' ? 'selected' : '' }}>
                             Informasi
                         </option>
 
                     </select>
-
-                    @error('jenis')
-                        <p class="text-red-500 text-sm mt-2">
-                            {{ $message }}
-                        </p>
-                    @enderror
                 </div>
 
-                {{-- TANGGAL --}}
                 <div>
                     <label class="block text-sm font-semibold text-gray-700 mb-2">
                         Tanggal
@@ -130,18 +91,11 @@
 
                     <input type="date"
                            name="tanggal"
-                           value="{{ old('tanggal', date('Y-m-d')) }}"
+                           value="{{ old('tanggal', $laporan->tanggal ? \Carbon\Carbon::parse($laporan->tanggal)->format('Y-m-d') : now()->format('Y-m-d')) }}"
                            class="w-full px-4 py-3 border border-gray-200 rounded-2xl bg-[#FAFCFB] focus:outline-none focus:ring-2 focus:ring-[#4D9A72]"
                            required>
-
-                    @error('tanggal')
-                        <p class="text-red-500 text-sm mt-2">
-                            {{ $message }}
-                        </p>
-                    @enderror
                 </div>
 
-                {{-- JUDUL --}}
                 <div class="md:col-span-2">
                     <label class="block text-sm font-semibold text-gray-700 mb-2">
                         Judul
@@ -149,74 +103,54 @@
 
                     <input type="text"
                            name="judul"
-                           value="{{ old('judul') }}"
-                           placeholder="Masukkan judul laporan"
+                           value="{{ old('judul', $laporan->judul) }}"
                            class="w-full px-4 py-3 border border-gray-200 rounded-2xl bg-[#FAFCFB] focus:outline-none focus:ring-2 focus:ring-[#4D9A72]"
                            required>
-
-                    @error('judul')
-                        <p class="text-red-500 text-sm mt-2">
-                            {{ $message }}
-                        </p>
-                    @enderror
                 </div>
 
-                {{-- TINGKAT --}}
                 <div id="tingkatWrapper">
                     <label class="block text-sm font-semibold text-gray-700 mb-2">
                         Tingkat
                     </label>
 
                     <select name="tingkat"
-                            id="tingkat"
                             class="w-full px-4 py-3 border border-gray-200 rounded-2xl bg-[#FAFCFB] focus:outline-none focus:ring-2 focus:ring-[#4D9A72]">
 
                         <option value="">
                             Pilih Tingkat
                         </option>
 
-                        <option value="Kelas" {{ old('tingkat') == 'Kelas' ? 'selected' : '' }}>
+                        <option value="Kelas" {{ old('tingkat', $laporan->tingkat) == 'Kelas' ? 'selected' : '' }}>
                             Kelas
                         </option>
 
-                        <option value="Sekolah" {{ old('tingkat') == 'Sekolah' ? 'selected' : '' }}>
+                        <option value="Sekolah" {{ old('tingkat', $laporan->tingkat) == 'Sekolah' ? 'selected' : '' }}>
                             Sekolah
                         </option>
 
-                        <option value="Kecamatan" {{ old('tingkat') == 'Kecamatan' ? 'selected' : '' }}>
+                        <option value="Kecamatan" {{ old('tingkat', $laporan->tingkat) == 'Kecamatan' ? 'selected' : '' }}>
                             Kecamatan
                         </option>
 
-                        <option value="Kabupaten/Kota" {{ old('tingkat') == 'Kabupaten/Kota' ? 'selected' : '' }}>
+                        <option value="Kabupaten/Kota" {{ old('tingkat', $laporan->tingkat) == 'Kabupaten/Kota' ? 'selected' : '' }}>
                             Kabupaten/Kota
                         </option>
 
-                        <option value="Provinsi" {{ old('tingkat') == 'Provinsi' ? 'selected' : '' }}>
+                        <option value="Provinsi" {{ old('tingkat', $laporan->tingkat) == 'Provinsi' ? 'selected' : '' }}>
                             Provinsi
                         </option>
 
-                        <option value="Nasional" {{ old('tingkat') == 'Nasional' ? 'selected' : '' }}>
+                        <option value="Nasional" {{ old('tingkat', $laporan->tingkat) == 'Nasional' ? 'selected' : '' }}>
                             Nasional
                         </option>
 
-                        <option value="Internasional" {{ old('tingkat') == 'Internasional' ? 'selected' : '' }}>
+                        <option value="Internasional" {{ old('tingkat', $laporan->tingkat) == 'Internasional' ? 'selected' : '' }}>
                             Internasional
                         </option>
 
                     </select>
-
-                    <p class="text-xs text-gray-400 mt-2">
-                        Diisi untuk laporan prestasi.
-                    </p>
-
-                    @error('tingkat')
-                        <p class="text-red-500 text-sm mt-2">
-                            {{ $message }}
-                        </p>
-                    @enderror
                 </div>
 
-                {{-- LAMPIRAN --}}
                 <div id="lampiranWrapper">
                     <label class="block text-sm font-semibold text-gray-700 mb-2">
                         Sertifikat / Lampiran
@@ -228,17 +162,51 @@
                            class="w-full px-4 py-3 border border-gray-200 rounded-2xl bg-[#FAFCFB] focus:outline-none focus:ring-2 focus:ring-[#4D9A72]">
 
                     <p class="text-xs text-gray-400 mt-2">
-                        Format: JPG, PNG, PDF. Maksimal 2MB.
+                        Kosongkan jika tidak ingin mengganti lampiran.
                     </p>
-
-                    @error('lampiran')
-                        <p class="text-red-500 text-sm mt-2">
-                            {{ $message }}
-                        </p>
-                    @enderror
                 </div>
 
-                {{-- DESKRIPSI --}}
+                @if($laporan->sertifikat)
+                    @php
+                        $ext = strtolower(pathinfo($laporan->sertifikat, PATHINFO_EXTENSION));
+                        $isImage = in_array($ext, ['jpg', 'jpeg', 'png', 'webp']);
+                    @endphp
+
+                    <div id="previewLampiran" class="md:col-span-2">
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">
+                            Lampiran Saat Ini
+                        </label>
+
+                        <div class="rounded-3xl border border-gray-200 bg-[#FAFCFB] p-4">
+
+                            <div class="flex items-center justify-between mb-4">
+                                <p class="text-sm text-gray-500">
+                                    File yang sedang tersimpan
+                                </p>
+
+                                <a href="{{ asset('storage/' . $laporan->sertifikat) }}"
+                                   target="_blank"
+                                   class="text-[#2F7D55] font-bold hover:underline">
+                                    Buka Lampiran
+                                </a>
+                            </div>
+
+                            @if($isImage)
+                                <div class="rounded-2xl bg-white border border-gray-100 p-4 flex justify-center">
+                                    <img src="{{ asset('storage/' . $laporan->sertifikat) }}"
+                                         alt="Lampiran {{ $laporan->judul }}"
+                                         class="max-h-[280px] rounded-2xl object-contain">
+                                </div>
+                            @else
+                                <div class="rounded-2xl bg-white border border-gray-100 p-6 text-center text-gray-500">
+                                    Lampiran berupa file. Klik “Buka Lampiran” untuk melihat.
+                                </div>
+                            @endif
+
+                        </div>
+                    </div>
+                @endif
+
                 <div class="md:col-span-2">
                     <label class="block text-sm font-semibold text-gray-700 mb-2">
                         Deskripsi
@@ -246,18 +214,10 @@
 
                     <textarea name="deskripsi"
                               rows="5"
-                              placeholder="Tuliskan detail laporan siswa"
                               class="w-full px-4 py-3 border border-gray-200 rounded-2xl bg-[#FAFCFB] focus:outline-none focus:ring-2 focus:ring-[#4D9A72]"
-                              required>{{ old('deskripsi') }}</textarea>
-
-                    @error('deskripsi')
-                        <p class="text-red-500 text-sm mt-2">
-                            {{ $message }}
-                        </p>
-                    @enderror
+                              required>{{ old('deskripsi', $laporan->deskripsi) }}</textarea>
                 </div>
 
-                {{-- CATATAN --}}
                 <div class="md:col-span-2">
                     <label class="block text-sm font-semibold text-gray-700 mb-2">
                         Catatan
@@ -265,14 +225,7 @@
 
                     <textarea name="catatan"
                               rows="3"
-                              placeholder="Catatan tambahan jika ada"
-                              class="w-full px-4 py-3 border border-gray-200 rounded-2xl bg-[#FAFCFB] focus:outline-none focus:ring-2 focus:ring-[#4D9A72]">{{ old('catatan') }}</textarea>
-
-                    @error('catatan')
-                        <p class="text-red-500 text-sm mt-2">
-                            {{ $message }}
-                        </p>
-                    @enderror
+                              class="w-full px-4 py-3 border border-gray-200 rounded-2xl bg-[#FAFCFB] focus:outline-none focus:ring-2 focus:ring-[#4D9A72]">{{ old('catatan', $laporan->catatan) }}</textarea>
                 </div>
 
             </div>
@@ -286,7 +239,7 @@
 
                 <button type="submit"
                         class="px-8 py-3 rounded-2xl bg-[#2F7D55] text-white hover:bg-[#256B47] transition font-bold">
-                    Simpan Laporan
+                    Simpan Perubahan
                 </button>
 
             </div>
@@ -301,6 +254,7 @@
     const jenisSelect = document.getElementById('jenis');
     const tingkatWrapper = document.getElementById('tingkatWrapper');
     const lampiranWrapper = document.getElementById('lampiranWrapper');
+    const previewLampiran = document.getElementById('previewLampiran');
 
     function toggleJenisFields() {
         if (!jenisSelect) return;
@@ -310,9 +264,11 @@
         if (jenis === 'prestasi') {
             if (tingkatWrapper) tingkatWrapper.style.display = 'block';
             if (lampiranWrapper) lampiranWrapper.style.display = 'block';
+            if (previewLampiran) previewLampiran.style.display = 'block';
         } else {
             if (tingkatWrapper) tingkatWrapper.style.display = 'none';
             if (lampiranWrapper) lampiranWrapper.style.display = 'none';
+            if (previewLampiran) previewLampiran.style.display = 'none';
         }
     }
 

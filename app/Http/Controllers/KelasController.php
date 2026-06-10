@@ -9,7 +9,10 @@ class KelasController extends Controller
 {
     public function index()
     {
-        $kelas = Kelas::all();
+        $kelas = Kelas::with(['siswas', 'guruPengampu'])
+            ->withCount('siswas')
+            ->orderBy('nama_kelas')
+            ->get();
 
         return view('admin.kelas.index', compact('kelas'));
     }

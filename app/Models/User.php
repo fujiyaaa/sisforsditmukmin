@@ -12,11 +12,11 @@ use Illuminate\Notifications\Notifiable;
 #[Fillable([
     'name',
     'email',
+    'phone',
     'nip',
     'password',
     'role',
     'must_change_password',
-    'siswa_id',
 ])]
 #[Hidden([
     'password',
@@ -24,11 +24,18 @@ use Illuminate\Notifications\Notifiable;
 ])]
 class User extends Authenticatable
 {
+    /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable;
 
     public function siswa()
     {
-        return $this->belongsTo(Siswa::class);
+        return $this->hasOne(Siswa::class, 'orangtua_id');
+    }
+
+    public function kelasDiampu()
+    {
+        return $this->belongsToMany(Kelas::class, 'guru_kelas', 'guru_id', 'kelas_id')
+            ->withTimestamps();
     }
 
     protected function casts(): array
@@ -39,9 +46,9 @@ class User extends Authenticatable
             'must_change_password' => 'boolean',
         ];
     }
-    public function kelasDiampu()
-{
-    return $this->belongsToMany(Kelas::class, 'guru_kelas', 'guru_id', 'kelas_id')
-        ->withTimestamps();
-}
+
+    public function siswaOrtu()
+    {
+        return $this->hasOne(Siswa::class, 'orangtua_id');
+    }
 }

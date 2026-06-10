@@ -194,7 +194,7 @@
             @if($siswas->count() > 0)
                 <button type="submit"
                         class="bg-[#2F7D55] text-white px-6 py-3 rounded-2xl hover:bg-[#256B47] transition font-bold shadow-sm">
-                    Simpan Semua
+                    Submit Absensi
                 </button>
             @endif
         </div>
@@ -288,12 +288,7 @@
                 </table>
             </div>
 
-            <div class="flex justify-end mt-8">
-                <button type="submit"
-                        class="bg-[#2F7D55] text-white px-8 py-4 rounded-2xl hover:bg-[#256B47] transition font-bold">
-                    Simpan Semua
-                </button>
-            </div>
+
         @else
             <div class="text-center py-16 bg-[#FAFCFB] rounded-[2rem] border border-dashed border-gray-200">
                 <h3 class="text-xl font-bold text-[#1F252D]">

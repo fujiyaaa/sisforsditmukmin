@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class LaporanSiswa extends Model
 {
+     protected $table = 'laporan_siswas';
+
     protected $fillable = [
         'siswa_id',
         'jenis',
@@ -19,6 +21,6 @@ class LaporanSiswa extends Model
 
     public function siswa()
     {
-        return $this->belongsTo(Siswa::class);
+        return $this->belongsTo(Siswa::class, 'siswa_id');
     }
 }

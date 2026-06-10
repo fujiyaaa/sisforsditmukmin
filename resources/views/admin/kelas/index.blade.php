@@ -4,132 +4,491 @@
 
 <div class="space-y-8">
 
-    <div class="bg-white rounded-2xl shadow-lg p-8 max-w-xl">
+    <!-- HEADER -->
+    <div class="relative overflow-hidden rounded-[2rem] bg-gradient-to-br from-[#1F5F43] via-[#2F7D55] to-[#75C295] p-8 shadow-lg text-white">
 
-        <h1 class="text-3xl font-bold text-[#2F6F4F] mb-6">
-            Kelola Kelas
-        </h1>
+        <div class="absolute right-0 top-0 w-72 h-72 bg-white/10 rounded-full translate-x-24 -translate-y-24"></div>
+        <div class="absolute left-0 bottom-0 w-60 h-60 bg-[#DDF3E7]/20 rounded-full -translate-x-24 translate-y-24"></div>
 
-        @if(session('success'))
-            <div class="mb-4 bg-green-100 text-green-700 px-4 py-3 rounded-xl">
-                {{ session('success') }}
+        <div class="relative flex flex-col md:flex-row md:items-center md:justify-between gap-8">
+
+            <div>
+                <div class="inline-flex items-center bg-white/15 text-white px-4 py-2 rounded-full text-xs font-bold tracking-[0.2em] mb-5">
+                    KELOLA KELAS
+                </div>
+
+                <h1 class="text-4xl md:text-5xl font-bold leading-tight">
+                    Data Kelas
+                </h1>
+
+                <p class="text-white/80 mt-3 max-w-2xl">
+                    Kelola daftar kelas, jumlah siswa, dan guru yang memiliki akses ke kelas.
+                </p>
             </div>
-        @endif
 
-        <form action="/admin/kelas" method="POST" class="space-y-5">
+            <div class="bg-white/15 backdrop-blur px-6 py-5 rounded-3xl min-w-[250px] border border-white/15">
+                <p class="text-sm text-white/70">
+                    Total Kelas
+                </p>
+
+                <h2 class="text-2xl font-bold mt-1">
+                    {{ $kelas->count() }}
+                </h2>
+
+                <p class="text-white/70 text-sm mt-1">
+                    kelas terdaftar
+                </p>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- FORM TAMBAH KELAS -->
+    <div class="bg-white rounded-[2rem] shadow-sm p-8 border border-gray-100">
+
+        <div class="mb-7">
+            <h2 class="text-2xl font-bold text-[#1F252D]">
+                Tambah Kelas
+            </h2>
+
+            <p class="text-gray-500 mt-1">
+                Tambahkan nama kelas baru, misalnya 1A, 1B, 2A, dan seterusnya.
+            </p>
+        </div>
+
+        <form method="POST"
+              action="{{ url('/admin/kelas') }}"
+              class="space-y-6">
+
             @csrf
 
-            <input type="text"
-                   name="nama_kelas"
-                   placeholder="Nama Kelas"
-                   value="{{ old('nama_kelas') }}"
-                   class="w-full px-4 py-3 border rounded-xl">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 
-            <button type="submit"
-                    class="bg-[#4D9A72] text-white px-6 py-3 rounded-xl hover:bg-[#2F6F4F] transition">
-                Simpan
-            </button>
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">
+                        Nama Kelas
+                    </label>
+
+                    <input type="text"
+                           name="nama_kelas"
+                           value="{{ old('nama_kelas') }}"
+                           placeholder="Contoh: 1A"
+                           class="w-full px-4 py-3 border border-gray-200 rounded-2xl bg-[#FAFCFB] focus:outline-none focus:ring-2 focus:ring-[#4D9A72]"
+                           required>
+                </div>
+
+            </div>
+
+            <div class="flex justify-end">
+                <button type="submit"
+                        class="bg-[#2F7D55] text-white px-8 py-4 rounded-2xl hover:bg-[#256B47] transition font-bold">
+                    Simpan Kelas
+                </button>
+            </div>
+
         </form>
 
     </div>
 
-    <div class="bg-white rounded-2xl shadow-lg p-8">
+    <!-- DATA KELAS -->
+    <div class="bg-white rounded-[2rem] shadow-sm p-8 border border-gray-100">
 
-        <h2 class="text-2xl font-bold text-[#2F6F4F] mb-6">
-            Data Kelas
-        </h2>
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-7">
 
-        <table class="w-full border-collapse">
+            <div>
+                <h2 class="text-2xl font-bold text-[#1F252D]">
+                    Data Kelas
+                </h2>
 
-            <thead>
-                <tr class="bg-[#4D9A72] text-white">
-                    <th class="p-4 text-left rounded-l-xl">Nama Kelas</th>
-                    <th class="p-4 text-left rounded-r-xl">Aksi</th>
-                </tr>
-            </thead>
+                <p class="text-gray-500 mt-1">
+                    Daftar kelas, jumlah siswa, dan guru yang memiliki akses ke kelas tersebut.
+                </p>
+            </div>
 
-            <tbody>
+            <div class="flex flex-col md:flex-row gap-3 md:items-center">
 
-                @forelse($kelas as $k)
+                <input type="text"
+                       id="searchKelas"
+                       placeholder="Cari kelas atau guru..."
+                       class="px-4 py-3 border border-gray-200 rounded-2xl bg-white focus:outline-none focus:ring-2 focus:ring-[#4D9A72] min-w-[260px]">
 
-                    <tr class="border-b hover:bg-gray-50 transition">
+                <div class="bg-[#EEF7F1] text-[#2F7D55] px-5 py-3 rounded-2xl font-bold">
+                    <span id="jumlahKelasTampil">{{ $kelas->count() }}</span> kelas
+                </div>
 
-                        <td class="p-4">
-                            {{ $k->nama_kelas }}
-                        </td>
+            </div>
 
-                        <td class="p-4 flex gap-2">
+        </div>
 
-                            <button type="button"
-                                    onclick="document.getElementById('edit-kelas-{{ $k->id }}').classList.remove('hidden')"
-                                    class="bg-yellow-500 text-white px-4 py-2 rounded-xl">
-                                Edit
-                            </button>
+        <div class="overflow-x-auto rounded-[2rem] border border-gray-100">
 
-                            <form action="/admin/kelas/{{ $k->id }}"
-                                  method="POST"
-                                  onsubmit="return confirm('Yakin ingin menghapus kelas ini?')">
-                                @csrf
-                                @method('DELETE')
+            <table class="w-full min-w-[1000px]">
 
-                                <button type="submit"
-                                        class="bg-red-500 text-white px-4 py-2 rounded-xl">
-                                    Hapus
-                                </button>
-                            </form>
-
-                        </td>
-
+                <thead class="bg-[#4D9A72] text-white">
+                    <tr>
+                        <th class="px-6 py-4 text-left font-semibold">No</th>
+                        <th class="px-6 py-4 text-left font-semibold">Nama Kelas</th>
+                        <th class="px-6 py-4 text-left font-semibold">Jumlah Siswa</th>
+                        <th class="px-6 py-4 text-left font-semibold">Guru Pengampu</th>
+                        <th class="px-6 py-4 text-center font-semibold">Aksi</th>
                     </tr>
+                </thead>
 
-                    <tr id="edit-kelas-{{ $k->id }}" class="hidden bg-gray-50">
+                <tbody class="divide-y divide-gray-100 bg-white">
 
-                        <td colspan="2" class="p-6">
+                    @forelse($kelas as $index => $item)
 
-                            <form action="/admin/kelas/{{ $k->id }}"
-                                  method="POST"
-                                  class="flex gap-4">
-                                @csrf
-                                @method('PUT')
+                        @php
+                            $daftarSiswa = $item->siswas->map(function ($siswa) {
+                                return [
+                                    'nis' => $siswa->nis,
+                                    'nama' => $siswa->nama,
+                                ];
+                            })->values();
 
-                                <input type="text"
-                                       name="nama_kelas"
-                                       value="{{ $k->nama_kelas }}"
-                                       class="w-full px-4 py-3 border rounded-xl">
+                            $guruText = $item->guruPengampu->pluck('name')->implode(', ');
+                        @endphp
 
-                                <button type="submit"
-                                        class="bg-[#4D9A72] text-white px-4 py-2 rounded-xl">
-                                    Update
-                                </button>
+                        <tr class="hover:bg-[#FAFCFB] transition kelas-row"
+                            data-search="{{ strtolower($item->nama_kelas . ' ' . $guruText) }}">
+
+                            <td class="px-6 py-5 text-gray-700 no-kelas-cell">
+                                {{ $index + 1 }}
+                            </td>
+
+                            <td class="px-6 py-5">
+
+                                <div class="flex items-center gap-3">
+
+                                    <div class="w-11 h-11 rounded-2xl bg-[#DDF3E7] text-[#2F7D55] flex items-center justify-center font-bold">
+                                        {{ strtoupper(substr($item->nama_kelas, 0, 1)) }}
+                                    </div>
+
+                                    <div>
+                                        <h4 class="font-bold text-[#1F252D]">
+                                            {{ $item->nama_kelas }}
+                                        </h4>
+
+                                        <p class="text-sm text-gray-400">
+                                            Kelas aktif
+                                        </p>
+                                    </div>
+
+                                </div>
+
+                            </td>
+
+                            <td class="px-6 py-5">
 
                                 <button type="button"
-                                        onclick="document.getElementById('edit-kelas-{{ $k->id }}').classList.add('hidden')"
-                                        class="bg-gray-400 text-white px-4 py-2 rounded-xl">
-                                    Batal
+                                        class="btn-detail-siswa bg-[#EEF7F1] text-[#2F7D55] px-4 py-2 rounded-2xl text-sm font-bold hover:bg-[#DDF3E7] transition"
+                                        data-kelas="{{ $item->nama_kelas }}"
+                                        data-siswa='@json($daftarSiswa)'>
+
+                                    {{ $item->siswas_count ?? $item->siswas->count() }} siswa
+
                                 </button>
 
-                            </form>
+                            </td>
 
+                            <td class="px-6 py-5">
+
+                                @if($item->guruPengampu->count() > 0)
+
+                                    <div class="flex flex-wrap gap-2">
+                                        @foreach($item->guruPengampu as $guru)
+                                            <span class="bg-yellow-50 text-yellow-700 px-4 py-2 rounded-2xl text-sm font-bold">
+                                                {{ $guru->name }}
+                                            </span>
+                                        @endforeach
+                                    </div>
+
+                                @else
+
+                                    <span class="text-gray-400">
+                                        Belum ada guru
+                                    </span>
+
+                                @endif
+
+                            </td>
+
+                            <td class="px-6 py-5 text-center">
+
+                                <div class="flex items-center justify-center gap-2">
+
+                                    <button type="button"
+                                            onclick="openEditKelasModal('editKelasModal{{ $item->id }}')"
+                                            class="bg-yellow-100 text-yellow-700 px-4 py-2 rounded-xl hover:bg-yellow-200 transition font-bold">
+                                        Edit
+                                    </button>
+
+                                    <form method="POST"
+                                          action="{{ url('/admin/kelas/' . $item->id) }}"
+                                          class="delete-kelas-form">
+
+                                        @csrf
+                                        @method('DELETE')
+
+                                        <button type="submit"
+                                                class="bg-red-100 text-red-700 px-4 py-2 rounded-xl hover:bg-red-200 transition font-bold">
+                                            Hapus
+                                        </button>
+
+                                    </form>
+
+                                </div>
+
+                            </td>
+
+                        </tr>
+
+                        <!-- MODAL EDIT KELAS -->
+                        <div id="editKelasModal{{ $item->id }}"
+                             class="fixed inset-0 z-50 hidden items-center justify-center bg-black/40 px-4">
+
+                            <div class="bg-white w-full max-w-md rounded-[2rem] shadow-xl p-8">
+
+                                <div class="flex items-center justify-between mb-6">
+
+                                    <div>
+                                        <h2 class="text-2xl font-bold text-[#1F252D]">
+                                            Edit Kelas
+                                        </h2>
+
+                                        <p class="text-gray-500 mt-1">
+                                            Ubah nama kelas.
+                                        </p>
+                                    </div>
+
+                                    <button type="button"
+                                            onclick="closeEditKelasModal('editKelasModal{{ $item->id }}')"
+                                            class="w-10 h-10 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-600 font-bold">
+                                        ×
+                                    </button>
+
+                                </div>
+
+                                <form method="POST"
+                                      action="{{ url('/admin/kelas/' . $item->id) }}"
+                                      class="space-y-5">
+
+                                    @csrf
+                                    @method('PUT')
+
+                                    <div>
+                                        <label class="block text-sm font-semibold text-gray-700 mb-2">
+                                            Nama Kelas
+                                        </label>
+
+                                        <input type="text"
+                                               name="nama_kelas"
+                                               value="{{ $item->nama_kelas }}"
+                                               class="w-full px-4 py-3 border border-gray-200 rounded-2xl bg-[#FAFCFB] focus:outline-none focus:ring-2 focus:ring-[#4D9A72]"
+                                               required>
+                                    </div>
+
+                                    <div class="flex justify-end gap-3 pt-4">
+
+                                        <button type="button"
+                                                onclick="closeEditKelasModal('editKelasModal{{ $item->id }}')"
+                                                class="px-6 py-3 rounded-2xl bg-gray-100 text-gray-700 hover:bg-gray-200 transition font-bold">
+                                            Batal
+                                        </button>
+
+                                        <button type="submit"
+                                                class="px-6 py-3 rounded-2xl bg-[#2F7D55] text-white hover:bg-[#256B47] transition font-bold">
+                                            Simpan
+                                        </button>
+
+                                    </div>
+
+                                </form>
+
+                            </div>
+
+                        </div>
+
+                    @empty
+
+                        <tr>
+                            <td colspan="5" class="text-center py-12 text-gray-500">
+                                Belum ada data kelas.
+                            </td>
+                        </tr>
+
+                    @endforelse
+
+                    <tr id="emptyKelasRow" class="hidden">
+                        <td colspan="5" class="text-center py-12 text-gray-500">
+                            Tidak ada kelas yang sesuai pencarian.
                         </td>
-
                     </tr>
 
-                @empty
+                </tbody>
 
-                    <tr>
-                        <td colspan="2" class="p-6 text-center text-gray-500">
-                            Belum ada data kelas
-                        </td>
-                    </tr>
+            </table>
 
-                @endforelse
-
-            </tbody>
-
-        </table>
+        </div>
 
     </div>
 
 </div>
+
+<script>
+    const searchKelas = document.getElementById('searchKelas');
+    const kelasRows = document.querySelectorAll('.kelas-row');
+    const jumlahKelasTampil = document.getElementById('jumlahKelasTampil');
+    const emptyKelasRow = document.getElementById('emptyKelasRow');
+
+    function filterKelas() {
+        const keyword = searchKelas.value.toLowerCase();
+        let totalTampil = 0;
+
+        kelasRows.forEach(function(row) {
+            const searchText = row.dataset.search || '';
+
+            if (searchText.includes(keyword)) {
+                row.style.display = '';
+                totalTampil++;
+
+                const noCell = row.querySelector('.no-kelas-cell');
+                if (noCell) {
+                    noCell.textContent = totalTampil;
+                }
+            } else {
+                row.style.display = 'none';
+            }
+        });
+
+        jumlahKelasTampil.textContent = totalTampil;
+
+        if (emptyKelasRow) {
+            if (totalTampil === 0 && kelasRows.length > 0) {
+                emptyKelasRow.classList.remove('hidden');
+            } else {
+                emptyKelasRow.classList.add('hidden');
+            }
+        }
+    }
+
+    if (searchKelas) {
+        searchKelas.addEventListener('keyup', filterKelas);
+        filterKelas();
+    }
+
+    function openEditKelasModal(id) {
+        const modal = document.getElementById(id);
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+    }
+
+    function closeEditKelasModal(id) {
+        const modal = document.getElementById(id);
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+    }
+
+    document.querySelectorAll('.btn-detail-siswa').forEach(function(button) {
+        button.addEventListener('click', function() {
+            const namaKelas = this.dataset.kelas;
+            const siswa = JSON.parse(this.dataset.siswa || '[]');
+
+            let htmlContent = '';
+
+            if (siswa.length === 0) {
+                htmlContent = `
+                    <div style="text-align:center; color:#6b7280; padding:12px;">
+                        Belum ada siswa di kelas ini.
+                    </div>
+                `;
+            } else {
+                htmlContent = `
+                    <div style="text-align:left;">
+                        <table style="width:100%; border-collapse:collapse;">
+                            <thead>
+                                <tr>
+                                    <th style="text-align:left; padding:10px; border-bottom:1px solid #e5e7eb;">No</th>
+                                    <th style="text-align:left; padding:10px; border-bottom:1px solid #e5e7eb;">NIS</th>
+                                    <th style="text-align:left; padding:10px; border-bottom:1px solid #e5e7eb;">Nama</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                `;
+
+                siswa.forEach(function(item, index) {
+                    htmlContent += `
+                        <tr>
+                            <td style="padding:10px; border-bottom:1px solid #f3f4f6;">${index + 1}</td>
+                            <td style="padding:10px; border-bottom:1px solid #f3f4f6;">${item.nis ?? '-'}</td>
+                            <td style="padding:10px; border-bottom:1px solid #f3f4f6;">${item.nama ?? '-'}</td>
+                        </tr>
+                    `;
+                });
+
+                htmlContent += `
+                            </tbody>
+                        </table>
+                    </div>
+                `;
+            }
+
+            Swal.fire({
+                title: 'Daftar Siswa Kelas ' + namaKelas,
+                html: htmlContent,
+                width: 650,
+                icon: 'info',
+                confirmButtonColor: '#2F7D55',
+                confirmButtonText: 'Tutup'
+            });
+        });
+    });
+
+    document.querySelectorAll('.delete-kelas-form').forEach(function(form) {
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            Swal.fire({
+                title: 'Hapus Kelas?',
+                text: 'Kelas yang dihapus tidak bisa digunakan lagi.',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#6b7280',
+                confirmButtonText: 'Ya, Hapus',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit();
+                }
+            });
+        });
+    });
+</script>
+
+@if(session('success'))
+    <script>
+        Swal.fire({
+            icon: 'success',
+            title: 'Berhasil',
+            text: '{{ session('success') }}',
+            confirmButtonColor: '#2F7D55',
+            confirmButtonText: 'Oke'
+        });
+    </script>
+@endif
+
+@if($errors->any())
+    <script>
+        Swal.fire({
+            icon: 'error',
+            title: 'Gagal',
+            html: `{!! implode('<br>', $errors->all()) !!}`,
+            confirmButtonColor: '#2F7D55',
+            confirmButtonText: 'Oke'
+        });
+    </script>
+@endif
 
 @endsection

@@ -3,52 +3,105 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Kelas;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;
 
 class GuruController extends Controller
 {
     public function index()
     {
-        $guru = User::where('role', 'guru')->get();
+        $guru = User::where('role', 'guru')
+            ->with('kelasDiampu')
+            ->orderBy('name')
+            ->get();
 
-        return view('admin.guru.index', compact('guru'));
+        $kelas = Kelas::orderBy('nama_kelas')->get();
+
+        return view('admin.guru.index', compact('guru', 'kelas'));
     }
 
     public function store(Request $request)
     {
-        User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'role' => 'guru',
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'nip' => 'required|string|max:50|unique:users,nip',
+            'phone' => 'required|string|max:20|unique:users,phone',
+            'password' => 'required|string|min:6',
+            'kelas_ids' => 'nullable|array',
+            'kelas_ids.*' => 'exists:kelas,id',
         ]);
 
-        return redirect('/admin/guru')->with('success', 'Guru berhasil ditambahkan');
+        DB::transaction(function () use ($request) {
+
+            $emailOtomatis = 'guru_' . $request->nip . '@simukmin.local';
+
+            $guru = User::create([
+                'name' => $request->name,
+                'email' => $emailOtomatis,
+                'nip' => $request->nip,
+                'phone' => $request->phone,
+                'password' => Hash::make($request->password),
+                'role' => 'guru',
+                'must_change_password' => true,
+            ]);
+
+            $guru->kelasDiampu()->sync($request->kelas_ids ?? []);
+        });
+
+        return redirect('/admin/guru')
+            ->with('success', 'Guru berhasil ditambahkan');
     }
 
     public function update(Request $request, $id)
     {
-        $guru = User::findOrFail($id);
+        $guru = User::where('role', 'guru')->findOrFail($id);
 
-        $guru->update([
-            'name' => $request->name,
-            'email' => $request->email,
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'nip' => 'required|string|max:50|unique:users,nip,' . $guru->id,
+            'phone' => 'required|string|max:20|unique:users,phone,' . $guru->id,
+            'password' => 'nullable|string|min:6',
+            'kelas_ids' => 'nullable|array',
+            'kelas_ids.*' => 'exists:kelas,id',
         ]);
 
-        if ($request->password) {
-            $guru->update([
-                'password' => Hash::make($request->password),
-            ]);
-        }
+        DB::transaction(function () use ($request, $guru) {
 
-        return redirect('/admin/guru')->with('success', 'Guru berhasil diubah');
+            $emailOtomatis = 'guru_' . $request->nip . '@simukmin.local';
+
+            $data = [
+                'name' => $request->name,
+                'email' => $emailOtomatis,
+                'nip' => $request->nip,
+                'phone' => $request->phone,
+            ];
+
+            if ($request->filled('password')) {
+                $data['password'] = Hash::make($request->password);
+                $data['must_change_password'] = true;
+            }
+
+            $guru->update($data);
+
+            $guru->kelasDiampu()->sync($request->kelas_ids ?? []);
+        });
+
+        return redirect('/admin/guru')
+            ->with('success', 'Guru berhasil diubah');
     }
 
     public function destroy($id)
     {
-        User::findOrFail($id)->delete();
+        $guru = User::where('role', 'guru')->findOrFail($id);
 
-        return redirect('/admin/guru')->with('success', 'Guru berhasil dihapus');
+        DB::transaction(function () use ($guru) {
+            $guru->kelasDiampu()->detach();
+            $guru->delete();
+        });
+
+        return redirect('/admin/guru')
+            ->with('success', 'Guru berhasil dihapus');
     }
 }

@@ -5,187 +5,233 @@
 <div class="space-y-8">
 
     <!-- HEADER -->
-    <div class="bg-white rounded-3xl shadow-lg p-8 flex justify-between items-center">
+    <div class="relative overflow-hidden rounded-[2rem] bg-gradient-to-br from-[#1F5F43] via-[#2F7D55] to-[#75C295] p-8 shadow-lg text-white">
 
-        <div>
-            <h1 class="text-3xl font-bold text-[#1F6B4A]">
-                Tulis Laporan Siswa
-            </h1>
+        <div class="absolute right-0 top-0 w-72 h-72 bg-white/10 rounded-full translate-x-24 -translate-y-24"></div>
+        <div class="absolute left-0 bottom-0 w-60 h-60 bg-[#DDF3E7]/20 rounded-full -translate-x-24 translate-y-24"></div>
 
-            <p class="text-gray-500 mt-2">
-                Admin dapat menginput prestasi, pelanggaran, atau informasi siswa.
-            </p>
+        <div class="relative flex flex-col md:flex-row md:items-center md:justify-between gap-8">
+
+            <div>
+                <div class="inline-flex items-center bg-white/15 text-white px-4 py-2 rounded-full text-xs font-bold tracking-[0.2em] mb-5">
+                    INPUT LAPORAN
+                </div>
+
+                <h1 class="text-4xl md:text-5xl font-bold leading-tight">
+                    Tambah Laporan Siswa
+                </h1>
+
+                <p class="text-white/80 mt-3 max-w-2xl">
+                    Tambahkan laporan prestasi, pelanggaran, atau informasi siswa.
+                </p>
+            </div>
+
+            <a href="{{ route('admin.laporan.index') }}"
+               class="bg-white text-[#2F7D55] px-6 py-4 rounded-2xl hover:bg-[#EEF7F1] transition font-bold text-center">
+                Kembali
+            </a>
+
         </div>
-
-        <a href="{{ route('admin.laporan.index') }}"
-           class="px-6 py-3 border border-[#4D9A72] text-[#1F6B4A] rounded-2xl hover:bg-[#4D9A72] hover:text-white transition">
-            Kembali
-        </a>
 
     </div>
 
     <!-- INFO SISWA -->
-    <div class="bg-white rounded-3xl shadow-lg p-8">
+    <div class="bg-white rounded-[2rem] shadow-sm p-8 border border-gray-100">
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="flex items-center gap-4">
 
-            <div>
-                <p class="text-sm text-gray-500">NIS</p>
-                <h2 class="text-xl font-bold text-gray-800">
-                    {{ $siswa->nis }}
-                </h2>
+            <div class="w-16 h-16 rounded-3xl bg-[#DDF3E7] text-[#2F7D55] flex items-center justify-center font-bold text-2xl">
+                {{ strtoupper(substr($siswa->nama, 0, 1)) }}
             </div>
 
             <div>
-                <p class="text-sm text-gray-500">Nama Siswa</p>
-                <h2 class="text-xl font-bold text-gray-800">
+                <h2 class="text-2xl font-bold text-[#1F252D]">
                     {{ $siswa->nama }}
                 </h2>
-            </div>
 
-            <div>
-                <p class="text-sm text-gray-500">Kelas</p>
-                <h2 class="text-xl font-bold text-gray-800">
-                    {{ $siswa->kelas->nama_kelas ?? $siswa->kelas ?? '-' }}
-                </h2>
+                <p class="text-gray-500 mt-1">
+                    NIS: {{ $siswa->nis }} | Kelas: {{ $siswa->kelas->nama_kelas ?? '-' }}
+                </p>
             </div>
 
         </div>
 
     </div>
 
-    <!-- ERROR VALIDATION -->
-    @if ($errors->any())
-        <div class="bg-red-100 border border-red-300 text-red-700 rounded-2xl p-5">
-            <h3 class="font-bold mb-2">Data belum lengkap:</h3>
+    <!-- FORM INPUT -->
+    <div class="bg-white rounded-[2rem] shadow-sm p-8 border border-gray-100">
 
-            <ul class="list-disc list-inside space-y-1">
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
+        <div class="mb-7">
+            <h2 class="text-2xl font-bold text-[#1F252D]">
+                Form Laporan
+            </h2>
+
+            <p class="text-gray-500 mt-1">
+                Isi data laporan dengan lengkap.
+            </p>
         </div>
-    @endif
 
-    <!-- FORM -->
-    <div class="bg-white rounded-3xl shadow-lg p-8">
+        <form method="POST"
+              action="{{ route('admin.laporan.store', $siswa->nis) }}"
+              enctype="multipart/form-data"
+              class="space-y-6">
 
-        <form action="{{ route('admin.laporan.store', $siswa->nis) }}" method="POST" class="space-y-6">
             @csrf
 
-            <!-- JENIS LAPORAN -->
-            <div>
-                <label class="block mb-3 font-semibold">
-                    Jenis Laporan
-                </label>
-
-                <div class="flex gap-6 flex-wrap">
-
-                    <label class="flex items-center gap-2 bg-yellow-50 border border-yellow-200 px-4 py-3 rounded-xl cursor-pointer">
-                        <input type="radio"
-                               name="jenis"
-                               value="prestasi"
-                               {{ old('jenis') == 'prestasi' ? 'checked' : '' }}
-                               onchange="ubahJenisLaporan()">
-                        <span>🏆 Prestasi</span>
-                    </label>
-
-                    <label class="flex items-center gap-2 bg-red-50 border border-red-200 px-4 py-3 rounded-xl cursor-pointer">
-                        <input type="radio"
-                               name="jenis"
-                               value="pelanggaran"
-                               {{ old('jenis') == 'pelanggaran' ? 'checked' : '' }}
-                               onchange="ubahJenisLaporan()">
-                        <span>⚠️ Pelanggaran</span>
-                    </label>
-
-                    <label class="flex items-center gap-2 bg-blue-50 border border-blue-200 px-4 py-3 rounded-xl cursor-pointer">
-                        <input type="radio"
-                               name="jenis"
-                               value="informasi"
-                               {{ old('jenis') == 'informasi' ? 'checked' : '' }}
-                               onchange="ubahJenisLaporan()">
-                        <span>ℹ️ Informasi</span>
-                    </label>
-
-                </div>
-            </div>
-
-            <!-- JUDUL -->
-            <div>
-                <label class="block mb-2 font-semibold">
-                    Judul Berita / Laporan
-                </label>
-
-                <input type="text"
-                       name="judul"
-                       value="{{ old('judul') }}"
-                       placeholder="Contoh: Juara 1 Lomba Cerdas Cermat"
-                       class="w-full px-4 py-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-[#4D9A72]">
-            </div>
-
-            <!-- DESKRIPSI -->
-            <div>
-                <label class="block mb-2 font-semibold">
-                    Isi Berita / Deskripsi
-                </label>
-
-                <textarea name="deskripsi"
-                          rows="5"
-                          placeholder="Jelaskan secara detail laporan siswa..."
-                          class="w-full px-4 py-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-[#4D9A72]">{{ old('deskripsi') }}</textarea>
-            </div>
-
-            <!-- TANGGAL DAN DETAIL -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 
+                <!-- JENIS -->
                 <div>
-                    <label class="block mb-2 font-semibold">
-                        Tanggal Kejadian
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">
+                        Jenis Laporan
+                    </label>
+
+                    <select name="jenis"
+                            id="jenis"
+                            class="w-full px-4 py-3 border border-gray-200 rounded-2xl bg-[#FAFCFB] focus:outline-none focus:ring-2 focus:ring-[#4D9A72]"
+                            required>
+
+                        <option value="">
+                            Pilih jenis laporan
+                        </option>
+
+                        <option value="prestasi" {{ old('jenis') == 'prestasi' ? 'selected' : '' }}>
+                            Prestasi
+                        </option>
+
+                        <option value="pelanggaran" {{ old('jenis') == 'pelanggaran' ? 'selected' : '' }}>
+                            Pelanggaran
+                        </option>
+
+                        <option value="informasi" {{ old('jenis') == 'informasi' ? 'selected' : '' }}>
+                            Informasi
+                        </option>
+
+                    </select>
+                </div>
+
+                <!-- TANGGAL -->
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">
+                        Tanggal
                     </label>
 
                     <input type="date"
                            name="tanggal"
-                           value="{{ old('tanggal', date('Y-m-d')) }}"
-                           class="w-full px-4 py-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-[#4D9A72]">
+                           value="{{ old('tanggal', now()->format('Y-m-d')) }}"
+                           class="w-full px-4 py-3 border border-gray-200 rounded-2xl bg-[#FAFCFB] focus:outline-none focus:ring-2 focus:ring-[#4D9A72]"
+                           required>
                 </div>
 
-                <div id="box-detail-jenis" class="hidden">
-                    <label id="label-detail-jenis" class="block mb-2 font-semibold">
-                        Detail Laporan
+                <!-- JUDUL -->
+                <div class="md:col-span-2">
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">
+                        Judul
                     </label>
 
-                    <select name="tingkat"
-                            id="tingkat"
-                            class="w-full px-4 py-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-[#4D9A72]">
-                        <option value="">-- Pilih --</option>
-                    </select>
+                    <input type="text"
+                           name="judul"
+                           value="{{ old('judul') }}"
+                           placeholder="Contoh: Juara lomba tahfidz / Terlambat masuk kelas"
+                           class="w-full px-4 py-3 border border-gray-200 rounded-2xl bg-[#FAFCFB] focus:outline-none focus:ring-2 focus:ring-[#4D9A72]"
+                           required>
+                </div>
+
+                <!-- TINGKAT -->
+                <div id="tingkatWrapper">
+                <label class="block text-sm font-semibold text-gray-700 mb-2">
+                    Tingkat
+                </label>
+
+                <select name="tingkat"
+                        class="w-full px-4 py-3 border border-gray-200 rounded-2xl bg-[#FAFCFB] focus:outline-none focus:ring-2 focus:ring-[#4D9A72]">
+
+                    <option value="">
+                        Pilih Tingkat
+                    </option>
+
+                    <option value="Sekolah" {{ old('tingkat') == 'Sekolah' ? 'selected' : '' }}>
+                        Sekolah
+                    </option>
+
+                    <option value="Kecamatan" {{ old('tingkat') == 'Kecamatan' ? 'selected' : '' }}>
+                        Kecamatan
+                    </option>
+
+                    <option value="Kabupaten/Kota" {{ old('tingkat') == 'Kabupaten/Kota' ? 'selected' : '' }}>
+                        Kabupaten/Kota
+                    </option>
+
+                    <option value="Provinsi" {{ old('tingkat') == 'Provinsi' ? 'selected' : '' }}>
+                        Provinsi
+                    </option>
+
+                    <option value="Nasional" {{ old('tingkat') == 'Nasional' ? 'selected' : '' }}>
+                        Nasional
+                    </option>
+
+                    <option value="Internasional" {{ old('tingkat') == 'Internasional' ? 'selected' : '' }}>
+                        Internasional
+                    </option>
+            </select>
+
+    <p class="text-xs text-gray-400 mt-2">
+        Pilih tingkat prestasi siswa.
+    </p>
+</div>
+
+                <!-- LAMPIRAN -->
+                <div id="lampiranWrapper">
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">
+                        Sertifikat / Lampiran
+                    </label>
+
+                    <input type="file"
+                           name="lampiran"
+                           accept=".jpg,.jpeg,.png,.pdf"
+                           class="w-full px-4 py-3 border border-gray-200 rounded-2xl bg-[#FAFCFB] focus:outline-none focus:ring-2 focus:ring-[#4D9A72]">
+
+                    <p class="text-xs text-gray-400 mt-2">
+                        Format: JPG, PNG, PDF. Maksimal 2MB.
+                    </p>
+                </div>
+
+                <!-- DESKRIPSI -->
+                <div class="md:col-span-2">
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">
+                        Deskripsi
+                    </label>
+
+                    <textarea name="deskripsi"
+                              rows="5"
+                              placeholder="Tuliskan detail laporan siswa"
+                              class="w-full px-4 py-3 border border-gray-200 rounded-2xl bg-[#FAFCFB] focus:outline-none focus:ring-2 focus:ring-[#4D9A72]"
+                              required>{{ old('deskripsi') }}</textarea>
+                </div>
+
+                <!-- CATATAN -->
+                <div class="md:col-span-2">
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">
+                        Catatan
+                    </label>
+
+                    <textarea name="catatan"
+                              rows="3"
+                              placeholder="Catatan tambahan jika ada"
+                              class="w-full px-4 py-3 border border-gray-200 rounded-2xl bg-[#FAFCFB] focus:outline-none focus:ring-2 focus:ring-[#4D9A72]">{{ old('catatan') }}</textarea>
                 </div>
 
             </div>
 
-            <!-- CATATAN -->
-            <div>
-                <label class="block mb-2 font-semibold">
-                    Catatan Admin
-                </label>
-
-                <textarea name="catatan"
-                          rows="4"
-                          placeholder="Catatan tambahan jika ada..."
-                          class="w-full px-4 py-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-[#4D9A72]">{{ old('catatan') }}</textarea>
-            </div>
-
-            <!-- BUTTON -->
-            <div class="flex justify-end gap-4 pt-4">
+            <div class="flex justify-end gap-3 pt-4">
 
                 <a href="{{ route('admin.laporan.index') }}"
-                   class="px-6 py-3 rounded-xl border border-gray-300 text-gray-600 hover:bg-gray-100 transition">
+                   class="px-6 py-3 rounded-2xl bg-gray-100 text-gray-700 hover:bg-gray-200 transition font-bold">
                     Batal
                 </a>
 
                 <button type="submit"
-                        class="px-8 py-3 rounded-xl bg-[#4D9A72] text-white font-semibold hover:bg-[#3F8260] transition">
+                        class="px-8 py-3 rounded-2xl bg-[#2F7D55] text-white hover:bg-[#256B47] transition font-bold">
                     Simpan Laporan
                 </button>
 
@@ -198,78 +244,72 @@
 </div>
 
 <script>
-    function ubahJenisLaporan() {
-        const jenis = document.querySelector('input[name="jenis"]:checked')?.value;
-        const box = document.getElementById('box-detail-jenis');
-        const label = document.getElementById('label-detail-jenis');
-        const select = document.getElementById('tingkat');
+    const jenisSelect = document.getElementById('jenis');
+    const tingkatWrapper = document.getElementById('tingkatWrapper');
+    const lampiranWrapper = document.getElementById('lampiranWrapper');
 
-        select.innerHTML = '<option value="">-- Pilih --</option>';
+    function toggleJenisFields() {
+        if (!jenisSelect) return;
 
-        if (!jenis) {
-            box.classList.add('hidden');
-            return;
+        const jenis = jenisSelect.value;
+
+        if (tingkatWrapper) {
+            tingkatWrapper.style.display = 'block';
         }
 
-        box.classList.remove('hidden');
-
-        let options = [];
-
-        if (jenis === 'prestasi') {
-            label.innerText = 'Tingkat Prestasi';
-            options = [
-                'Sekolah',
-                'Kecamatan',
-                'Kabupaten',
-                'Provinsi',
-                'Nasional',
-                'Internasional'
-            ];
+        if (lampiranWrapper) {
+            lampiranWrapper.style.display = 'block';
         }
 
-        if (jenis === 'pelanggaran') {
-            label.innerText = 'Jenis Pelanggaran';
-            options = [
-                'Terlambat',
-                'Tidak Mengerjakan Tugas',
-                'Tidak Mengikuti Kegiatan',
-                'Melanggar Tata Tertib',
-                'Berkelahi',
-                'Tidak Membawa Perlengkapan',
-                'Lainnya'
-            ];
-        }
-
-        if (jenis === 'informasi') {
-            label.innerText = 'Jenis Informasi';
-            options = [
-                'Pengumuman',
-                'Catatan Perkembangan',
-                'Kegiatan Sekolah',
-                'Kesehatan',
-                'Administrasi',
-                'Lainnya'
-            ];
-        }
-
-        const oldValue = "{{ old('tingkat') }}";
-
-        options.forEach(function(item) {
-            const option = document.createElement('option');
-            option.value = item;
-            option.textContent = item;
-
-            if (item === oldValue) {
-                option.selected = true;
+        if (jenis === 'pelanggaran' || jenis === 'informasi') {
+            if (tingkatWrapper) {
+                tingkatWrapper.style.display = 'none';
             }
 
-            select.appendChild(option);
-        });
+            if (lampiranWrapper) {
+                lampiranWrapper.style.display = 'none';
+            }
+        }
+
+        if (jenis === 'prestasi') {
+            if (tingkatWrapper) {
+                tingkatWrapper.style.display = 'block';
+            }
+
+            if (lampiranWrapper) {
+                lampiranWrapper.style.display = 'block';
+            }
+        }
     }
 
-    document.addEventListener('DOMContentLoaded', function () {
-        ubahJenisLaporan();
-    });
+    if (jenisSelect) {
+        jenisSelect.addEventListener('change', toggleJenisFields);
+        toggleJenisFields();
+    }
 </script>
+
+@if(session('success'))
+    <script>
+        Swal.fire({
+            icon: 'success',
+            title: 'Berhasil',
+            text: '{{ session('success') }}',
+            confirmButtonColor: '#2F7D55',
+            confirmButtonText: 'Oke'
+        });
+    </script>
+@endif
+
+@if($errors->any())
+    <script>
+        Swal.fire({
+            icon: 'error',
+            title: 'Gagal',
+            html: `{!! implode('<br>', $errors->all()) !!}`,
+            confirmButtonColor: '#2F7D55',
+            confirmButtonText: 'Oke'
+        });
+    </script>
+@endif
 
 @endsection

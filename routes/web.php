@@ -75,6 +75,8 @@ Route::middleware(['auth', 'must.change.password', 'role:admin'])->prefix('admin
     Route::put('/siswa/{id}', [SiswaController::class, 'update']);
     Route::delete('/siswa/{id}', [SiswaController::class, 'destroy']);
 
+
+
     Route::get('/kelas', [KelasController::class, 'index']);
     Route::post('/kelas', [KelasController::class, 'store']);
     Route::put('/kelas/{id}', [KelasController::class, 'update']);
@@ -85,26 +87,20 @@ Route::middleware(['auth', 'must.change.password', 'role:admin'])->prefix('admin
     Route::put('/guru/{id}', [GuruController::class, 'update']);
     Route::delete('/guru/{id}', [GuruController::class, 'destroy']);
 
-    Route::get('/laporan-prestasi-pelanggaran', [LaporanSiswaController::class, 'adminIndex'])
-        ->name('admin.laporan.index');
+    Route::get('/laporan-prestasi-pelanggaran', [LaporanSiswaController::class, 'adminIndex'])->name('admin.laporan.index');
+    Route::get('/laporan-prestasi-pelanggaran/{nis}', [LaporanSiswaController::class, 'adminCreate'])->name('admin.laporan.create');
+    Route::post('/laporan-prestasi-pelanggaran/{nis}', [LaporanSiswaController::class, 'adminStore'])->name('admin.laporan.store');
+    Route::get('/laporan-prestasi-pelanggaran/{id}/edit', [LaporanSiswaController::class, 'adminEdit'])->name('admin.laporan.edit');
+    Route::put('/laporan-prestasi-pelanggaran/{id}', [LaporanSiswaController::class, 'adminUpdate'])->name('admin.laporan.update');
+    Route::delete('/laporan-prestasi-pelanggaran/{id}', [LaporanSiswaController::class, 'adminDestroy'])->name('admin.laporan.destroy');
 
-    Route::get('/laporan-prestasi-pelanggaran/{nis}', [LaporanSiswaController::class, 'adminCreate'])
-        ->name('admin.laporan.create');
+    Route::get('/akun', [AkunController::class, 'index'])->name('admin.akun.index');
+    Route::post('/akun', [AkunController::class, 'store'])->name('admin.akun.store');
+    Route::put('/akun/{id}', [AkunController::class, 'update'])->name('admin.akun.update');
+    Route::delete('/akun/{user}', [AkunController::class, 'destroy'])->name('admin.akun.destroy');
 
-    Route::post('/laporan-prestasi-pelanggaran/{nis}', [LaporanSiswaController::class, 'adminStore'])
-        ->name('admin.laporan.store');
-    Route::get('/akun', [AkunController::class, 'index'])
-    ->name('admin.akun.index');
+    Route::match(['post', 'put'], '/akun/{id}/reset-password', [AkunController::class, 'resetPassword'])->name('admin.akun.reset-password');
 
-    Route::post('/akun', [AkunController::class, 'store'])
-        ->name('admin.akun.store');
-
-    Route::delete('/akun/{user}', [AkunController::class, 'destroy'])
-        ->name('admin.akun.destroy');
-
-    Route::post('/akun/{id}/reset-password', [AkunController::class, 'resetPassword'])
-    ->name('admin.akun.reset-password');
-    
     Route::get('/hak-akses-guru', [HakAksesGuruController::class, 'index'])
     ->name('admin.hak-akses-guru.index');
 
@@ -190,14 +186,12 @@ Route::middleware(['auth', 'must.change.password', 'role:guru'])->prefix('guru')
     Route::get('/monitoring-sholat/riwayat', [MonitoringSholatController::class, 'riwayat'])
         ->name('monitoring-sholat.riwayat');
 
-    Route::get('/laporan-prestasi-pelanggaran', [LaporanSiswaController::class, 'index'])
-        ->name('laporan.index');
-
-    Route::get('/laporan-prestasi-pelanggaran/{nis}', [LaporanSiswaController::class, 'create'])
-        ->name('laporan.create');
-
-    Route::post('/laporan-prestasi-pelanggaran/{nis}', [LaporanSiswaController::class, 'store'])
-        ->name('laporan.store');
+    Route::get('/laporan-prestasi-pelanggaran', [LaporanSiswaController::class, 'index'])->name('laporan.index');
+    Route::get('/laporan-prestasi-pelanggaran/{nis}', [LaporanSiswaController::class, 'create'])->name('laporan.create');
+    Route::post('/laporan-prestasi-pelanggaran/{nis}', [LaporanSiswaController::class, 'store'])->name('laporan.store');
+    Route::get('/laporan-prestasi-pelanggaran/edit/{id}', [LaporanSiswaController::class, 'edit'])->name('laporan.edit');
+    Route::put('/laporan-prestasi-pelanggaran/update/{id}', [LaporanSiswaController::class, 'update'])->name('laporan.update');
+    Route::delete('/laporan-prestasi-pelanggaran/delete/{id}', [LaporanSiswaController::class, 'destroy'])->name('laporan.destroy');
 
     Route::get('/rekap-absensi', [AbsensiController::class, 'index'])
         ->name('guru.absensi.index');
