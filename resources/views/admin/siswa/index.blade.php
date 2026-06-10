@@ -4,46 +4,49 @@
 
 <div class="space-y-8">
 
-    <!-- HEADER -->
-    <div class="relative overflow-hidden rounded-[2rem] bg-gradient-to-br from-[#1F5F43] via-[#2F7D55] to-[#75C295] p-8 shadow-lg text-white">
+<!-- HEADER -->
+<div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#1F252D] via-[#2F6F4F] to-[#4D9A72] p-8 shadow-lg text-white">
 
-        <div class="absolute right-0 top-0 w-72 h-72 bg-white/10 rounded-full translate-x-24 -translate-y-24"></div>
-        <div class="absolute left-0 bottom-0 w-60 h-60 bg-[#DDF3E7]/20 rounded-full -translate-x-24 translate-y-24"></div>
+    <div class="absolute right-0 top-0 w-72 h-72 bg-white/5 rounded-full translate-x-24 -translate-y-24"></div>
+    <div class="absolute left-0 bottom-0 w-60 h-60 bg-white/5 rounded-full -translate-x-24 translate-y-24"></div>
 
-        <div class="relative flex flex-col md:flex-row md:items-center md:justify-between gap-8">
+    <div class="relative flex flex-col md:flex-row md:items-center md:justify-between gap-6">
 
-            <div>
-                <div class="inline-flex items-center bg-white/15 text-white px-4 py-2 rounded-full text-xs font-bold tracking-[0.2em] mb-5">
-                    KELOLA SISWA
-                </div>
-
-                <h1 class="text-4xl md:text-5xl font-bold leading-tight">
-                    Data Siswa
-                </h1>
-
-                <p class="text-white/80 mt-3 max-w-2xl">
-                    Tambahkan data siswa lengkap, hubungkan akun orang tua, atau buat akun orang tua baru sekaligus.
-                </p>
+        <div>
+            <div class="inline-flex items-center bg-white/15 text-white px-4 py-2 rounded-full text-sm font-semibold mb-4 tracking-wide">
+                KELOLA SISWA
             </div>
 
-            <div class="bg-white/15 backdrop-blur px-6 py-5 rounded-3xl min-w-[250px] border border-white/15">
-                <p class="text-sm text-white/70">
-                    Total Siswa
-                </p>
+            <h1 class="text-4xl font-bold">
+                Data Siswa
+            </h1>
 
-                <h2 class="text-2xl font-bold mt-1">
-                    {{ $siswas->count() }}
-                </h2>
+            <p class="text-white/80 mt-2 max-w-2xl">
+                Tambahkan data siswa lengkap, hubungkan akun orang tua, atau buat akun orang tua baru sekaligus.
+            </p>
+        </div>
 
-                <p class="text-white/70 text-sm mt-1">
-                    siswa terdaftar
-                </p>
-            </div>
+        <div class="bg-white/15 backdrop-blur px-6 py-5 rounded-3xl min-w-[260px] border border-white/10">
+            <p class="text-sm text-white/70">
+                Total Siswa
+            </p>
 
+            <h2 class="text-2xl font-bold mt-1">
+                {{ $siswas->count() }}
+            </h2>
+
+            <p class="text-white/80 text-sm mt-1">
+                Siswa terdaftar
+            </p>
+
+            <p class="text-white/60 text-xs mt-1">
+                Data siswa aktif di sistem
+            </p>
         </div>
 
     </div>
 
+</div>
     <!-- FORM TAMBAH SISWA -->
     <div class="bg-white rounded-[2rem] shadow-sm p-8 border border-gray-100">
 

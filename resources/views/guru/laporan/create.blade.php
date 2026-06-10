@@ -4,27 +4,46 @@
 
 <div class="space-y-8">
 
-    {{-- HEADER --}}
-    <div class="bg-white rounded-[2rem] shadow-sm border border-gray-100 p-8">
-        <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
-            <div>
-                <p class="text-sm font-semibold text-[#2F7D55] mb-2">
-                    Laporan Siswa
-                </p>
+    <!-- HERO HEADER -->
+    <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#1F252D] via-[#2F6F4F] to-[#4D9A72] p-8 shadow-lg text-white">
 
-                <h1 class="text-3xl md:text-4xl font-bold text-[#1F252D]">
+        <div class="absolute right-0 top-0 w-72 h-72 bg-white/5 rounded-full translate-x-24 -translate-y-24"></div>
+        <div class="absolute left-0 bottom-0 w-60 h-60 bg-white/5 rounded-full -translate-x-24 translate-y-24"></div>
+
+        <div class="relative flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+
+            <div>
+                <div class="inline-flex items-center bg-white/15 text-white px-4 py-2 rounded-full text-sm font-semibold mb-4 tracking-wide">
+                    LAPORAN SISWA
+                </div>
+
+                <h1 class="text-4xl font-bold">
                     Tulis Laporan Siswa
                 </h1>
 
-                <p class="text-gray-500 mt-3 max-w-2xl">
-                    Input laporan prestasi, pelanggaran, atau informasi siswa.
+                <p class="text-white/80 mt-2 max-w-2xl">
+                    Input laporan prestasi, pelanggaran, atau informasi siswa secara lengkap.
                 </p>
             </div>
 
-            <a href="{{ route('laporan.index') }}"
-               class="inline-flex items-center justify-center bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold px-6 py-3 rounded-2xl transition">
-                Kembali
-            </a>
+            <div class="bg-white/15 backdrop-blur px-6 py-5 rounded-3xl min-w-[260px] border border-white/10">
+                <p class="text-sm text-white/70">
+                    Siswa Dipilih
+                </p>
+
+                <h2 class="text-2xl font-bold mt-1">
+                    {{ $siswa->nama ?? '-' }}
+                </h2>
+
+                <p class="text-white/80 text-sm mt-1">
+                    NIS: {{ $siswa->nis ?? '-' }}
+                </p>
+
+                <a href="{{ url('/guru/laporan-prestasi-pelanggaran') }}"
+                class="inline-flex items-center justify-center bg-white text-[#2F7D55] hover:bg-[#F0F8F4] px-4 py-2 rounded-2xl font-semibold text-sm mt-4 transition">
+                    Kembali
+                </a>
+            </div>
         </div>
     </div>
 

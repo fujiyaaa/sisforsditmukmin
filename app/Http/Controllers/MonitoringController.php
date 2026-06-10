@@ -118,13 +118,21 @@ class MonitoringController extends Controller
             ->whereHas('siswa', function ($query) use ($kelasIds, $request) {
                 $query->whereIn('kelas_id', $kelasIds);
 
-                if ($request->kelas_id) {
+                if ($request->filled('kelas_id')) {
                     $query->where('kelas_id', $request->kelas_id);
                 }
             })
+
+            // FILTER TANGGAL
             ->when($request->filled('tanggal'), function ($query) use ($request) {
                 $query->whereDate('tanggal', $request->tanggal);
             })
+
+            // FILTER JENIS SETORAN
+            ->when($request->filled('jenis'), function ($query) use ($request) {
+                $query->where('jenis', $request->jenis);
+            })
+
             ->orderBy('tanggal', 'desc')
             ->orderBy('created_at', 'desc')
             ->get();

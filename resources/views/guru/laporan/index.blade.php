@@ -4,41 +4,48 @@
 
 <div class="space-y-8">
 
-    {{-- HEADER --}}
-    <div class="relative overflow-hidden rounded-[32px] bg-gradient-to-r from-[#1F6B4A] via-[#2F7D55] to-[#5AA578] p-8 md:p-10 shadow-xl">
-        <div class="absolute top-0 right-0 w-72 h-72 bg-white/10 rounded-full -translate-y-20 translate-x-20"></div>
-        <div class="absolute bottom-0 left-0 w-52 h-52 bg-white/10 rounded-full translate-y-20 -translate-x-16"></div>
+    <!-- HERO HEADER -->
+    <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#1F252D] via-[#2F6F4F] to-[#4D9A72] p-8 shadow-lg text-white">
 
-        <div class="relative z-10 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
-            <div class="text-white">
-                <span class="inline-flex items-center px-4 py-2 rounded-full bg-white/15 text-sm font-semibold tracking-wide">
+        <div class="absolute right-0 top-0 w-72 h-72 bg-white/5 rounded-full translate-x-24 -translate-y-24"></div>
+        <div class="absolute left-0 bottom-0 w-60 h-60 bg-white/5 rounded-full -translate-x-24 translate-y-24"></div>
+
+        <div class="relative flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+
+            <div>
+                <div class="inline-flex items-center bg-white/15 text-white px-4 py-2 rounded-full text-sm font-semibold mb-4 tracking-wide">
                     PANEL GURU
-                </span>
+                </div>
 
-                <h1 class="text-3xl md:text-4xl font-bold mt-4 leading-tight">
+                <h1 class="text-4xl font-bold">
                     Laporan Prestasi & Pelanggaran
                 </h1>
 
-                <p class="text-white/85 mt-3 max-w-2xl">
-                    Kelola laporan siswa dengan lebih cepat. Pilih kelas, lihat riwayat laporan,
-                    lalu tulis laporan baru untuk siswa yang dipilih.
+                <p class="text-white/80 mt-2 max-w-2xl">
+                    Kelola laporan siswa dengan lebih cepat. Pilih kelas, lihat riwayat laporan, lalu tulis laporan baru untuk siswa yang dipilih.
                 </p>
             </div>
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 min-w-[260px]">
-                <div class="rounded-2xl bg-white/15 backdrop-blur-sm border border-white/10 p-5 text-white">
-                    <p class="text-sm text-white/75">Total Siswa Ditampilkan</p>
-                    <h2 class="text-3xl font-bold mt-1">{{ $siswas->count() }}</h2>
-                    <p class="text-sm text-white/70 mt-1">siswa aktif</p>
-                </div>
+            <div class="bg-white/15 backdrop-blur px-6 py-5 rounded-3xl min-w-[260px] border border-white/10">
+                <p class="text-sm text-white/70">
+                    Total Siswa Ditampilkan
+                </p>
 
-                <div class="rounded-2xl bg-white/15 backdrop-blur-sm border border-white/10 p-5 text-white">
-                    <p class="text-sm text-white/75">Hari Ini</p>
-                    <h2 class="text-2xl font-bold mt-1">{{ now()->format('d M Y') }}</h2>
-                    <p class="text-sm text-white/70 mt-1">{{ now()->format('l') }}</p>
-                </div>
+                <h2 class="text-2xl font-bold mt-1">
+                    {{ $siswas->count() ?? 0 }}
+                </h2>
+
+                <p class="text-white/80 text-sm mt-1">
+                    Siswa aktif
+                </p>
+
+                <p class="text-white/60 text-xs mt-1">
+                    {{ now()->translatedFormat('l, d M Y') }}
+                </p>
             </div>
+
         </div>
+
     </div>
 
     {{-- FILTER KELAS --}}

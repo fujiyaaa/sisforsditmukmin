@@ -4,46 +4,49 @@
 
 <div class="space-y-8">
 
-    <!-- HERO HEADER -->
-    <div class="relative overflow-hidden rounded-[2rem] bg-gradient-to-br from-[#1F5F43] via-[#2F7D55] to-[#75C295] p-8 shadow-lg text-white">
+<!-- HERO HEADER -->
+<div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#1F252D] via-[#2F6F4F] to-[#4D9A72] p-8 shadow-lg text-white">
 
-        <div class="absolute right-0 top-0 w-72 h-72 bg-white/10 rounded-full translate-x-24 -translate-y-24"></div>
-        <div class="absolute left-0 bottom-0 w-60 h-60 bg-[#DDF3E7]/20 rounded-full -translate-x-24 translate-y-24"></div>
+    <div class="absolute right-0 top-0 w-72 h-72 bg-white/5 rounded-full translate-x-24 -translate-y-24"></div>
+    <div class="absolute left-0 bottom-0 w-60 h-60 bg-white/5 rounded-full -translate-x-24 translate-y-24"></div>
 
-        <div class="relative flex flex-col md:flex-row md:items-center md:justify-between gap-8">
+    <div class="relative flex flex-col md:flex-row md:items-center md:justify-between gap-6">
 
-            <div>
-                <div class="inline-flex items-center bg-white/15 text-white px-4 py-2 rounded-full text-xs font-bold tracking-[0.2em] mb-5">
-                    PANEL ADMINISTRATOR
-                </div>
-
-                <h1 class="text-4xl md:text-5xl font-bold leading-tight">
-                    Dashboard Admin
-                </h1>
-
-                <p class="text-white/80 mt-3 max-w-2xl">
-                    Kelola data siswa, guru, kelas, absensi, laporan, dan rekap monitoring siswa SDIT Mukmin Kreatif.
-                </p>
+        <div>
+            <div class="inline-flex items-center bg-white/15 text-white px-4 py-2 rounded-full text-sm font-semibold mb-4 tracking-wide">
+                PANEL ADMINISTRATOR
             </div>
 
-            <div class="bg-white/15 backdrop-blur px-6 py-5 rounded-3xl min-w-[250px] border border-white/15">
-                <p class="text-sm text-white/70">
-                    Hari Ini
-                </p>
+            <h1 class="text-4xl font-bold">
+                Dashboard Admin
+            </h1>
 
-                <h2 class="text-2xl font-bold mt-1">
-                    {{ now()->format('d M Y') }}
-                </h2>
+            <p class="text-white/80 mt-2 max-w-2xl">
+                Kelola data siswa, guru, kelas, absensi, laporan, dan rekap monitoring siswa SDIT Mukmin Kreatif.
+            </p>
+        </div>
 
-                <p class="text-white/70 text-sm mt-1">
-                    Sistem aktif
-                </p>
-            </div>
+        <div class="bg-white/15 backdrop-blur px-6 py-5 rounded-3xl min-w-[260px] border border-white/10">
+            <p class="text-sm text-white/70">
+                Hari Ini
+            </p>
 
+            <h2 class="text-2xl font-bold mt-1">
+                {{ now()->format('d M Y') }}
+            </h2>
+
+            <p class="text-white/80 text-sm mt-1">
+                Sistem aktif
+            </p>
+
+            <p class="text-white/60 text-xs mt-1">
+                Panel administrator
+            </p>
         </div>
 
     </div>
 
+</div>
     <!-- STATISTIK UTAMA -->
     <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
 

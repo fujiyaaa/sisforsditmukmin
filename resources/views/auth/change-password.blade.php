@@ -6,7 +6,7 @@
             S
         </div>
 
-        <h1 class="text-3xl font-bold text-[#1F252D]">
+        <h1 class="text-3xl font-bold text-[#AAC9f2]">
             Ganti Password
         </h1>
 

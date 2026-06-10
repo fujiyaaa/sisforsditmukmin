@@ -4,29 +4,46 @@
 
 <div class="space-y-8">
 
-    <!-- HEADER -->
-    <div class="relative overflow-hidden rounded-[2rem] bg-gradient-to-br from-[#1F5F43] via-[#2F7D55] to-[#75C295] p-8 shadow-lg text-white">
+        <!-- HERO HEADER -->
+    <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#1F252D] via-[#2F6F4F] to-[#4D9A72] p-8 shadow-lg text-white">
 
-        <div class="relative flex flex-col md:flex-row md:items-center md:justify-between gap-8">
+        <div class="absolute right-0 top-0 w-72 h-72 bg-white/5 rounded-full translate-x-24 -translate-y-24"></div>
+        <div class="absolute left-0 bottom-0 w-60 h-60 bg-white/5 rounded-full -translate-x-24 translate-y-24"></div>
+
+        <div class="relative flex flex-col md:flex-row md:items-center md:justify-between gap-6">
 
             <div>
-                <div class="inline-flex items-center bg-white/15 text-white px-4 py-2 rounded-full text-xs font-bold tracking-[0.2em] mb-5">
+                <div class="inline-flex items-center bg-white/15 text-white px-4 py-2 rounded-full text-sm font-semibold mb-4 tracking-wide">
                     RIWAYAT SETORAN QURAN
                 </div>
 
-                <h1 class="text-4xl md:text-5xl font-bold leading-tight">
+                <h1 class="text-4xl font-bold">
                     Riwayat Setoran Quran
                 </h1>
 
-                <p class="text-white/80 mt-3 max-w-2xl">
+                <p class="text-white/80 mt-2 max-w-2xl">
                     Lihat semua riwayat setoran Quran siswa dari seluruh kelas.
                 </p>
             </div>
 
-            <a href="{{ route('admin.setoran.index') }}"
-               class="bg-white text-[#2F7D55] px-6 py-3 rounded-2xl hover:bg-[#EEF7F1] transition font-bold">
-                Kembali
-            </a>
+            <div class="bg-white/15 backdrop-blur px-6 py-5 rounded-3xl min-w-[260px] border border-white/10">
+                <p class="text-sm text-white/70">
+                    Halaman Aktif
+                </p>
+
+                <h2 class="text-2xl font-bold mt-1">
+                    Riwayat
+                </h2>
+
+                <p class="text-white/80 text-sm mt-1">
+                    Data setoran siswa
+                </p>
+
+                <a href="{{ route('admin.setoran.index') }}"
+                class="inline-flex items-center justify-center bg-white text-[#2F7D55] hover:bg-[#F0F8F4] px-4 py-2 rounded-2xl font-semibold text-sm mt-4 transition">
+                    Kembali
+                </a>
+            </div>
 
         </div>
 

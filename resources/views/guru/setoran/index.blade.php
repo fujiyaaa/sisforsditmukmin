@@ -4,37 +4,50 @@
 
 <div class="space-y-8">
 
-    {{-- HEADER --}}
-    <div class="relative overflow-hidden rounded-[2rem] bg-gradient-to-br from-[#1F6B4A] via-[#2F7D55] to-[#4D9A72] p-8 shadow-sm">
+    <!-- HERO HEADER -->
+    <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#1F252D] via-[#2F6F4F] to-[#4D9A72] p-8 shadow-lg text-white">
 
-        <div class="absolute -right-20 -top-20 w-72 h-72 rounded-full bg-white/10"></div>
-        <div class="absolute -left-16 -bottom-20 w-52 h-52 rounded-full bg-white/10"></div>
+        <div class="absolute right-0 top-0 w-72 h-72 bg-white/5 rounded-full translate-x-24 -translate-y-24"></div>
+        <div class="absolute left-0 bottom-0 w-60 h-60 bg-white/5 rounded-full -translate-x-24 translate-y-24"></div>
 
-        <div class="relative z-10 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
+        <div class="relative flex flex-col md:flex-row md:items-center md:justify-between gap-6">
 
             <div>
-                <p class="inline-flex items-center bg-white/15 text-white text-xs tracking-[0.22em] font-bold px-4 py-2 rounded-full mb-5">
+                <div class="inline-flex items-center bg-white/15 text-white px-4 py-2 rounded-full text-sm font-semibold mb-4 tracking-wide">
                     SETORAN QURAN
-                </p>
+                </div>
 
-                <h1 class="text-3xl md:text-4xl font-bold text-white">
+                <h1 class="text-4xl font-bold">
                     Monitoring Setoran Quran
                 </h1>
 
-                <p class="text-white/90 mt-3 max-w-2xl">
+                <p class="text-white/80 mt-2 max-w-2xl">
                     Pilih siswa untuk menginput setoran Tahfidz, Murajaah, atau Tilawah.
                 </p>
             </div>
 
-            <a href="{{ route('setoran.riwayat') }}"
-               class="inline-flex items-center justify-center bg-white text-[#2F7D55] hover:bg-[#F0F8F4] px-6 py-3 rounded-2xl font-bold transition shadow-sm">
-                Riwayat Setoran
-            </a>
+            <div class="bg-white/15 backdrop-blur px-6 py-5 rounded-3xl min-w-[260px] border border-white/10">
+                <p class="text-sm text-white/70">
+                    Menu Aktif
+                </p>
+
+                <h2 class="text-2xl font-bold mt-1">
+                    Setoran Quran
+                </h2>
+
+                <p class="text-white/80 text-sm mt-1">
+                    Tahfidz, Murajaah, Tilawah
+                </p>
+
+                <a href="{{ route('setoran.riwayat') }}"
+                class="inline-flex items-center justify-center bg-white text-[#2F7D55] hover:bg-[#F0F8F4] px-4 py-2 rounded-2xl font-semibold text-sm mt-4 transition">
+                    Riwayat Setoran
+                </a>
+            </div>
 
         </div>
 
     </div>
-
     @if(session('success'))
         <script>
             document.addEventListener('DOMContentLoaded', function() {
@@ -106,131 +119,161 @@
     </div>
 
     {{-- DAFTAR SISWA --}}
-    <div class="bg-white rounded-[2rem] shadow-sm border border-gray-100 overflow-hidden">
+    <div class="bg-white rounded-3xl shadow-md p-8 border border-gray-100">
 
-        <div class="px-8 py-7 border-b border-gray-100 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+        @php
+            $daftarSiswaByKelas = isset($siswasByKelas)
+                ? $siswasByKelas
+                : collect($siswas)
+                    ->filter(function ($item) {
+                        return is_object($item);
+                    })
+                    ->groupBy(function ($siswa) {
+                        return $siswa->kelas->nama_kelas ?? '-';
+                    });
+
+            $totalSiswa = $daftarSiswaByKelas->flatten(1)->count();
+        @endphp
+
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
 
             <div>
                 <h2 class="text-2xl font-bold text-[#1F252D]">
                     Daftar Siswa
                 </h2>
 
-                <p class="text-gray-500 text-sm mt-1">
+                <p class="text-gray-500 mt-1">
                     Klik tombol input untuk menambahkan setoran Quran siswa.
                 </p>
             </div>
 
-            <div class="inline-flex items-center gap-2 bg-[#EEF7F1] text-[#2F7D55] px-5 py-3 rounded-2xl font-semibold">
-                {{ $siswas->count() ?? 0 }} Siswa
+            <div class="bg-[#EEF7F1] text-[#2F7D55] px-5 py-3 rounded-2xl font-semibold">
+                {{ $totalSiswa }} Siswa
             </div>
 
         </div>
 
-        @if(isset($siswasByKelas) && $siswasByKelas->count() > 0)
+        @if($totalSiswa > 0)
 
-            @foreach ($siswasByKelas as $namaKelas => $daftarSiswa)
+            <div class="overflow-x-auto rounded-3xl border border-gray-100">
 
-                <div class="px-8 py-5 bg-[#F6FAF8] border-b border-gray-100">
+                <table class="w-full min-w-[1000px] table-fixed">
 
-                    <h3 class="text-lg font-bold text-[#2F7D55]">
-                        {{ $namaKelas }}
-                    </h3>
+                    <thead class="bg-[#4D9A72] text-white">
+                        <tr>
+                            <th class="w-[80px] px-6 py-4 text-left font-semibold">
+                                No
+                            </th>
 
-                    <p class="text-sm text-gray-500 mt-1">
-                        {{ $daftarSiswa->count() }} siswa
-                    </p>
+                            <th class="w-[180px] px-6 py-4 text-left font-semibold">
+                                NIS
+                            </th>
 
-                </div>
+                            <th class="px-6 py-4 text-left font-semibold">
+                                Nama Siswa
+                            </th>
 
-                <div class="overflow-x-auto">
+                            <th class="w-[180px] px-6 py-4 text-left font-semibold">
+                                Kelas
+                            </th>
 
-                    <table class="w-full min-w-[850px]">
+                            <th class="w-[220px] px-6 py-4 text-center font-semibold">
+                                Aksi
+                            </th>
+                        </tr>
+                    </thead>
 
-                        <thead>
-                            <tr class="bg-[#4D9A72] text-white">
-                                <th class="px-6 py-4 text-left font-semibold">No</th>
-                                <th class="px-6 py-4 text-left font-semibold">NIS</th>
-                                <th class="px-6 py-4 text-left font-semibold">Nama Siswa</th>
-                                <th class="px-6 py-4 text-left font-semibold">Kelas</th>
-                                <th class="px-6 py-4 text-left font-semibold">Aksi</th>
+                    <tbody class="divide-y divide-gray-100 bg-white">
+
+                        @php
+                            $no = 1;
+                        @endphp
+
+                        @foreach($daftarSiswaByKelas as $namaKelas => $daftarSiswa)
+
+                            <tr>
+                                <td colspan="5" class="bg-[#F8FBF9] px-6 py-4 border-b border-gray-100">
+                                    <h3 class="font-bold text-[#2F7D55]">
+                                        Kelas {{ $namaKelas }}
+                                    </h3>
+
+                                    <p class="text-sm text-gray-500 mt-1">
+                                        {{ collect($daftarSiswa)->count() }} siswa
+                                    </p>
+                                </td>
                             </tr>
-                        </thead>
 
-                        <tbody class="divide-y divide-gray-100">
+                            @foreach($daftarSiswa as $siswa)
 
-                            @foreach ($daftarSiswa as $siswa)
+                                <tr class="hover:bg-[#F8FBF9] transition">
 
-                                <tr class="hover:bg-[#FAFCFB] transition">
-
-                                    <td class="px-6 py-5 text-gray-600">
-                                        {{ $loop->iteration }}
+                                    <td class="px-6 py-5 text-gray-600 align-middle">
+                                        {{ $no++ }}
                                     </td>
 
-                                    <td class="px-6 py-5 font-semibold text-gray-700">
-                                        {{ $siswa->nis ?? '-' }}
+                                    <td class="px-6 py-5 text-gray-700 font-medium align-middle">
+                                        {{ $siswa->nis }}
                                     </td>
 
-                                    <td class="px-6 py-5">
-
+                                    <td class="px-6 py-5 align-middle">
                                         <div class="flex items-center gap-4">
 
-                                            <div class="w-12 h-12 rounded-2xl bg-[#DDF3E7] text-[#2F7D55] flex items-center justify-center font-bold">
+                                            <div class="w-12 h-12 rounded-full bg-[#DDF3E7] text-[#2F7D55] flex items-center justify-center font-bold text-lg shrink-0">
                                                 {{ strtoupper(substr($siswa->nama ?? '-', 0, 1)) }}
                                             </div>
 
-                                            <div>
-                                                <h4 class="font-bold text-[#1F252D]">
-                                                    {{ $siswa->nama ?? '-' }}
+                                            <div class="min-w-0">
+                                                <h4 class="font-bold text-[#1F252D] truncate">
+                                                    {{ $siswa->nama }}
                                                 </h4>
 
-                                                <p class="text-sm text-gray-400">
+                                                <p class="text-sm text-gray-400 mt-1">
                                                     Siswa
                                                 </p>
                                             </div>
 
                                         </div>
-
                                     </td>
 
-                                    <td class="px-6 py-5 text-gray-600">
-                                        {{ $siswa->kelas->nama_kelas ?? '-' }}
+                                    <td class="px-6 py-5 align-middle">
+                                        <span class="inline-flex items-center bg-[#EEF7F1] text-[#2F7D55] px-4 py-2 rounded-2xl text-sm font-semibold">
+                                            {{ $siswa->kelas->nama_kelas ?? '-' }}
+                                        </span>
                                     </td>
 
-                                    <td class="px-6 py-5">
-
+                                    <td class="px-6 py-5 text-center align-middle">
                                         <a href="{{ route('setoran.create', $siswa->nis) }}"
-                                           class="inline-flex items-center justify-center bg-[#2F7D55] hover:bg-[#256B47] text-white px-5 py-3 rounded-2xl font-semibold transition shadow-sm">
+                                        class="inline-flex items-center justify-center bg-[#4D9A72] hover:bg-[#2F6F4F] text-white px-5 py-3 rounded-2xl font-semibold transition">
                                             Input Setoran
                                         </a>
-
                                     </td>
 
                                 </tr>
 
                             @endforeach
 
-                        </tbody>
+                        @endforeach
 
-                    </table>
+                    </tbody>
 
-                </div>
+                </table>
 
-            @endforeach
+            </div>
 
         @else
 
-            <div class="py-14 text-center">
+            <div class="text-center py-16 bg-[#F8FBF9] rounded-3xl border border-dashed border-gray-200">
 
-                <div class="w-16 h-16 mx-auto rounded-3xl bg-[#EEF7F1] text-[#2F7D55] flex items-center justify-center text-2xl font-bold mb-4">
+                <div class="w-16 h-16 mx-auto rounded-full bg-[#EEF7F1] text-[#2F7D55] flex items-center justify-center text-2xl font-bold mb-4">
                     0
                 </div>
 
-                <h3 class="text-xl font-bold text-gray-700">
-                    Belum ada siswa
+                <h3 class="text-xl font-bold text-[#1F252D]">
+                    Belum Ada Data Siswa
                 </h3>
 
                 <p class="text-gray-500 mt-2">
-                    Data siswa akan muncul sesuai kelas yang diampu.
+                    Data siswa belum tersedia untuk filter kelas ini.
                 </p>
 
             </div>
