@@ -13,80 +13,102 @@ use Illuminate\Support\Facades\Auth;
 
 class OrangTuaController extends Controller
 {
-    public function monitoring(Request $request)
+   public function monitoring(Request $request)
     {
-       $siswa = Siswa::first();
+        $orangtuaId = auth()->id();
 
-        if (!$siswa) {
-            return back()->with('error', 'Data siswa tidak ditemukan');
+        // Ambil hanya anak yang terhubung dengan akun orang tua login
+        $siswas = Siswa::with('kelas')
+            ->where('orangtua_id', $orangtuaId)
+            ->get();
+
+        $siswa = $siswas->first();
+        $siswaIds = $siswas->pluck('id');
+
+        $tanggal = $request->tanggal;
+
+        $query = Monitoring::with('siswa.kelas')
+            ->whereIn('siswa_id', $siswaIds);
+
+        if ($tanggal) {
+            $query->whereDate('tanggal', $tanggal);
         }
 
-        $monitorings = Monitoring::where('siswa_id', $siswa->id)
-            ->when($request->filled('tanggal'), function ($query) use ($request) {
-                $query->whereDate('tanggal', $request->tanggal);
-            })
+        $monitorings = $query
             ->orderBy('tanggal', 'desc')
             ->orderBy('created_at', 'desc')
             ->get();
 
-        $totalSetoran = Monitoring::where('siswa_id', $siswa->id)->count();
+        $totalSetoran = $monitorings->count();
 
-        $totalTahfidz = Monitoring::where('siswa_id', $siswa->id)
-                        ->where('jenis', 'tahfidz')
-                        ->count();
+        $totalTahfidz = $monitorings->where('jenis', 'tahfidz')->count();
+        $totalMurajaah = $monitorings->where('jenis', 'murajaah')->count();
+        $totalTilawah = $monitorings->where('jenis', 'tilawah')->count();
 
-        $totalTilawah = Monitoring::where('siswa_id', $siswa->id)
-                        ->where('jenis', 'tilawah')
-                        ->count();
-
-        $rataNilai = Monitoring::where('siswa_id', $siswa->id)
-                        ->avg('nilai');
+        $rataRataNilai = $monitorings->count() > 0
+            ? round($monitorings->avg('nilai'))
+            : 0;
 
         return view('orangtua.monitoring.index', compact(
+            'siswas',
             'siswa',
             'monitorings',
+            'tanggal',
             'totalSetoran',
             'totalTahfidz',
+            'totalMurajaah',
             'totalTilawah',
-            'rataNilai'
+            'rataRataNilai'
         ));
     }
+
     public function laporan(Request $request)
     {
-        // Sementara ambil siswa pertama dulu.
-        // Nanti kalau sudah ada relasi orang tua-anak, bagian ini bisa disesuaikan.
-        $siswa = Siswa::with('kelas')->first();
+        $orangtuaId = auth()->id();
 
-        if (!$siswa) {
-            $laporans = collect();
-
-            return view('orangtua.laporan.index', compact('siswa', 'laporans'));
-        }
-
-        $laporans = LaporanSiswa::where('siswa_id', $siswa->id)
-            ->when($request->jenis, function ($query) use ($request) {
-                $query->where('jenis', $request->jenis);
-            })
-            ->latest()
+        // Ambil hanya anak yang terhubung dengan akun orang tua login
+        $siswas = Siswa::with('kelas')
+            ->where('orangtua_id', $orangtuaId)
             ->get();
 
-        $totalSemua = LaporanSiswa::where('siswa_id', $siswa->id)->count();
+        $siswa = $siswas->first();
+        $siswaIds = $siswas->pluck('id');
 
-        $totalPrestasi = LaporanSiswa::where('siswa_id', $siswa->id)
+        $jenis = $request->jenis;
+
+        $query = LaporanSiswa::with('siswa.kelas')
+            ->whereIn('siswa_id', $siswaIds);
+
+        if ($jenis && $jenis !== 'semua') {
+            $query->where('jenis', $jenis);
+        }
+
+        $laporans = $query
+            ->orderBy('tanggal', 'desc')
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        $semuaLaporan = LaporanSiswa::whereIn('siswa_id', $siswaIds)->get();
+
+        $totalSemua = $semuaLaporan->count();
+
+        $totalPrestasi = $semuaLaporan
             ->where('jenis', 'prestasi')
             ->count();
 
-        $totalPelanggaran = LaporanSiswa::where('siswa_id', $siswa->id)
+        $totalPelanggaran = $semuaLaporan
             ->where('jenis', 'pelanggaran')
             ->count();
 
-        $totalInformasi = LaporanSiswa::where('siswa_id', $siswa->id)
+        $totalInformasi = $semuaLaporan
             ->where('jenis', 'informasi')
             ->count();
 
         return view('orangtua.laporan.index', compact(
+            'siswas',
             'siswa',
             'laporans',
+            'jenis',
             'totalSemua',
             'totalPrestasi',
             'totalPelanggaran',

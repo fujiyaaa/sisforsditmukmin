@@ -10,45 +10,56 @@ class OrangTuaAbsensiController extends Controller
 {
         public function index(Request $request)
     {
-        // Sementara karena belum pakai login
-        $siswa = Siswa::with('kelas')->firstOrFail();
+        $orangtuaId = auth()->id();
 
-        $query = Absensi::where('siswa_id', $siswa->id)
-            ->orderBy('tanggal', 'desc');
+        $siswas = Siswa::with('kelas')
+            ->where('orangtua_id', $orangtuaId)
+            ->get();
 
-        // FILTER TANGGAL
-        if ($request->filled('tanggal')) {
-            $query->whereDate('tanggal', $request->tanggal);
+        $siswa = $siswas->first();
+        $siswaIds = $siswas->pluck('id');
+
+        $tanggal = $request->tanggal;
+
+        $query = Absensi::with('siswa.kelas')
+            ->whereIn('siswa_id', $siswaIds);
+
+        if ($tanggal) {
+            $query->whereDate('tanggal', $tanggal);
         }
 
-        $absensis = $query->get();
+        $absensis = $query
+            ->orderBy('tanggal', 'desc')
+            ->orderBy('created_at', 'desc')
+            ->get();
 
-        $semuaAbsensi = Absensi::where('siswa_id', $siswa->id)->get();
+        $totalAbsensi = $absensis->count();
 
-        $totalAbsensi = $semuaAbsensi->count();
-        $totalHadir = $semuaAbsensi->where('status', 'hadir')->count();
-        $totalIzin = $semuaAbsensi->where('status', 'izin')->count();
-        $totalSakit = $semuaAbsensi->where('status', 'sakit')->count();
-        $totalAlpha = $semuaAbsensi->where('status', 'alpha')->count();
+        $totalHadir = $absensis->where('status', 'hadir')->count();
+        $totalIzin = $absensis->where('status', 'izin')->count();
+        $totalSakit = $absensis->where('status', 'sakit')->count();
+        $totalAlpha = $absensis->where('status', 'alfa')->count();
 
-        $totalTerlambat = $semuaAbsensi->filter(function ($item) {
-            return $item->keterlambatan > 0;
+        $totalTerlambat = $absensis->filter(function ($item) {
+            return !empty($item->keterlambatan) && $item->keterlambatan > 0;
         })->count();
 
-        $persentaseHadir = $totalAbsensi > 0
+        $persentaseKehadiran = $totalAbsensi > 0
             ? round(($totalHadir / $totalAbsensi) * 100)
             : 0;
 
         return view('orangtua.absensi.index', compact(
+            'siswas',
             'siswa',
             'absensis',
+            'tanggal',
             'totalAbsensi',
             'totalHadir',
             'totalIzin',
             'totalSakit',
             'totalAlpha',
             'totalTerlambat',
-            'persentaseHadir'
+            'persentaseKehadiran'
         ));
     }
 }
