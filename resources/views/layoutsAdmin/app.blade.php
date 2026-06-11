@@ -61,13 +61,13 @@
                 <span>Dashboard</span>
             </a>
 
-            <!-- KELOLA SISWA -->
-            <a href="/admin/siswa"
+            <!-- KELOLA AKUN -->
+            <a href="{{ route('admin.akun.index') }}"
                class="group relative flex items-center gap-3 px-4 py-3 rounded-2xl transition
-                      {{ request()->is('admin/siswa*') ? 'bg-white text-[#1F6B4A] font-semibold shadow-lg shadow-black/10' : 'text-white/70 hover:bg-white/10 hover:text-white' }}">
+                      {{ request()->routeIs('admin.akun.*') ? 'bg-white text-[#1F6B4A] font-semibold shadow-lg shadow-black/10' : 'text-white/70 hover:bg-white/10 hover:text-white' }}">
 
-                <span class="w-2 h-2 rounded-full {{ request()->is('admin/siswa*') ? 'bg-[#2F7D55]' : 'bg-white/35 group-hover:bg-white' }}"></span>
-                <span>Kelola Siswa</span>
+                <span class="w-2 h-2 rounded-full {{ request()->routeIs('admin.akun.*') ? 'bg-[#2F7D55]' : 'bg-white/35 group-hover:bg-white' }}"></span>
+                <span>Kelola Akun</span>
             </a>
 
             <!-- KELOLA KELAS -->
@@ -88,49 +88,14 @@
                 <span>Kelola Guru</span>
             </a>
 
-            <!-- SETORAN QURAN -->
-            <a href="{{ route('admin.setoran.index') }}"
+
+            <!-- KELOLA SISWA -->
+            <a href="/admin/siswa"
                class="group relative flex items-center gap-3 px-4 py-3 rounded-2xl transition
-                      {{ request()->routeIs('admin.setoran.*') ? 'bg-white text-[#1F6B4A] font-semibold shadow-lg shadow-black/10' : 'text-white/70 hover:bg-white/10 hover:text-white' }}">
+                      {{ request()->is('admin/siswa*') ? 'bg-white text-[#1F6B4A] font-semibold shadow-lg shadow-black/10' : 'text-white/70 hover:bg-white/10 hover:text-white' }}">
 
-                <span class="w-2 h-2 rounded-full {{ request()->routeIs('admin.setoran.*') ? 'bg-[#2F7D55]' : 'bg-white/35 group-hover:bg-white' }}"></span>
-                <span>Setoran Quran</span>
-            </a>
-
-            <!-- MONITORING SHOLAT -->
-            <a href="{{ route('admin.monitoring-sholat.index') }}"
-               class="group relative flex items-center gap-3 px-4 py-3 rounded-2xl transition
-                      {{ request()->routeIs('admin.monitoring-sholat.*') ? 'bg-white text-[#1F6B4A] font-semibold shadow-lg shadow-black/10' : 'text-white/70 hover:bg-white/10 hover:text-white' }}">
-
-                <span class="w-2 h-2 rounded-full {{ request()->routeIs('admin.monitoring-sholat.*') ? 'bg-[#2F7D55]' : 'bg-white/35 group-hover:bg-white' }}"></span>
-                <span>Monitoring Sholat</span>
-            </a>
-
-            <!-- ABSENSI SISWA -->
-            <a href="{{ route('admin.absensi.index') }}"
-               class="group relative flex items-center gap-3 px-4 py-3 rounded-2xl transition
-                      {{ request()->routeIs('admin.absensi.*') ? 'bg-white text-[#1F6B4A] font-semibold shadow-lg shadow-black/10' : 'text-white/70 hover:bg-white/10 hover:text-white' }}">
-
-                <span class="w-2 h-2 rounded-full {{ request()->routeIs('admin.absensi.*') ? 'bg-[#2F7D55]' : 'bg-white/35 group-hover:bg-white' }}"></span>
-                <span>Absensi Siswa</span>
-            </a>
-
-            <!-- LAPORAN -->
-            <a href="{{ route('admin.laporan.index') }}"
-               class="group relative flex items-center gap-3 px-4 py-3 rounded-2xl transition
-                      {{ request()->routeIs('admin.laporan.*') ? 'bg-white text-[#1F6B4A] font-semibold shadow-lg shadow-black/10' : 'text-white/70 hover:bg-white/10 hover:text-white' }}">
-
-                <span class="w-2 h-2 rounded-full {{ request()->routeIs('admin.laporan.*') ? 'bg-[#2F7D55]' : 'bg-white/35 group-hover:bg-white' }}"></span>
-                <span class="leading-snug">Laporan Prestasi & Pelanggaran</span>
-            </a>
-
-            <!-- KELOLA AKUN -->
-            <a href="{{ route('admin.akun.index') }}"
-               class="group relative flex items-center gap-3 px-4 py-3 rounded-2xl transition
-                      {{ request()->routeIs('admin.akun.*') ? 'bg-white text-[#1F6B4A] font-semibold shadow-lg shadow-black/10' : 'text-white/70 hover:bg-white/10 hover:text-white' }}">
-
-                <span class="w-2 h-2 rounded-full {{ request()->routeIs('admin.akun.*') ? 'bg-[#2F7D55]' : 'bg-white/35 group-hover:bg-white' }}"></span>
-                <span>Kelola Akun</span>
+                <span class="w-2 h-2 rounded-full {{ request()->is('admin/siswa*') ? 'bg-[#2F7D55]' : 'bg-white/35 group-hover:bg-white' }}"></span>
+                <span>Kelola Siswa</span>
             </a>
 
             <!-- HAK AKSES GURU -->
@@ -142,6 +107,42 @@
                 <span>Hak Akses Guru</span>
             </a>
 
+            <!-- ABSENSI SISWA -->
+            <a href="{{ route('admin.absensi.index') }}"
+               class="group relative flex items-center gap-3 px-4 py-3 rounded-2xl transition
+                      {{ request()->routeIs('admin.absensi.*') ? 'bg-white text-[#1F6B4A] font-semibold shadow-lg shadow-black/10' : 'text-white/70 hover:bg-white/10 hover:text-white' }}">
+
+                <span class="w-2 h-2 rounded-full {{ request()->routeIs('admin.absensi.*') ? 'bg-[#2F7D55]' : 'bg-white/35 group-hover:bg-white' }}"></span>
+                <span>Absensi Siswa</span>
+            </a>
+
+            <!-- MONITORING SHOLAT -->
+            <a href="{{ route('admin.monitoring-sholat.index') }}"
+               class="group relative flex items-center gap-3 px-4 py-3 rounded-2xl transition
+                      {{ request()->routeIs('admin.monitoring-sholat.*') ? 'bg-white text-[#1F6B4A] font-semibold shadow-lg shadow-black/10' : 'text-white/70 hover:bg-white/10 hover:text-white' }}">
+
+                <span class="w-2 h-2 rounded-full {{ request()->routeIs('admin.monitoring-sholat.*') ? 'bg-[#2F7D55]' : 'bg-white/35 group-hover:bg-white' }}"></span>
+                <span>Monitoring Sholat</span>
+            </a>
+
+            <!-- LAPORAN -->
+            <a href="{{ route('admin.laporan.index') }}"
+               class="group relative flex items-center gap-3 px-4 py-3 rounded-2xl transition
+                      {{ request()->routeIs('admin.laporan.*') ? 'bg-white text-[#1F6B4A] font-semibold shadow-lg shadow-black/10' : 'text-white/70 hover:bg-white/10 hover:text-white' }}">
+
+                <span class="w-2 h-2 rounded-full {{ request()->routeIs('admin.laporan.*') ? 'bg-[#2F7D55]' : 'bg-white/35 group-hover:bg-white' }}"></span>
+                <span class="leading-snug">Laporan Prestasi & Pelanggaran</span>
+            </a>
+
+            <!-- SETORAN QURAN -->
+            <a href="{{ route('admin.setoran.index') }}"
+               class="group relative flex items-center gap-3 px-4 py-3 rounded-2xl transition
+                      {{ request()->routeIs('admin.setoran.*') ? 'bg-white text-[#1F6B4A] font-semibold shadow-lg shadow-black/10' : 'text-white/70 hover:bg-white/10 hover:text-white' }}">
+
+                <span class="w-2 h-2 rounded-full {{ request()->routeIs('admin.setoran.*') ? 'bg-[#2F7D55]' : 'bg-white/35 group-hover:bg-white' }}"></span>
+                <span>Setoran Quran</span>
+            </a>
+
             <!-- REKAP PERSENTASE -->
             <a href="{{ route('admin.rekap-persentase.index') }}"
                class="group relative flex items-center gap-3 px-4 py-3 rounded-2xl transition
@@ -150,16 +151,6 @@
                 <span class="w-2 h-2 rounded-full {{ request()->routeIs('admin.rekap-persentase.*') ? 'bg-[#2F7D55]' : 'bg-white/35 group-hover:bg-white' }}"></span>
                 <span>Rekap Persentase</span>
             </a>
-
-            <!-- HARI LIBUR -->
-            <a href="{{ route('admin.hari-libur.index') }}"
-               class="group relative flex items-center gap-3 px-4 py-3 rounded-2xl transition
-                      {{ request()->routeIs('admin.hari-libur.*') || request()->is('admin/hari-libur*') ? 'bg-white text-[#1F6B4A] font-semibold shadow-lg shadow-black/10' : 'text-white/70 hover:bg-white/10 hover:text-white' }}">
-
-                <span class="w-2 h-2 rounded-full {{ request()->routeIs('admin.hari-libur.*') || request()->is('admin/hari-libur*') ? 'bg-[#2F7D55]' : 'bg-white/35 group-hover:bg-white' }}"></span>
-                <span>Hari Libur</span>
-            </a>
-
         </nav>
 
     </div>

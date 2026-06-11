@@ -57,13 +57,13 @@
                     <span>Beranda</span>
                 </a>
 
-                <a href="{{ route('orangtua.monitoring') }}"
+                <a href="{{ url('/orangtua/absensi') }}"
                    class="group flex items-center gap-4 px-5 py-4 rounded-2xl transition
-                   {{ request()->is('orangtua/monitoring*') ? 'bg-white text-[#1F6B4A] shadow-lg shadow-black/10 font-semibold' : 'text-white/75 hover:bg-white/10 hover:text-white' }}">
+                   {{ request()->is('orangtua/absensi*') ? 'bg-white text-[#1F6B4A] shadow-lg shadow-black/10 font-semibold' : 'text-white/75 hover:bg-white/10 hover:text-white' }}">
 
-                    <span class="w-2.5 h-2.5 rounded-full {{ request()->is('orangtua/monitoring*') ? 'bg-[#2F7D55]' : 'bg-white/35 group-hover:bg-white' }}"></span>
+                    <span class="w-2.5 h-2.5 rounded-full {{ request()->is('orangtua/absensi*') ? 'bg-[#2F7D55]' : 'bg-white/35 group-hover:bg-white' }}"></span>
 
-                    <span>Setoran Quran</span>
+                    <span>Absensi</span>
                 </a>
 
                 <a href="{{ route('orangtua.ibadah-sholat.index') }}"
@@ -75,13 +75,13 @@
                     <span>Monitoring Ibadah</span>
                 </a>
 
-                <a href="{{ url('/orangtua/absensi') }}"
+                <a href="{{ route('orangtua.monitoring') }}"
                    class="group flex items-center gap-4 px-5 py-4 rounded-2xl transition
-                   {{ request()->is('orangtua/absensi*') ? 'bg-white text-[#1F6B4A] shadow-lg shadow-black/10 font-semibold' : 'text-white/75 hover:bg-white/10 hover:text-white' }}">
+                   {{ request()->is('orangtua/monitoring*') ? 'bg-white text-[#1F6B4A] shadow-lg shadow-black/10 font-semibold' : 'text-white/75 hover:bg-white/10 hover:text-white' }}">
 
-                    <span class="w-2.5 h-2.5 rounded-full {{ request()->is('orangtua/absensi*') ? 'bg-[#2F7D55]' : 'bg-white/35 group-hover:bg-white' }}"></span>
+                    <span class="w-2.5 h-2.5 rounded-full {{ request()->is('orangtua/monitoring*') ? 'bg-[#2F7D55]' : 'bg-white/35 group-hover:bg-white' }}"></span>
 
-                    <span>Absensi</span>
+                    <span>Setoran Quran</span>
                 </a>
 
                 <a href="{{ url('/orangtua/laporan') }}"
@@ -90,7 +90,7 @@
 
                     <span class="w-2.5 h-2.5 rounded-full {{ request()->is('orangtua/laporan*') ? 'bg-[#2F7D55]' : 'bg-white/35 group-hover:bg-white' }}"></span>
 
-                    <span>Prestasi & Pelanggaran</span>
+                    <span>Laporan Prestasi & Pelanggaran</span>
                 </a>
 
             </nav>
