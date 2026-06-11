@@ -355,8 +355,8 @@
                                             Sakit
                                         </option>
 
-                                        <option value="alfa" {{ ($absensi->status ?? '') == 'alfa' ? 'selected' : '' }}>
-                                            Alfa
+                                        <option value="alpha" {{ ($absensi->status ?? '') == 'alpha' ? 'selected' : '' }}>
+                                            Alpha
                                         </option>
                                     </select>
                                 </td>

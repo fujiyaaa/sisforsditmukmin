@@ -38,7 +38,9 @@ class OrangTuaAbsensiController extends Controller
         $totalHadir = $absensis->where('status', 'hadir')->count();
         $totalIzin = $absensis->where('status', 'izin')->count();
         $totalSakit = $absensis->where('status', 'sakit')->count();
-        $totalAlpha = $absensis->where('status', 'alfa')->count();
+        $totalAlpha = $absensis->filter(function ($item) {
+                return in_array(strtolower($item->status), ['alfa', 'alpha', 'alpa']);
+            })->count();
 
         $totalTerlambat = $absensis->filter(function ($item) {
             return !empty($item->keterlambatan) && $item->keterlambatan > 0;

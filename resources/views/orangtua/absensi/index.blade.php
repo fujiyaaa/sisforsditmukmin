@@ -82,7 +82,7 @@
 
                     <div class="rounded-3xl bg-[#F6FAF8] border border-[#E6F4EC] p-5 text-center">
                         <h3 class="text-3xl font-bold text-[#2F7D55]">
-                            {{ $persentaseHadir ?? 0 }}%
+                            {{ $persentaseKehadiran ?? 0 }}%
                         </h3>
 
                         <p class="text-sm text-gray-500 mt-1">
@@ -114,7 +114,7 @@
 
             <div class="mt-4 flex items-end gap-2">
                 <h2 class="text-5xl font-bold text-[#2F7D55]">
-                    {{ $persen }}
+                    {{ $persentaseKehadiran ?? 0 }}%
                 </h2>
 
                 <span class="text-gray-400 font-semibold mb-2">

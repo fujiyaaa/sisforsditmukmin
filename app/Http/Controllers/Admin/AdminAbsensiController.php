@@ -43,7 +43,7 @@ class AdminAbsensiController extends Controller
         $totalHadir = $absensiHariIni->where('status', 'hadir')->count();
         $totalIzin  = $absensiHariIni->where('status', 'izin')->count();
         $totalSakit = $absensiHariIni->where('status', 'sakit')->count();
-        $totalAlfa  = $absensiHariIni->where('status', 'alfa')->count();
+        $totalAlfa  = $absensiHariIni->where('status', 'alpha')->count();
 
         return view('admin.absensi.index', compact(
             'kelas',
@@ -66,7 +66,7 @@ class AdminAbsensiController extends Controller
             'tanggal' => 'required|date',
             'kelas_id' => 'required|exists:kelas,id',
             'status' => 'required|array',
-            'status.*' => 'required|in:hadir,izin,sakit,alfa',
+            'status.*' => 'required|in:hadir,izin,sakit,alpha',
             'waktu_absen' => 'nullable|array',
             'keterlambatan' => 'nullable|array',
             'keterangan' => 'nullable|array',
