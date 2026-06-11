@@ -51,6 +51,17 @@
             <!-- NAVBAR -->
             <nav class="mt-6 px-4 space-y-1.5">
 
+                <a href="{{ url('/guru/dashboard') }}"
+                   class="group relative flex items-center gap-3 px-4 py-3 rounded-2xl transition
+                          {{ request()->is('guru/dashboard*') ? 'bg-white text-[#1F6B4A] font-semibold shadow-lg shadow-black/10' : 'text-white/70 hover:bg-white/10 hover:text-white' }}">
+
+                    <span class="w-2 h-2 rounded-full {{ request()->is('guru/dashboard*') ? 'bg-[#2F7D55]' : 'bg-white/35 group-hover:bg-white' }}"></span>
+
+                    <span>
+                        Dashboard
+                    </span>
+                </a>
+
                 <!-- MONITORING IBADAH -->
                 <a href="{{ url('/guru/monitoring-sholat') }}"
                    class="group relative flex items-center gap-3 px-4 py-3 rounded-2xl transition

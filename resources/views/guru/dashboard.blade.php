@@ -4,27 +4,45 @@
 
 <div class="space-y-8">
 
-    <!-- HEADER -->
-    <div class="bg-white p-8 rounded-3xl shadow-md border border-gray-100 flex items-center justify-between">
+    <!-- HERO HEADER -->
+    <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#1F252D] via-[#2F6F4F] to-[#4D9A72] p-8 shadow-lg text-white">
 
-        <div>
-            <h1 class="text-4xl font-bold text-[#1F252D]">
-                Dashboard Guru
-            </h1>
+        <div class="absolute right-0 top-0 w-72 h-72 bg-white/5 rounded-full translate-x-24 -translate-y-24"></div>
+        <div class="absolute left-0 bottom-0 w-60 h-60 bg-white/5 rounded-full -translate-x-24 translate-y-24"></div>
 
-            <p class="text-gray-500 mt-2 text-lg">
-                Monitoring aktivitas siswa dan ibadah
-            </p>
-        </div>
+        <div class="relative flex flex-col md:flex-row md:items-center md:justify-between gap-6">
 
-        <div class="bg-[#EEF7F1] px-6 py-4 rounded-2xl">
-            <p class="text-sm text-gray-500">
-                Hari Ini
-            </p>
+            <div>
+                <div class="inline-flex items-center bg-white/15 text-white px-4 py-2 rounded-full text-sm font-semibold mb-4 tracking-wide">
+                    DASHBOARD GURU
+                </div>
 
-            <h2 class="text-xl font-bold text-[#2F7D55] mt-1">
-                {{ now()->format('d M Y') }}
-            </h2>
+                <h1 class="text-4xl font-bold">
+                    DASHBOARD GURU
+                </h1>
+
+                
+            </div>
+
+            <div class="bg-white/15 backdrop-blur px-6 py-5 rounded-3xl min-w-[260px] border border-white/10">
+                <p class="text-sm text-white/70">
+                    Tanggal Aktif
+                </p>
+
+                <h2 class="text-2xl font-bold mt-1">
+                    {{ now()->format('d M Y') }}
+                </h2>
+
+
+                <p class="text-white/80 text-sm mt-1">
+                    Rekap Absensi Siswa
+                </p>
+
+                <p class="text-white/60 text-xs mt-1">
+                    Input kehadiran harian
+                </p>
+            </div>
+
         </div>
 
     </div>
