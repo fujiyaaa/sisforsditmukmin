@@ -10,6 +10,92 @@ use Illuminate\Support\Facades\DB;
 
 class GuruController extends Controller
 {
+    public function dashboard()
+{
+    $guru = auth()->user();
+
+    $kelasDiampu = $guru->kelasDiampu()
+        ->orderBy('nama_kelas')
+        ->get();
+
+    $kelasIds = $kelasDiampu->pluck('id');
+
+    $siswas = \App\Models\Siswa::with('kelas')
+        ->whereIn('kelas_id', $kelasIds)
+        ->orderBy('nama')
+        ->get();
+
+    $siswaIds = $siswas->pluck('id');
+
+    $totalSiswa = $siswas->count();
+    $totalKelas = $kelasDiampu->count();
+
+    $totalSetoran = \App\Models\Monitoring::whereIn('siswa_id', $siswaIds)->count();
+
+    $totalSholatHariIni = \App\Models\MonitoringSholat::whereIn('siswa_id', $siswaIds)
+        ->whereDate('tanggal', now()->toDateString())
+        ->count();
+
+    $totalAbsensiHariIni = \App\Models\Absensi::whereIn('siswa_id', $siswaIds)
+        ->whereDate('tanggal', now()->toDateString())
+        ->count();
+
+    $totalHadirHariIni = \App\Models\Absensi::whereIn('siswa_id', $siswaIds)
+        ->whereDate('tanggal', now()->toDateString())
+        ->where('status', 'hadir')
+        ->count();
+
+    $persentaseHadirHariIni = $totalAbsensiHariIni > 0
+        ? round(($totalHadirHariIni / $totalAbsensiHariIni) * 100)
+        : 0;
+
+    $totalLaporan = \App\Models\LaporanSiswa::whereIn('siswa_id', $siswaIds)->count();
+
+    $totalPrestasi = \App\Models\LaporanSiswa::whereIn('siswa_id', $siswaIds)
+        ->where('jenis', 'prestasi')
+        ->count();
+
+    $totalPelanggaran = \App\Models\LaporanSiswa::whereIn('siswa_id', $siswaIds)
+        ->where('jenis', 'pelanggaran')
+        ->count();
+
+    $totalInformasi = \App\Models\LaporanSiswa::whereIn('siswa_id', $siswaIds)
+        ->where('jenis', 'informasi')
+        ->count();
+
+    $setoranTerbaru = \App\Models\Monitoring::with('siswa.kelas')
+        ->whereIn('siswa_id', $siswaIds)
+        ->orderBy('tanggal', 'desc')
+        ->orderBy('created_at', 'desc')
+        ->limit(5)
+        ->get();
+
+    $laporanTerbaru = \App\Models\LaporanSiswa::with('siswa.kelas')
+        ->whereIn('siswa_id', $siswaIds)
+        ->orderBy('tanggal', 'desc')
+        ->orderBy('created_at', 'desc')
+        ->limit(5)
+        ->get();
+
+    return view('guru.dashboard', compact(
+        'guru',
+        'kelasDiampu',
+        'siswas',
+        'totalSiswa',
+        'totalKelas',
+        'totalSetoran',
+        'totalSholatHariIni',
+        'totalAbsensiHariIni',
+        'totalHadirHariIni',
+        'persentaseHadirHariIni',
+        'totalLaporan',
+        'totalPrestasi',
+        'totalPelanggaran',
+        'totalInformasi',
+        'setoranTerbaru',
+        'laporanTerbaru'
+    ));
+}
     public function index()
     {
         $guru = User::where('role', 'guru')

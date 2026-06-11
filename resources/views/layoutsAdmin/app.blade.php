@@ -29,10 +29,11 @@
         <div class="px-6 py-7 border-b border-white/10">
 
             <div class="flex items-center gap-3">
-
-                <div class="w-12 h-12 rounded-2xl bg-white text-[#2F7D55] flex items-center justify-center font-bold text-lg shadow-sm">
-                    SM
-                </div>
+                    <div class="w-12 h-12 shrink-0 flex items-center justify-center overflow-hidden">
+                        <img src="{{ asset('images/logo.png') }}"
+                            alt="Logo SiMukmin"
+                            class="max-w-full max-h-full object-contain mix-blend-multiply">
+                    </div>
 
                 <div>
                     <h1 class="text-2xl font-bold text-white leading-tight">

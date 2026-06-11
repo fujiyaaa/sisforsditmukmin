@@ -16,25 +16,27 @@
 <div class="flex min-h-screen">
 
     {{-- SIDEBAR --}}
-    <aside class="fixed left-0 top-0 w-72 h-screen bg-[#1F6B4A] text-white flex flex-col justify-between shadow-xl z-40">
+    <aside class="fixed left-0 top-0 z-40 h-screen w-72 overflow-hidden bg-gradient-to-b from-[#102B21] via-[#174B35] to-[#23704D] border-r border-white/10 shadow-[10px_0_35px_rgba(16,43,33,0.35)] flex flex-col justify-between">
 
         <div>
 
             {{-- LOGO --}}
             <div class="px-7 py-7 border-b border-white/10">
 
-                <div class="flex items-center gap-3">
+                <div class="flex items-center gap-4">
 
-                    <div class="w-12 h-12 rounded-2xl bg-white text-[#1F6B4A] flex items-center justify-center font-bold text-xl">
-                        S
+                    <div class="w-12 h-12 shrink-0 flex items-center justify-center rounded-2xl bg-white/10 overflow-hidden p-1">
+                        <img src="{{ asset('images/logo.png') }}"
+                             alt="Logo SiMukmin"
+                             class="w-full h-full object-contain mix-blend-screen">
                     </div>
 
                     <div>
-                        <h1 class="text-2xl font-bold tracking-tight">
+                        <h1 class="text-2xl font-bold text-white tracking-tight leading-tight">
                             SiMukmin
                         </h1>
 
-                        <p class="text-xs text-white/70 mt-0.5">
+                        <p class="text-xs text-white/70 mt-1">
                             Panel Orang Tua
                         </p>
                     </div>
@@ -48,45 +50,45 @@
 
                 <a href="{{ route('orangtua.dashboard') }}"
                    class="group flex items-center gap-4 px-5 py-4 rounded-2xl transition
-                   {{ request()->is('orangtua') || request()->is('orangtua/dashboard') ? 'bg-white text-[#1F6B4A] shadow-sm font-semibold' : 'text-white/80 hover:bg-white/10 hover:text-white' }}">
+                   {{ request()->is('orangtua') || request()->is('orangtua/dashboard') ? 'bg-white text-[#1F6B4A] shadow-lg shadow-black/10 font-semibold' : 'text-white/75 hover:bg-white/10 hover:text-white' }}">
 
-                    <span class="w-2.5 h-2.5 rounded-full {{ request()->is('orangtua') || request()->is('orangtua/dashboard') ? 'bg-[#1F6B4A]' : 'bg-white/40 group-hover:bg-white' }}"></span>
+                    <span class="w-2.5 h-2.5 rounded-full {{ request()->is('orangtua') || request()->is('orangtua/dashboard') ? 'bg-[#2F7D55]' : 'bg-white/35 group-hover:bg-white' }}"></span>
 
                     <span>Beranda</span>
                 </a>
 
                 <a href="{{ route('orangtua.monitoring') }}"
                    class="group flex items-center gap-4 px-5 py-4 rounded-2xl transition
-                   {{ request()->is('orangtua/monitoring*') ? 'bg-white text-[#1F6B4A] shadow-sm font-semibold' : 'text-white/80 hover:bg-white/10 hover:text-white' }}">
+                   {{ request()->is('orangtua/monitoring*') ? 'bg-white text-[#1F6B4A] shadow-lg shadow-black/10 font-semibold' : 'text-white/75 hover:bg-white/10 hover:text-white' }}">
 
-                    <span class="w-2.5 h-2.5 rounded-full {{ request()->is('orangtua/monitoring*') ? 'bg-[#1F6B4A]' : 'bg-white/40 group-hover:bg-white' }}"></span>
+                    <span class="w-2.5 h-2.5 rounded-full {{ request()->is('orangtua/monitoring*') ? 'bg-[#2F7D55]' : 'bg-white/35 group-hover:bg-white' }}"></span>
 
                     <span>Setoran Quran</span>
                 </a>
 
                 <a href="{{ route('orangtua.ibadah-sholat.index') }}"
                    class="group flex items-center gap-4 px-5 py-4 rounded-2xl transition
-                   {{ request()->is('orangtua/ibadah-sholat*') ? 'bg-white text-[#1F6B4A] shadow-sm font-semibold' : 'text-white/80 hover:bg-white/10 hover:text-white' }}">
+                   {{ request()->is('orangtua/ibadah-sholat*') ? 'bg-white text-[#1F6B4A] shadow-lg shadow-black/10 font-semibold' : 'text-white/75 hover:bg-white/10 hover:text-white' }}">
 
-                    <span class="w-2.5 h-2.5 rounded-full {{ request()->is('orangtua/ibadah-sholat*') ? 'bg-[#1F6B4A]' : 'bg-white/40 group-hover:bg-white' }}"></span>
+                    <span class="w-2.5 h-2.5 rounded-full {{ request()->is('orangtua/ibadah-sholat*') ? 'bg-[#2F7D55]' : 'bg-white/35 group-hover:bg-white' }}"></span>
 
                     <span>Monitoring Ibadah</span>
                 </a>
 
                 <a href="{{ url('/orangtua/absensi') }}"
                    class="group flex items-center gap-4 px-5 py-4 rounded-2xl transition
-                   {{ request()->is('orangtua/absensi*') ? 'bg-white text-[#1F6B4A] shadow-sm font-semibold' : 'text-white/80 hover:bg-white/10 hover:text-white' }}">
+                   {{ request()->is('orangtua/absensi*') ? 'bg-white text-[#1F6B4A] shadow-lg shadow-black/10 font-semibold' : 'text-white/75 hover:bg-white/10 hover:text-white' }}">
 
-                    <span class="w-2.5 h-2.5 rounded-full {{ request()->is('orangtua/absensi*') ? 'bg-[#1F6B4A]' : 'bg-white/40 group-hover:bg-white' }}"></span>
+                    <span class="w-2.5 h-2.5 rounded-full {{ request()->is('orangtua/absensi*') ? 'bg-[#2F7D55]' : 'bg-white/35 group-hover:bg-white' }}"></span>
 
                     <span>Absensi</span>
                 </a>
 
                 <a href="{{ url('/orangtua/laporan') }}"
                    class="group flex items-center gap-4 px-5 py-4 rounded-2xl transition
-                   {{ request()->is('orangtua/laporan*') ? 'bg-white text-[#1F6B4A] shadow-sm font-semibold' : 'text-white/80 hover:bg-white/10 hover:text-white' }}">
+                   {{ request()->is('orangtua/laporan*') ? 'bg-white text-[#1F6B4A] shadow-lg shadow-black/10 font-semibold' : 'text-white/75 hover:bg-white/10 hover:text-white' }}">
 
-                    <span class="w-2.5 h-2.5 rounded-full {{ request()->is('orangtua/laporan*') ? 'bg-[#1F6B4A]' : 'bg-white/40 group-hover:bg-white' }}"></span>
+                    <span class="w-2.5 h-2.5 rounded-full {{ request()->is('orangtua/laporan*') ? 'bg-[#2F7D55]' : 'bg-white/35 group-hover:bg-white' }}"></span>
 
                     <span>Prestasi & Pelanggaran</span>
                 </a>
@@ -98,16 +100,16 @@
         {{-- PROFILE --}}
         <div class="p-4">
 
-            <div class="bg-white/10 backdrop-blur-sm border border-white/10 rounded-[1.5rem] p-5">
+            <div class="rounded-3xl bg-white/10 backdrop-blur-md border border-white/15 p-5 shadow-sm">
 
                 <div class="flex items-center gap-3">
 
-                    <div class="w-11 h-11 rounded-2xl bg-white text-[#1F6B4A] flex items-center justify-center font-bold">
+                    <div class="w-11 h-11 rounded-2xl bg-white text-[#1F6B4A] flex items-center justify-center font-bold shadow-sm">
                         {{ strtoupper(substr(Auth::user()->name ?? 'O', 0, 1)) }}
                     </div>
 
                     <div class="min-w-0">
-                        <h2 class="font-semibold text-sm truncate">
+                        <h2 class="font-semibold text-sm text-white truncate">
                             {{ Auth::user()->name ?? 'Orang Tua' }}
                         </h2>
 
@@ -166,7 +168,7 @@
                         </p>
 
                         <p class="text-sm font-semibold text-[#2F7D55]">
-                            {{ now()->format('d M Y') }}
+                            {{ now()->translatedFormat('d M Y') }}
                         </p>
                     </div>
 

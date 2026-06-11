@@ -150,28 +150,8 @@ Route::middleware(['auth', 'must.change.password', 'role:admin'])->prefix('admin
 
 Route::middleware(['auth', 'must.change.password', 'role:guru'])->prefix('guru')->group(function () {
 
-    Route::get('/dashboard', function () {
-        $totalSiswa = Schema::hasTable('siswas') ? DB::table('siswas')->count() : 0;
-        $totalMonitoring = Schema::hasTable('monitorings') ? DB::table('monitorings')->count() : 0;
-        $totalSetoran = Schema::hasTable('setorans') ? DB::table('setorans')->count() : 0;
-
-        $aktivitas = [
-            'Monitoring ibadah siswa diperbarui',
-            'Setoran Quran siswa berhasil ditambahkan',
-            'Data absensi siswa diperiksa',
-        ];
-
-        return view('guru.dashboard', compact(
-            'totalSiswa',
-            'totalMonitoring',
-            'totalSetoran',
-            'aktivitas'
-        ));
-    })->name('guru.dashboard');
-
-    Route::get('/', function () {
-        return redirect()->route('guru.dashboard');
-    });
+    Route::get('/dashboard', [GuruController::class, 'dashboard'])->name('guru.dashboard');
+    Route::get('/', function () {return redirect()->route('guru.dashboard');});
 
     Route::get('/siswa', [SiswaController::class, 'listGuru']);
 
@@ -211,16 +191,9 @@ Route::middleware(['auth', 'must.change.password', 'role:guru'])->prefix('guru')
 });
 
 Route::middleware(['auth', 'must.change.password', 'role:orangtua'])->prefix('orangtua')->group(function () {
-    Route::get('/', function () {
-        return view('orangtua.dashboard');
-    })->name('orangtua.dashboard');
-
-    Route::get('/dashboard', function () {
-        return redirect()->route('orangtua.dashboard');
-    });
-
-    Route::get('/monitoring', [OrangTuaController::class, 'monitoring'])
-        ->name('orangtua.monitoring');
+    Route::get('/', [OrangTuaController::class, 'dashboard'])->name('orangtua.dashboard');
+    Route::get('/dashboard', function () {return redirect()->route('orangtua.dashboard');});
+    Route::get('/monitoring', [OrangTuaController::class, 'monitoring'])->name('orangtua.monitoring');
 
     Route::get('/laporan', [OrangTuaController::class, 'laporan'])
         ->name('orangtua.laporan');
