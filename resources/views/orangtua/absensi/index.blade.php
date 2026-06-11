@@ -8,38 +8,46 @@
 
 <div class="space-y-8">
 
-    {{-- HERO HEADER --}}
-    <div class="relative overflow-hidden rounded-[2rem] bg-gradient-to-br from-[#1F6B4A] via-[#2F7D55] to-[#4D9A72] p-8 shadow-sm">
+ {{-- HERO HEADER --}}
+<div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#1F252D] via-[#2F6F4F] to-[#4D9A72] p-8 shadow-lg text-white">
 
-        <div class="absolute -right-20 -top-20 w-72 h-72 rounded-full bg-white/10"></div>
-        <div class="absolute -left-16 -bottom-20 w-52 h-52 rounded-full bg-white/10"></div>
+    <div class="absolute right-0 top-0 w-72 h-72 bg-white/5 rounded-full translate-x-24 -translate-y-24"></div>
+    <div class="absolute left-0 bottom-0 w-60 h-60 bg-white/5 rounded-full -translate-x-24 translate-y-24"></div>
 
-        <div class="relative z-10 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
+    <div class="relative flex flex-col md:flex-row md:items-center md:justify-between gap-6">
 
-            <div>
-                <p class="inline-flex items-center bg-white/15 text-white text-xs tracking-[0.22em] font-bold px-4 py-2 rounded-full mb-5">
-                    REKAP ABSENSI
-                </p>
-
-                <h1 class="text-3xl md:text-4xl font-bold text-white">
-                    Rekapitulasi Absensi
-                </h1>
-
+        <div>
+            <div class="inline-flex items-center bg-white/15 text-white px-4 py-2 rounded-full text-sm font-semibold mb-4 tracking-wide">
+                REKAP ABSENSI
             </div>
 
-            <div class="bg-white/15 backdrop-blur-sm border border-white/10 rounded-[1.5rem] px-6 py-4 text-white">
-                <p class="text-xs text-white/70">
-                    Persentase Kehadiran
-                </p>
-
-                <h2 class="text-3xl font-bold mt-1">
-                    {{ $persen }}%
-                </h2>
-            </div>
+            <h1 class="text-4xl font-bold">
+                Rekapitulasi Absensi
+            </h1>
 
         </div>
 
+        <div class="bg-white/15 backdrop-blur px-6 py-5 rounded-3xl min-w-[260px] border border-white/10">
+            <p class="text-sm text-white/70">
+                Persentase Kehadiran
+            </p>
+
+            <h2 class="text-2xl font-bold mt-1">
+                {{ $persentaseKehadiran ?? 0 }}%
+            </h2>
+
+            <p class="text-white/80 text-sm mt-1">
+                Rekap Absensi Siswa
+            </p>
+
+            <p class="text-white/60 text-xs mt-1">
+                Riwayat kehadiran ananda
+            </p>
+        </div>
+
     </div>
+
+</div>
 
     {{-- PROFIL SISWA + PROGRESS --}}
     <div class="grid grid-cols-1 xl:grid-cols-4 gap-6">

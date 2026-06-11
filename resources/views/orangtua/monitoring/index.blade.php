@@ -12,49 +12,49 @@
 
 <div class="space-y-8">
 
-{{-- HERO HEADER --}}
-<div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#1F252D] via-[#2F6F4F] to-[#4D9A72] p-8 shadow-lg text-white">
+    {{-- HERO HEADER --}}
+    <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#1F252D] via-[#2F6F4F] to-[#4D9A72] p-8 shadow-lg text-white">
 
-    <div class="absolute right-0 top-0 w-72 h-72 bg-white/5 rounded-full translate-x-24 -translate-y-24"></div>
-    <div class="absolute left-0 bottom-0 w-60 h-60 bg-white/5 rounded-full -translate-x-24 translate-y-24"></div>
+        <div class="absolute right-0 top-0 w-72 h-72 bg-white/5 rounded-full translate-x-24 -translate-y-24"></div>
+        <div class="absolute left-0 bottom-0 w-60 h-60 bg-white/5 rounded-full -translate-x-24 translate-y-24"></div>
 
-    <div class="relative flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+        <div class="relative flex flex-col md:flex-row md:items-center md:justify-between gap-6">
 
-        <div>
-            <div class="inline-flex items-center bg-white/15 text-white px-4 py-2 rounded-full text-sm font-semibold mb-4 tracking-wide">
-                MONITORING HAFALAN
+            <div>
+                <div class="inline-flex items-center bg-white/15 text-white px-4 py-2 rounded-full text-sm font-semibold mb-4 tracking-wide">
+                    MONITORING HAFALAN
+                </div>
+
+                <h1 class="text-4xl font-bold">
+                    Monitoring Hafalan Ananda
+                </h1>
+
+                <p class="text-white/80 mt-2 max-w-2xl">
+                    {{ $siswa->nama ?? '-' }} • Kelas {{ $siswa->kelas->nama_kelas ?? $siswa->kelas ?? '-' }}
+                </p>
             </div>
 
-            <h1 class="text-4xl font-bold">
-                Monitoring Hafalan Ananda
-            </h1>
+            <div class="bg-white/15 backdrop-blur px-6 py-5 rounded-3xl min-w-[260px] border border-white/10">
+                <p class="text-sm text-white/70">
+                    Hari Ini
+                </p>
 
-            <p class="text-white/80 mt-2 max-w-2xl">
-                {{ $siswa->nama ?? '-' }} • Kelas {{ $siswa->kelas->nama_kelas ?? $siswa->kelas ?? '-' }}
-            </p>
-        </div>
+                <h2 class="text-2xl font-bold mt-1">
+                    {{ now()->translatedFormat('d M Y') }}
+                </h2>
 
-        <div class="bg-white/15 backdrop-blur px-6 py-5 rounded-3xl min-w-[260px] border border-white/10">
-            <p class="text-sm text-white/70">
-                Hari Ini
-            </p>
+                <p class="text-white/80 text-sm mt-1">
+                    Monitoring Setoran Quran
+                </p>
 
-            <h2 class="text-2xl font-bold mt-1">
-                {{ now()->translatedFormat('d M Y') }}
-            </h2>
+                <p class="text-white/60 text-xs mt-1">
+                    Riwayat hafalan ananda
+                </p>
+            </div>
 
-            <p class="text-white/80 text-sm mt-1">
-                Monitoring Setoran Quran
-            </p>
-
-            <p class="text-white/60 text-xs mt-1">
-                Riwayat hafalan ananda
-            </p>
         </div>
 
     </div>
-
-</div>
 
     {{-- INFO SISWA --}}
     <div class="bg-white rounded-[2rem] shadow-sm border border-gray-100 p-7">
