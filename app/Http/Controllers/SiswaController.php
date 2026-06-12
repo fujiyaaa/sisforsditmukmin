@@ -43,12 +43,12 @@ class SiswaController extends Controller
    public function store(Request $request)
 {
     $request->validate([
-        'nis' => 'required|string|max:50|unique:siswas,nis',
+        'nis' => 'required|int|max:50|unique:siswas,nis',
         'nama' => 'required|string|max:255',
-        'jenis_kelamin' => 'nullable|in:L,P',
-        'tempat_lahir' => 'nullable|string|max:255',
-        'tanggal_lahir' => 'nullable|date',
-        'alamat' => 'nullable|string',
+        'jenis_kelamin' => 'required|in:L,P',
+        'tempat_lahir' => 'required|string|max:255',
+        'tanggal_lahir' => 'required|date',
+        'alamat' => 'required|string',
         'kelas_id' => 'required|exists:kelas,id',
 
         'opsi_orangtua' => 'required|in:tanpa,hubungkan,buat_baru',
@@ -146,12 +146,12 @@ class SiswaController extends Controller
     $siswa = Siswa::findOrFail($id);
 
     $request->validate([
-        'nis' => 'required|string|max:50|unique:siswas,nis,' . $siswa->id,
+        'nis' => 'required|integer|max:50|unique:siswas,nis,' . $siswa->id,
         'nama' => 'required|string|max:255',
-        'jenis_kelamin' => 'nullable|in:L,P',
-        'tempat_lahir' => 'nullable|string|max:255',
-        'tanggal_lahir' => 'nullable|date',
-        'alamat' => 'nullable|string',
+        'jenis_kelamin' => 'required|in:L,P',
+        'tempat_lahir' => 'required|string|max:255',
+        'tanggal_lahir' => 'required|date',
+        'alamat' => 'required|string',
         'kelas_id' => 'required|exists:kelas,id',
 
         'orangtua_id' => [

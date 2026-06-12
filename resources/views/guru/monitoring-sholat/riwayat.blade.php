@@ -121,7 +121,7 @@
 
             <div class="mb-6">
                 <h2 class="text-2xl font-bold text-[#1F252D]">
-                    Kalender {{ $daftarBulan[(int) $selectedBulan] }} {{ $selectedTahun }}
+                    Calendar {{ $daftarBulan[(int) $selectedBulan] }} {{ $selectedTahun }}
                 </h2>
 
                 <p class="text-gray-500 mt-1">

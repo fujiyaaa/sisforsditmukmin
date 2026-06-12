@@ -158,10 +158,6 @@ class MonitoringSholatController extends Controller
                 }
             });
 
-        /*
-         * Fungsi untuk menggabungkan data admin/guru/orangtua.
-         * Jadi satu siswa pada satu tanggal cuma tampil satu baris.
-         */
         $gabungkanMonitoring = function ($items) {
             return $items
                 ->groupBy('siswa_id')
