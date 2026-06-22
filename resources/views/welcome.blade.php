@@ -1,17 +1,24 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SiMukmin</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
     <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+        body{
+            font-family:'Plus Jakarta Sans',sans-serif;
+        }
+    </style>
 </head>
 
-<body class="bg-[#F4F7F5] text-[#1F252D] font-sans">
+<body class="bg-slate-950 text-white overflow-x-hidden">
 
     {{-- NAVBAR --}}
-    <nav class="fixed top-0 left-0 right-0 z-50 bg-[#1F6B4A]/95 backdrop-blur-md border-b border-white/10">
+    <nav class="fixed top-0 left-0 right-0 z-50 backdrop-blur-xl bg-slate-950/70 border-b border-white/10">
 
         <div class="max-w-6xl mx-auto px-5 lg:px-6">
 
@@ -19,16 +26,12 @@
 
                 <a href="#home" class="flex items-center gap-3">
 
-                    <div class="w-10 h-10 rounded-xl bg-white text-[#1F6B4A] flex items-center justify-center font-bold text-lg">
-                        S
-                    </div>
-
                     <div>
                         <h1 class="text-xl font-bold text-white tracking-tight">
                             SiMukmin
                         </h1>
 
-                        <p class="text-[11px] text-white/60">
+                        <p class="text-xs text-white/60">
                             Sistem Informasi Sekolah
                         </p>
                     </div>
@@ -58,14 +61,14 @@
                     </a>
 
                     <a href="{{ url('/login') }}"
-                       class="ml-3 inline-flex items-center justify-center bg-white text-[#1F6B4A] hover:bg-[#F0F8F4] px-5 py-2.5 rounded-xl font-bold text-sm transition shadow-sm">
+                       class="bg-emerald-500 hover:bg-emerald-400 text-white px-5 py-2.5 rounded-xl font-semibold transition">
                         Login
                     </a>
 
                 </div>
 
                 <a href="{{ url('/login') }}"
-                   class="md:hidden inline-flex items-center justify-center bg-white text-[#1F6B4A] px-4 py-2 rounded-xl font-bold text-sm">
+                   class="md:hidden inline-flex items-center justify-center bg-emerald-500 hover:bg-emerald-400 text-white px-4 py-2 rounded-xl font-semibold transition">
                     Login
                 </a>
 
@@ -79,81 +82,93 @@
     <main class="pt-20">
 
         {{-- HERO --}}
-        <section id="home" class="max-w-6xl mx-auto px-5 lg:px-6 py-6">
+        <section id="home" class="relative min-h-screen flex items-center">
 
-            <div class="relative overflow-hidden rounded-[2rem] bg-gradient-to-br from-[#1F6B4A] via-[#2F7D55] to-[#4D9A72] p-7 md:p-9 lg:p-10 shadow-sm">
+    <div class="absolute inset-0 bg-gradient-to-br from-emerald-950 via-slate-950 to-slate-900"></div>
 
-                <div class="absolute -right-24 -top-24 w-80 h-80 rounded-full bg-white/10"></div>
-                <div class="absolute -left-20 -bottom-24 w-64 h-64 rounded-full bg-white/10"></div>
+    <div class="absolute top-0 left-0 w-96 h-96 bg-emerald-500/20 blur-[120px] rounded-full"></div>
 
-                <div class="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+    <div class="absolute bottom-0 right-0 w-96 h-96 bg-green-400/20 blur-[120px] rounded-full"></div>
 
-                    <div>
+    <div class="relative z-10 max-w-7xl mx-auto px-6 py-20">
 
-                        <p class="inline-flex items-center bg-white/15 text-white text-[11px] tracking-[0.22em] font-bold px-4 py-2 rounded-full mb-5">
-                            SDIT MUKMIN KREATIF
-                        </p>
+        <div class="grid lg:grid-cols-2 gap-14 items-center">
 
-                        <h1 class="text-3xl md:text-4xl lg:text-5xl font-bold text-white leading-tight">
-                            Selamat Datang di SiMukmin
-                        </h1>
+            <div>
+                <img
+                        src="{{ asset('images/logoSDITMUKMIN.png') }}"
+                        alt="Logo SiMukmin"
+                        class="w-50 h-50 object-contain"/>
 
-                        <p class="text-white/90 text-base md:text-lg mt-4 leading-relaxed max-w-xl">
-                            Website monitoring aktivitas siswa, absensi, ibadah, setoran Quran, serta laporan perkembangan siswa SDIT Mukmin Kreatif.
-                        </p>
+                <span class="inline-flex items-center px-4 py-2 rounded-full bg-emerald-500/10 border border-emerald-400/20 text-emerald-300 text-sm">
+                    ✨ Sistem Monitoring SD  IT Mukmin Kreatif
+                </span>
 
-                        <div class="flex flex-col sm:flex-row gap-3 mt-6">
+                <h1 class="mt-8 text-5xl lg:text-7xl font-extrabold leading-tight">
+                    Monitoring
+                    <span class="text-emerald-400">
+                        Ibadah,
+                    </span>
+                    Hafalan &
+                    Kehadiran Siswa
+                </h1>
 
-                            <a href="{{ url('/login') }}"
-                               class="inline-flex items-center justify-center bg-white text-[#1F6B4A] hover:bg-[#F0F8F4] px-6 py-3 rounded-2xl font-bold text-sm transition shadow-sm">
-                                Login Sekarang
-                            </a>
+                <p class="mt-6 text-slate-300 text-lg leading-relaxed max-w-xl">
+                    SiMukmin membantu sekolah, guru dan orang tua memantau perkembangan siswa secara real-time dalam satu platform modern.
+                </p>
 
-                            <a href="#fitur"
-                               class="inline-flex items-center justify-center bg-white/10 text-white hover:bg-white/20 px-6 py-3 rounded-2xl font-bold text-sm transition border border-white/10">
-                                Lihat Fitur
-                            </a>
+
+                <div class="flex gap-4 mt-10">
+                    <center>
+                    <a href="{{ url('/login') }}"
+                        class="bg-emerald-500 hover:bg-emerald-400 px-7 py-4 rounded-2xl font-semibold transition">
+                        Login Sekarang
+                    </a>
+
+                    <a href="#fitur"
+                        class="border border-white/10 bg-white/5 px-7 py-4 rounded-2xl font-semibold hover:bg-white/10 transition">
+                        Lihat Fitur
+                    </a>
+                    </center>
+
+                </div>
+
+            </div>
+
+            <div>
+
+                <div class="bg-white/5 border border-white/10 backdrop-blur-xl rounded-3xl p-6">
+
+                    <div class="bg-slate-900 rounded-3xl p-6">
+
+                        <div class="flex items-center justify-between">
+
+                            <h3 class="font-bold text-xl">
+                                Dashboard SiMukmin
+                            </h3>
+
+                            <span class="bg-green-500/20 text-green-400 px-3 py-1 rounded-full text-sm">
+                                Online
+                            </span>
 
                         </div>
 
-                    </div>
+                        <div class="space-y-4 mt-6">
 
-                    <div class="flex justify-center lg:justify-end">
+                            <div class="bg-emerald-500/10 p-4 rounded-2xl">
+                                Monitoring Ibadah
+                            </div>
 
-                        <div class="bg-white/15 backdrop-blur-sm border border-white/10 rounded-[2rem] p-5 w-full max-w-sm">
+                            <div class="bg-blue-500/10 p-4 rounded-2xl">
+                                Absensi Siswa
+                            </div>
 
-                            <div class="bg-white rounded-[1.5rem] p-6 shadow-sm">
+                            <div class="bg-yellow-500/10 p-4 rounded-2xl">
+                                Setoran Quran
+                            </div>
 
-                                <div class="w-16 h-16 rounded-2xl bg-[#DDF3E7] text-[#2F7D55] flex items-center justify-center text-2xl font-bold mb-4">
-                                    S
-                                </div>
-
-                                <h2 class="text-xl font-bold text-[#1F252D]">
-                                    Monitoring Terintegrasi
-                                </h2>
-
-                                <p class="text-gray-500 mt-3 text-sm leading-relaxed">
-                                    Guru dan orang tua dapat memantau perkembangan siswa melalui satu sistem yang rapi dan mudah digunakan.
-                                </p>
-
-                                <div class="grid grid-cols-2 gap-3 mt-5">
-
-                                    <div class="rounded-2xl bg-[#F6FAF8] border border-[#E6F4EC] p-4">
-                                        <p class="text-xs text-gray-500">Role</p>
-                                        <h3 class="text-lg font-bold text-[#2F7D55] mt-1">
-                                            3
-                                        </h3>
-                                    </div>
-
-                                    <div class="rounded-2xl bg-[#F6FAF8] border border-[#E6F4EC] p-4">
-                                        <p class="text-xs text-gray-500">Fitur</p>
-                                        <h3 class="text-lg font-bold text-[#2F7D55] mt-1">
-                                            5+
-                                        </h3>
-                                    </div>
-
-                                </div>
-
+                            <div class="bg-red-500/10 p-4 rounded-2xl">
+                                Laporan Siswa
                             </div>
 
                         </div>
@@ -164,41 +179,147 @@
 
             </div>
 
+        </div>
+
+    </div>
+
+</section>
+
+<section class="max-w-7xl mx-auto px-6 -mt-20 relative z-20">
+
+    <div class="grid md:grid-cols-4 gap-5">
+
+        <div class="bg-slate-900 border border-white/10 rounded-3xl p-6">
+            <h2 class="text-4xl font-bold text-emerald-400">500+</h2>
+            <p class="text-slate-400 mt-2">Siswa Aktif</p>
+        </div>
+
+        <div class="bg-slate-900 border border-white/10 rounded-3xl p-6">
+            <h2 class="text-4xl font-bold text-blue-400">50+</h2>
+            <p class="text-slate-400 mt-2">Guru</p>
+        </div>
+
+        <div class="bg-slate-900 border border-white/10 rounded-3xl p-6">
+            <h2 class="text-4xl font-bold text-yellow-400">95%</h2>
+            <p class="text-slate-400 mt-2">Kehadiran</p>
+        </div>
+
+        <div class="bg-slate-900 border border-white/10 rounded-3xl p-6">
+            <h2 class="text-4xl font-bold text-red-400">24/7</h2>
+            <p class="text-slate-400 mt-2">Monitoring</p>
+        </div>
+
+    </div>
+
+</section>
+
         </section>
 
         {{-- TENTANG --}}
+
         <section id="tentang" class="max-w-6xl mx-auto px-5 lg:px-6 py-6">
 
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
 
-                <div class="bg-white rounded-[2rem] shadow-sm border border-gray-100 p-6">
+                <center>
+                <div class="bg-slate-900 border border-white/10 rounded-3xl p-8 hover:border-emerald-400/30 hover:-translate-y-2 transition duration-300">
 
-                    <div class="w-12 h-12 rounded-2xl bg-[#EEF7F1] text-[#2F7D55] flex items-center justify-center font-bold mb-5">
-                        T
-                    </div>
-
-                    <h2 class="text-2xl font-bold text-[#1F252D]">
+                    <h2 class="text-2xl font-bold text-white">
                         Tentang Sekolah
                     </h2>
 
                     <p class="text-gray-500 mt-3 text-sm leading-relaxed">
-                        SDIT Mukmin Kreatif merupakan sekolah yang memanfaatkan teknologi untuk membantu monitoring aktivitas siswa, absensi, ibadah, dan perkembangan siswa secara lebih terstruktur.
+                         SD IT Mukmin Kreatif hadir sebagai pilihan terbaik bagi orang tua yang ingin memberikan pendidikan berkualitas, yang tidak hanya mencerdaskan pikiran, tetapi juga menumbuhkan karakter mulia pada anak-anak mereka
+                    </p>
+
+                </div>
+                </center>
+
+                <center>
+                <div class="bg-slate-900 border border-white/10 rounded-3xl p-8 hover:border-emerald-400/30 hover:-translate-y-2 transition duration-300">
+
+                    <h2 class="text-2xl font-bold text-white">
+                        Tentang Sekolah
+                    </h2>
+
+                    <p class="text-gray-500 mt-3 text-sm leading-relaxed">
+                         SD IT Mukmin Kreatif hadir sebagai pilihan terbaik bagi orang tua yang ingin memberikan pendidikan berkualitas, yang tidak hanya mencerdaskan pikiran, tetapi juga menumbuhkan karakter mulia pada anak-anak mereka
+                    </p>
+
+                </div>
+                </center>
+
+
+            </div>
+
+        </section>
+
+                {{-- Motto --}}
+        <section id="fitur" class="max-w-6xl mx-auto px-5 lg:px-6 py-6">
+
+            <div class="mb-6">
+
+                <center>
+                     <h2 class="inline-flex items-center bg-emerald-500/10 text-emerald-400 text-lg font-bold px-6 py-3 rounded-md mb-5">
+                     Motto SD IT Mukmin Kreatif
+                </h2>
+
+                </center>
+
+
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5">
+
+                <div class="bg-slate-900 border border-white/10 rounded-3xl p-8 hover:border-emerald-400/30 hover:-translate-y-2 transition duration-300">
+
+
+                    <h3 class="text-lg font-bold text-white">
+                        SHALEH
+                    </h3>
+
+                    <p class="text-gray-500 mt-3 text-sm leading-relaxed">
+                        Nilai-nilai ajaran Islam yang terintergasi dalam seluruh muatan kurikulumnya didesign untuk mewujudkan pribadi mukmin unggul yang shaleh, baik dalam hubungan vertikal dengan Allah maupun hubungan horizontal dengan manusia
                     </p>
 
                 </div>
 
-                <div class="bg-white rounded-[2rem] shadow-sm border border-gray-100 p-6">
+                <div class="bg-slate-900 border border-white/10 rounded-3xl p-8 hover:border-emerald-400/30 hover:-translate-y-2 transition duration-300">
 
-                    <div class="w-12 h-12 rounded-2xl bg-[#EEF7F1] text-[#2F7D55] flex items-center justify-center font-bold mb-5">
-                        V
-                    </div>
 
-                    <h2 class="text-2xl font-bold text-[#1F252D]">
-                        Visi Sekolah
-                    </h2>
+                    <h3 class="text-lg font-bold text-white">
+                        BERILMU
+                    </h3>
 
                     <p class="text-gray-500 mt-3 text-sm leading-relaxed">
-                        Menjadi sekolah islami yang unggul dalam pendidikan, teknologi, dan pembentukan karakter siswa yang berakhlak baik.
+                        Kurikulum dinas pendidikan yang dikombinasikan dengan kurikulum khas yayasan diramu dalam sebuah pembelajaran yang aktif, inovatif, kreatif, efektif, dan menyenangkan untuk menciptakan peserta didik yang berilmu dan berwawasan luas
+                    </p>
+
+                </div>
+
+                <div class="bg-slate-900 border border-white/10 rounded-3xl p-8 hover:border-emerald-400/30 hover:-translate-y-2 transition duration-300">
+
+
+                    <h3 class="text-lg font-bold text-white">
+                        BERKARYA
+                    </h3>
+
+                    <p class="text-gray-500 mt-3 text-sm leading-relaxed">
+                        Berbagai program yang mengasah sisi kreatifitas disajikan kepada peserta didik agar di masa mendatang mereka tidak hanya menjadi pribadi yang shaleh dan
+                        berilmu saja namun juga punya karya nyata bagi masyarakat secara umum
+                    </p>
+
+                </div>
+
+                <div class="bg-slate-900 border border-white/10 rounded-3xl p-8 hover:border-emerald-400/30 hover:-translate-y-2 transition duration-300">
+
+
+                    <h3 class="text-lg font-bold text-white">
+                        BERMANFAAT
+                    </h3>
+
+                    <p class="text-gray-500 mt-3 text-sm leading-relaxed">
+                        “Sebaik-baik manusia adalah mereka yang paling banyak memberikan manfaat bagi orang lain.” Sabda Nabi Shallallaahu ‘alaihi wasallam inilah yang menjadi goal akhir SDIT Mukmin Kreatif dari setiap proses pendidikan yang dihadirkan kepada masyarakat
                     </p>
 
                 </div>
@@ -212,11 +333,11 @@
 
             <div class="mb-6">
 
-                <p class="inline-flex items-center bg-[#EEF7F1] text-[#2F7D55] text-[11px] tracking-[0.22em] font-bold px-4 py-2 rounded-full mb-4">
+                <p class="inline-flex items-center bg-emerald-500/10 text-emerald-400 text-lg font-bold px-6 py-3 rounded-md mb-5">
                     FITUR UTAMA
                 </p>
 
-                <h2 class="text-3xl md:text-4xl font-bold text-[#1F252D]">
+                <h2 class="text-3xl md:text-4xl font-bold text-white">
                     Fitur Sistem SiMukmin
                 </h2>
 
@@ -228,13 +349,13 @@
 
             <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5">
 
-                <div class="bg-white rounded-[2rem] shadow-sm border border-gray-100 p-6 hover:shadow-md hover:-translate-y-1 transition">
+                <div class="bg-slate-900 border border-white/10 rounded-3xl p-8 hover:border-emerald-400/30 hover:-translate-y-2 transition duration-300">
 
                     <div class="w-12 h-12 rounded-2xl bg-[#EEF7F1] text-[#2F7D55] flex items-center justify-center font-bold mb-5">
                         M
                     </div>
 
-                    <h3 class="text-lg font-bold text-[#1F252D]">
+                    <h3 class="text-lg font-bold text-white">
                         Monitoring Ibadah
                     </h3>
 
@@ -244,13 +365,13 @@
 
                 </div>
 
-                <div class="bg-white rounded-[2rem] shadow-sm border border-gray-100 p-6 hover:shadow-md hover:-translate-y-1 transition">
+                <div class="bg-slate-900 border border-white/10 rounded-3xl p-8 hover:border-emerald-400/30 hover:-translate-y-2 transition duration-300">
 
                     <div class="w-12 h-12 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center font-bold mb-5">
                         A
                     </div>
 
-                    <h3 class="text-lg font-bold text-[#1F252D]">
+                    <h3 class="text-lg font-bold text-white">
                         Rekap Absensi
                     </h3>
 
@@ -260,13 +381,13 @@
 
                 </div>
 
-                <div class="bg-white rounded-[2rem] shadow-sm border border-gray-100 p-6 hover:shadow-md hover:-translate-y-1 transition">
+                <div class="bg-slate-900 border border-white/10 rounded-3xl p-8 hover:border-emerald-400/30 hover:-translate-y-2 transition duration-300">
 
                     <div class="w-12 h-12 rounded-2xl bg-yellow-50 text-yellow-600 flex items-center justify-center font-bold mb-5">
                         Q
                     </div>
 
-                    <h3 class="text-lg font-bold text-[#1F252D]">
+                    <h3 class="text-lg font-bold text-white">
                         Setoran Quran
                     </h3>
 
@@ -276,13 +397,13 @@
 
                 </div>
 
-                <div class="bg-white rounded-[2rem] shadow-sm border border-gray-100 p-6 hover:shadow-md hover:-translate-y-1 transition">
+                <div class="bg-slate-900 border border-white/10 rounded-3xl p-8 hover:border-emerald-400/30 hover:-translate-y-2 transition duration-300">
 
                     <div class="w-12 h-12 rounded-2xl bg-red-50 text-red-600 flex items-center justify-center font-bold mb-5">
                         L
                     </div>
 
-                    <h3 class="text-lg font-bold text-[#1F252D]">
+                    <h3 class="text-lg font-bold text-white">
                         Laporan Siswa
                     </h3>
 
@@ -299,7 +420,7 @@
         {{-- LOKASI --}}
         <section id="lokasi" class="max-w-6xl mx-auto px-5 lg:px-6 py-6">
 
-            <div class="bg-white rounded-[2rem] shadow-sm border border-gray-100 overflow-hidden">
+            <div class="bg-slate-900 border border-white/10 rounded-3xl p-8 hover:border-emerald-400/30 hover:-translate-y-2 transition duration-300">
 
                 <div class="p-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
 
@@ -308,7 +429,7 @@
                             LOKASI
                         </p>
 
-                        <h2 class="text-2xl font-bold text-[#1F252D]">
+                        <h2 class="text-2xl font-bold text-white">
                             Lokasi Sekolah
                         </h2>
 
@@ -318,7 +439,7 @@
                     </div>
 
                     <a href="{{ url('/login') }}"
-                       class="inline-flex items-center justify-center bg-[#2F7D55] hover:bg-[#256B47] text-white px-6 py-3 rounded-2xl font-semibold text-sm transition shadow-sm">
+                       class="bg-emerald-500 hover:bg-emerald-400 text-white px-5 py-2.5 rounded-xl font-semibold transition">
                         Masuk ke Sistem
                     </a>
 

@@ -896,4 +896,24 @@
     </script>
 @endif
 
+@push('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+
+    document.querySelectorAll('select[id^="orangtuaSelect"]').forEach(function(el){
+
+        if(!el.tomselect){
+            new TomSelect(el,{
+                create:false,
+                placeholder:'Cari orang tua...',
+                allowEmptyOption:true
+            });
+        }
+
+    });
+
+});
+</script>
+@endpush
+
 @endsection

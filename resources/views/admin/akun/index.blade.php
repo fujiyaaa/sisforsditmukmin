@@ -160,7 +160,7 @@
                         Hubungkan ke Siswa
                     </label>
 
-                    <select name="siswa_id"
+                    <select id="siswaSelect" name="siswa_id"
                             class="w-full px-4 py-3 border border-gray-200 rounded-2xl bg-[#FAFCFB] focus:outline-none focus:ring-2 focus:ring-[#4D9A72]">
 
                         <option value="">
@@ -185,9 +185,7 @@
 
                     </select>
 
-                    <p class="text-xs text-gray-400 mt-2">
-                        Satu siswa hanya bisa terhubung ke satu akun orang tua.
-                    </p>
+                   
                 </div>
 
                 <div>
@@ -996,5 +994,20 @@
         });
     </script>
 @endif
+
+@push('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+
+    if(document.getElementById('siswaSelect')){
+        new TomSelect('#siswaSelect',{
+            create:false,
+            placeholder:'Cari siswa...'
+        });
+    }
+
+});
+</script>
+@endpush
 
 @endsection
