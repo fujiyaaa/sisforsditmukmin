@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>SiMukmin Orang Tua</title>
+    <title>MUKTI Orang Tua</title>
 
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -33,7 +33,7 @@
 
                     <div>
                         <h1 class="text-2xl font-bold text-white tracking-tight leading-tight">
-                            SiMukmin
+                            MUKTI
                         </h1>
 
                         <p class="text-xs text-white/70 mt-1">

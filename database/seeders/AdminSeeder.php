@@ -14,7 +14,7 @@ class AdminSeeder extends Seeder
                 'email' => 'admin@simukmin.test',
             ],
             [
-                'name' => 'Admin SiMukmin',
+                'name' => 'Admin MUKTI',
                 'password' => 'admin123',
                 'role' => 'admin',
                 'must_change_password' => false,

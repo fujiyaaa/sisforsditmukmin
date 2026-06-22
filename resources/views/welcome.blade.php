@@ -37,7 +37,7 @@
 >>>>>>> f83cb3209145c42b8efbbefaacab331c5313c251
                     <div>
                         <h1 class="text-xl font-bold text-white tracking-tight">
-                            SiMukmin
+                            MUKTI
                         </h1>
 
                         <p class="text-xs text-white/60">
@@ -123,7 +123,7 @@
                 </h1>
 
                 <p class="mt-6 text-slate-300 text-lg leading-relaxed max-w-xl">
-                    SiMukmin membantu sekolah, guru dan orang tua memantau perkembangan siswa secara real-time dalam satu platform modern.
+                    MUKTI membantu sekolah, guru dan orang tua memantau perkembangan siswa secara real-time dalam satu platform modern.
                 </p>
 
 
@@ -153,7 +153,7 @@
                         <div class="flex items-center justify-between">
 
                             <h3 class="font-bold text-xl">
-                                Dashboard SiMukmin
+                                Dashboard MUKTI
                             </h3>
 
                             <span class="bg-green-500/20 text-green-400 px-3 py-1 rounded-full text-sm">
@@ -347,7 +347,7 @@
                 </p>
 
                 <h2 class="text-3xl md:text-4xl font-bold text-white">
-                    Fitur Sistem SiMukmin
+                    Fitur Sistem MUKTI
                 </h2>
 
                 <p class="text-gray-500 mt-3 max-w-2xl text-sm leading-relaxed">
@@ -478,7 +478,7 @@
         <div class="max-w-6xl mx-auto px-5 lg:px-6 py-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
 
             <p class="text-gray-500 text-sm">
-                © 2026 SiMukmin - Sistem Informasi Sekolah
+                © 2026 MUKTI - Sistem Informasi Sekolah
             </p>
 
             <div class="flex items-center gap-3">

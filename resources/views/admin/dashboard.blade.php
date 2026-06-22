@@ -293,7 +293,7 @@
                     </h2>
 
                     <p class="text-gray-500 mt-1">
-                        Informasi singkat mengenai fitur dan pengelolaan sistem SiMukmin.
+                        Informasi singkat mengenai fitur dan pengelolaan sistem MUKTI.
                     </p>
                 </div>
 
@@ -386,7 +386,7 @@
                 </h3>
 
                 <p class="text-sm text-gray-500 mt-2">
-                    Data ditampilkan berdasarkan database sistem SiMukmin.
+                    Data ditampilkan berdasarkan database sistem MUKTI.
                 </p>
 
             </div>

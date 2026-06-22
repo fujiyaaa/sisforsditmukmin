@@ -22,7 +22,7 @@
                 </h1>
 
                 <p class="text-white/90 mt-3 max-w-2xl">
-                    Atur kelas mana saja yang dapat diakses oleh setiap guru pada sistem SiMukmin.
+                    Atur kelas mana saja yang dapat diakses oleh setiap guru pada sistem MUKTI.
                 </p>
             </div>
 
