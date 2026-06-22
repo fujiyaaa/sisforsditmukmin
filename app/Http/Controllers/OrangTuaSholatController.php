@@ -111,15 +111,9 @@ $adaInputGuru = $inputGuruHariIni ? true : false;
     })
     ->first();
 
-$adaInputGuru = $inputGuruHariIni ? true : false;
+    $adaInputGuru = $inputGuruHariIni ? true : false;
 
-    /*
-     * Dzuhur dan Ashar dikunci hanya jika:
-     * - bukan hari libur
-     * - guru sudah input
-     *
-     * Kalau guru belum input, orang tua boleh input semua.
-     */
+   
     $disableDzuhurAshar = !$isLibur && $adaInputGuru;
 
     MonitoringSholat::updateOrCreate(

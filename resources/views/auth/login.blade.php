@@ -251,12 +251,14 @@
                             SIMUKMIN
                         </div>
 
-                        <div class="logo-box">
-                            SM
+                        <div class="w-12 h-12 shrink-0 flex items-center justify-center rounded-2xl bg-white/10 overflow-hidden p-1">
+                            <img src="{{ asset('images/logo.png') }}"
+                                alt="Logo SiMukmin"
+                                class="w-full h-full object-contain mix-blend-screen">
                         </div>
 
                         <h1>
-                            SiMukmin
+                            SDIT Mukmin Kreatif
                         </h1>
 
                         <p>
@@ -284,7 +286,7 @@
                     </h2>
 
                     <p class="subtitle">
-                        Masuk ke akun SiMukmin sesuai role pengguna.
+                        Belum punya akun? Hubungi admin
                     </p>
 
                     @if ($errors->any())
@@ -320,7 +322,7 @@
                                 name="email"
                                 value="{{ old('email') }}"
                                 class="form-control"
-                                placeholder="Email admin / NIP guru / NIS siswa"
+                                placeholder="Email Admin / NIP Guru / NIS Siswa"
                                 required
                                 autofocus
                                 autocomplete="username"

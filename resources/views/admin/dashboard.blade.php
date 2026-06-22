@@ -97,7 +97,7 @@
                     </h2>
 
                     <p class="text-sm text-gray-400 mt-3">
-                        Guru pengguna sistem
+                        Guru
                     </p>
                 </div>
 

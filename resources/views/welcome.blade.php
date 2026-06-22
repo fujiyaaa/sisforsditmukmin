@@ -26,6 +26,15 @@
 
                 <a href="#home" class="flex items-center gap-3">
 
+<<<<<<< HEAD
+=======
+                   <div class="w-12 h-12 shrink-0 flex items-center justify-center rounded-2xl bg-black/10 overflow-hidden p-1">
+                            <img src="{{ asset('images/logo.png') }}"
+                                alt="Logo SiMukmin"
+                                class="w-full h-full object-contain mix-blend-screen">
+                        </div>
+
+>>>>>>> f83cb3209145c42b8efbbefaacab331c5313c251
                     <div>
                         <h1 class="text-xl font-bold text-white tracking-tight">
                             SiMukmin
