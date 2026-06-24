@@ -43,7 +43,7 @@ class SiswaController extends Controller
    public function store(Request $request)
 {
     $request->validate([
-        'nis' => 'required|int|max:50|unique:siswas,nis',
+        'nis' => 'int|unique:siswas,nis',
         'nama' => 'required|string|max:255',
         'jenis_kelamin' => 'required|in:L,P',
         'tempat_lahir' => 'required|string|max:255',
@@ -146,7 +146,7 @@ class SiswaController extends Controller
     $siswa = Siswa::findOrFail($id);
 
     $request->validate([
-        'nis' => 'required|integer|max:50|unique:siswas,nis,' . $siswa->id,
+        'nis' => '|integer|unique:siswas,nis,' . $siswa->id,
         'nama' => 'required|string|max:255',
         'jenis_kelamin' => 'required|in:L,P',
         'tempat_lahir' => 'required|string|max:255',
